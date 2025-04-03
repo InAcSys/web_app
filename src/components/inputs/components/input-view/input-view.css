@@ -1,0 +1,47 @@
+.input-view-component {
+  width: 100%;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid var(--primary-color-inactive);
+  overflow: hidden;
+}
+
+.input-view-component.error {
+  border-color: var(--error-color);
+}
+
+.input-view-component-input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  padding: 10px;
+  background-color: var(--backgroud-light-color-normal);
+}
+
+.input-view-component-input:focus {
+  outline: none;
+}
+
+.input-view-component-input::placeholder {
+  color: var(--primary-color-inactive);
+}
+
+.input-view-component-input.error::placeholder {
+  color: var(--error-color);
+}
+
+.input-view-component-secret-button {
+  width: 40px;
+  height: 40px;
+  background-color: var(--primary-color-inactive);
+  color: var(--foreground-light-color);
+  border: none;
+  cursor: pointer;
+}
+
+.input-view-component-secret-button.error {
+  background-color: var(--error-color);
+}

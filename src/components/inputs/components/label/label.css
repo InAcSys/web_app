@@ -1,0 +1,12 @@
+.label-component {
+  width: 100%;
+}
+
+.label-component-text {
+  color: var(--primary-color-normal);
+}
+
+.label-component-mandatory-symbol {
+  color: var(--secondary-color-normal);
+  margin-left: 0.25rem;
+}
