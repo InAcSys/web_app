@@ -36,6 +36,7 @@
   box-sizing: border-box;
   font-size: var(--font-size-general);
   font-family: "Roboto", sans-serif;
+  user-select: none;
 }
 
 body {
@@ -82,11 +83,16 @@ input.error::placeholder {
 button {
   cursor: pointer;
   text-align: center;
+  height: 40px;
 }
 
 button.error {
   background-color: var(--error-color);
   color: var(--foreground-light-color);
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 .flex-column-center {
@@ -110,5 +116,5 @@ button.error {
 ::-webkit-scrollbar-thumb {
   background-color: var(--primary-color-inactive);
   border-radius: 2rem;
-  cursor:s-resize;
+  cursor: s-resize;
 }

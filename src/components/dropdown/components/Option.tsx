@@ -6,20 +6,22 @@ interface Props {
   changeOption: (option: number) => void;
   label?: string;
   isSelected: boolean;
+  closeDropdown: () => void;
 }
 
-const Option = ({
+export const Option = ({
   position,
+  closeDropdown,
   changeOption,
   label = "Option",
   isSelected,
 }: Props) => {
   return (
     <button
-      className={`dropdown-option-component ${isSelected ? "selected" : ""}`}
+      className={`dropdown-option-component flex-row-center ${isSelected ? "selected" : ""}`}
       onClick={() => {
+        closeDropdown()
         changeOption(position)
-        console.log(position)
       }}
     >
       <span className="dropdown-option-component-label">{label}</span>
@@ -27,5 +29,3 @@ const Option = ({
     </button>
   );
 };
-
-export default Option;

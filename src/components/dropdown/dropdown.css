@@ -6,8 +6,6 @@
 
 .dropdown-component-option-selected {
   width: 100%;
-  cursor: pointer;
-  height: 40px;
   color: var(--primary-color-inactive);
   border: 1px solid var(--primary-color-inactive);
   background-color: var(--backgroud-light-color-normal);

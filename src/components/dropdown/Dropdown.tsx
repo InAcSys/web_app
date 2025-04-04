@@ -1,6 +1,6 @@
-import Option from "./components/Option";
 import "./dropdown.css";
 import { ChevronUp, ChevronDown } from "lucide-react";
+import { Option } from "./components";
 
 interface Props {
   optionSelected?: number;
@@ -11,7 +11,7 @@ interface Props {
   isDisabled?: boolean;
 }
 
-const Dropdown = ({
+export const Dropdown = ({
   optionSelected = 0,
   changeOptionSelected,
   options,
@@ -41,6 +41,7 @@ const Dropdown = ({
           options.map((option, index) => (
             <Option
               key={`dropdown-option-${index}`}
+              closeDropdown={changeOpenOptions}
               position={index}
               changeOption={changeOptionSelected}
               label={option}
@@ -54,5 +55,3 @@ const Dropdown = ({
     </div>
   );
 };
-
-export default Dropdown;

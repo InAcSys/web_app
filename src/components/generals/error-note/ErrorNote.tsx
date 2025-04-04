@@ -4,16 +4,10 @@ interface Props {
   error: string;
 }
 
-const ErrorNote = ({error}: Props) => {
-return (
-    <div className="error-note-component">
-      {
-        error && (
-          <span className="error-note-component-text">{error}</span>
-        )
-      }
+export const ErrorNote = ({ error }: Props) => {
+  return (
+    <div className="error-note-component flex-column-center">
+      {error && <p className="error-note-component-text">{error}</p>}
     </div>
   );
 };
-
-export default ErrorNote;

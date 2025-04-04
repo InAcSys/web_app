@@ -1,14 +1,12 @@
-import { SubDomain } from "./components";
-import Button from "./components/buttons/Button";
-import Dropdown from "./components/dropdown/Dropdown";
-import Input from "./components/inputs/Input";
+import { SubDomain, Dropdown, Input, Button, CheckBox } from "./components";
 import { useState } from "react";
 
 function App() {
   const [value, setValue] = useState("");
-  const [domain, setDomain] = useState("")
+  const [domain, setDomain] = useState("");
   const [option, setOption] = useState(-1);
   const [open, setOpen] = useState(false);
+  const [checked, setChecked] = useState(false);
 
   return (
     <>
@@ -18,7 +16,7 @@ function App() {
         value={value}
         onChange={setValue}
         isMandatory={true}
-        isSecret={true}
+        isSecret={false}
         error=""
       />
       <Dropdown
@@ -29,7 +27,8 @@ function App() {
         options={["Uno", "Dos", "Tres", "cuatro", "cinco", "seis"]}
         setIsOpen={setOpen}
       />
-      <SubDomain value={domain} changeValue={setDomain} />
+      <SubDomain value={domain} changeValue={setDomain} error="" />
+      <CheckBox isChecked={checked} changeChecked={setChecked} isMandatory />
     </>
   );
 }

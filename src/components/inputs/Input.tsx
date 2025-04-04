@@ -1,6 +1,6 @@
-import InputView from "./components/input-view/InputView";
-import { Label, ErrorNote } from "../generals";
 import "./input.css";
+import { InputView } from "./components";
+import { Label, ErrorNote } from "../generals";
 
 interface Props {
   label?: string;
@@ -13,7 +13,7 @@ interface Props {
   isSecret?: boolean;
 }
 
-const Input = ({
+export const Input = ({
   label = "Label",
   onChange,
   value,
@@ -24,7 +24,7 @@ const Input = ({
   isSecret = false,
 }: Props) => {
   return (
-    <div className="input-component">
+    <div className="input-component flex-column-center">
       <Label text={label} isMandatory={isMandatory} />
       <InputView
         value={value}
@@ -39,5 +39,3 @@ const Input = ({
     </div>
   );
 };
-
-export default Input;

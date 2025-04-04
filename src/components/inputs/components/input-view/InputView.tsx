@@ -12,7 +12,7 @@ interface Props {
   hasError: boolean;
 }
 
-const InputView = ({
+export const InputView = ({
   value,
   onChange,
   placeholder,
@@ -52,5 +52,3 @@ const InputView = ({
     </div>
   );
 };
-
-export default InputView;

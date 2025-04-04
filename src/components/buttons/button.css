@@ -1,12 +1,7 @@
 .button-component {
   min-width: 10ch;
-  height: 40px;
   border-radius: 2rem;
   background-color: transparent;
-}
-
-.button-component:disabled {
-  cursor: not-allowed;
 }
 
 .button-component.primary {

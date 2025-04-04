@@ -13,9 +13,6 @@
   border-color: var(--error-color);
 }
 
-.input-view-component-input {
-}
-
 .input-view-component-secret-button {
   width: 40px;
   height: 40px;

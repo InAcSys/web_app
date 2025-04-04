@@ -6,7 +6,27 @@
   color: var(--primary-color-normal);
 }
 
+.label-component-text.crossed-out {
+  font-style: italic;
+  opacity: 0.5;
+  text-decoration: line-through;
+  animation: 0.2s linear crossed-out;
+}
+
 .label-component-mandatory-symbol {
   color: var(--secondary-color-normal);
   margin-left: 0.25rem;
+}
+
+/* Animation */
+@keyframes crossed-out {
+  from {
+    text-decoration: none;
+    font-style: normal;
+  }
+
+  to {
+    text-decoration: line-through;
+    font-style: italic;
+  }
 }

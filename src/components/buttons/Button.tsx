@@ -7,7 +7,7 @@ interface Props {
   type?: "primary" | "secondary";
 }
 
-const Button = ({ label = "Button", onClick = () => console.log("Click :D"), disabled = false, type = "primary" }: Props) => {
+export const Button = ({ label = "Button", onClick = () => console.log("Click :D"), disabled = false, type = "primary" }: Props) => {
 
   const buttonOnClick = () => {
     !disabled && onClick()
@@ -19,5 +19,3 @@ const Button = ({ label = "Button", onClick = () => console.log("Click :D"), dis
     </button>
   );
 };
-
-export default Button;
