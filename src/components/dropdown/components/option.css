@@ -1,0 +1,23 @@
+.dropdown-option-component {
+  width: 100%;
+  min-height: 40px;
+  background-color: var(--backgroud-light-color-dark);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: auto;
+  color: var(--primary-color-inactive);
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.dropdown-option-component.selected {
+  background-color: var(--primary-color-inactive);
+  color: var(--foreground-light-color);
+}
+
+.dropdown-option-component-label {
+  width: 100%;
+  text-align: left;
+}

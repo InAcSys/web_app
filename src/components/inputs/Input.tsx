@@ -1,13 +1,11 @@
-import ErrorNote from "./components/error-note/ErrorNote";
 import InputView from "./components/input-view/InputView";
-import Label from "./components/label/Label";
+import { Label, ErrorNote } from "../generals";
 import "./input.css";
 
 interface Props {
   label?: string;
   onChange: (value: string) => void;
   value: string;
-  type?: "text" | "password";
   placeholder?: string;
   disabled?: boolean;
   error?: string;
@@ -28,7 +26,15 @@ const Input = ({
   return (
     <div className="input-component">
       <Label text={label} isMandatory={isMandatory} />
-      <InputView value={value} onChange={onChange} placeholder={placeholder} disabled={disabled} isSecret={isSecret} isMandatory={isMandatory} hasError={error.length > 0} />
+      <InputView
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        disabled={disabled}
+        isSecret={isSecret}
+        isMandatory={isMandatory}
+        hasError={error.length > 0}
+      />
       <ErrorNote error={error} />
     </div>
   );

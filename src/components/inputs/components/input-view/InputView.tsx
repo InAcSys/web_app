@@ -42,7 +42,7 @@ const InputView = ({
       />
       {isSecret && (
         <button
-          className={`input-view-component-secret-button ${hasError ? "error" : ""}`}
+          className={`input-view-component-secret-button flex-column-center ${hasError ? "error" : ""}`}
           onClick={changeVisibilityValue}
           disabled={disabled}
         >

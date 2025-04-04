@@ -27,7 +27,7 @@
   --font-size-general: 18px;
   --font-size-notes: 14px;
 
-  --error-color: #FB2C36;
+  --error-color: #fb2c36;
 }
 
 * {
@@ -57,4 +57,58 @@ h3 {
 
 h4 {
   font-size: var(--font-size-heading-4);
+}
+
+input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  padding: 0.5rem;
+}
+
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--primary-color-inactive);
+}
+
+input.error::placeholder {
+  color: var(--error-color);
+}
+
+button {
+  cursor: pointer;
+  text-align: center;
+}
+
+button.error {
+  background-color: var(--error-color);
+  color: var(--foreground-light-color);
+}
+
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color-inactive);
+  border-radius: 2rem;
+  cursor:s-resize;
 }
