@@ -1,0 +1,13 @@
+.error-note-component {
+  width: 100%;
+  min-height: 20px;
+  padding: 0.5rem;
+  animation: 0.5s ease-in-out;
+}
+
+.error-note-component-text {
+  width: 100%;
+  text-align: left;
+  color: var(--error-color);
+  font-size: var(--font-size-notes);
+}
