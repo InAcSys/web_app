@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wdth,wght@0,75..100,100..900;1,75..100,100..900&display=swap");
+
+:root {
+  --primary-color-normal: #2b7fff;
+  --primary-color-hover: #155dfc;
+  --primary-color-inactive: #51a2ff;
+
+  --secondary-color-normal: #ff6900;
+  --secondary-color-hover: #f54a00;
+  --secondary-color-inactive: #ff8904;
+
+  --backgroud-light-color-normal: #f3f4f6;
+  --backgroud-light-color-dark: #e5e7eb;
+  --backgroud-light-color-light: #f9fafb;
+
+  --backgroud-dark-color-normal: #101828;
+  --backgroud-dark-color-dark: #030712;
+  --backgroud-dark-color-light: #1e2939;
+
+  --foreground-light-color: #fff;
+  --foreground-dark-color: #000;
+
+  --font-size-heading-1: 32px;
+  --font-size-heading-2: 28px;
+  --font-size-heading-3: 24px;
+  --font-size-heading-4: 20px;
+  --font-size-general: 18px;
+  --font-size-notes: 14px;
+
+  --error-color: #fb2c36;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-size: var(--font-size-general);
+  font-family: "Roboto", sans-serif;
+  user-select: none;
+}
+
+body {
+  background-color: var(--backgroud-light-color-normal);
+  color: var(--foreground-dark-color);
+}
+
+h1 {
+  font-size: var(--font-size-heading-1);
+}
+
+h2 {
+  font-size: var(--font-size-heading-2);
+}
+
+h3 {
+  font-size: var(--font-size-heading-3);
+}
+
+h4 {
+  font-size: var(--font-size-heading-4);
+}
+
+input {
+  width: 100%;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  padding: 0.5rem;
+}
+
+input:focus {
+  outline: none;
+}
+
+input::placeholder {
+  color: var(--primary-color-inactive);
+}
+
+input.error::placeholder {
+  color: var(--error-color);
+}
+
+button {
+  cursor: pointer;
+  text-align: center;
+  height: 40px;
+}
+
+button.error {
+  background-color: var(--error-color);
+  color: var(--foreground-light-color);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-row-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+::-webkit-scrollbar {
+  width: 0.4rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color-inactive);
+  border-radius: 2rem;
+  cursor: s-resize;
+}

@@ -1,0 +1,11 @@
+.check-component {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid var(--primary-color-inactive);
+}
+
+.check-component.checked {
+  background-color: var(--primary-color-inactive);
+  color: var(--foreground-light-color);
+}

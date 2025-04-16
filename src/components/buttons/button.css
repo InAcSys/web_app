@@ -1,0 +1,36 @@
+.button-component {
+  min-width: 10ch;
+  border-radius: 2rem;
+  background-color: transparent;
+}
+
+.button-component.primary {
+  background-color: var(--primary-color-normal);
+  color: var(--foreground-light-color);
+  border: none;
+}
+
+.button-component.primary:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.button-component.primary:disabled {
+  background-color: var(--primary-color-inactive);
+}
+
+.button-component.secondary {
+  border: 1px solid var(--secondary-color-normal);
+  color: var(--secondary-color-normal);
+}
+
+.button-component.secondary:hover {
+  background-color: var(--secondary-color-hover);
+  color: var(--foreground-light-color);
+  border: none;
+}
+
+.button-component.secondary:disabled {
+  background-color: var(--secondary-color-inactive);
+  color: var(--foreground-light-color);
+  border: none;
+}
