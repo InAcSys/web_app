@@ -9,6 +9,10 @@
   overflow: hidden;
 }
 
+.input-view-component-input {
+  color: var(--secondary-color-normal);
+}
+
 .input-view-component.error {
   border-color: var(--error-color);
 }

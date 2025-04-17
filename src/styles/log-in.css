@@ -1,0 +1,28 @@
+.image-form-layout-section {
+  background-image: url(../assets/backgrounds/primary.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.log-in-title {
+  width: 100%;
+  text-align: left;
+}
+
+.button-log-in-form-section {
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px 0;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 420px) {
+  .button-log-in-form-section {
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .button-component {
+    width: 100%;
+  }
+}
