@@ -15,6 +15,10 @@
   border-color: var(--error-color);
 }
 
+.sub-domain-component-input-section {
+  color: var(--secondary-color-normal);
+}
+
 .sub-domain-component-input-domain {
   width: 200px;
   height: 40px;

@@ -1,0 +1,21 @@
+.registration-form-section {
+  width: 100%;
+}
+
+.form-input-section {
+  width: 100%;
+}
+
+.form-input-section.double-form-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 800px) {
+  .form-input-section.double-form-section {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+  }
+}

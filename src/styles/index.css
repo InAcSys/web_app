@@ -61,6 +61,11 @@ h1, h1 > * {
   font-size: var(--font-size-heading-1);
 }
 
+h1.complete-left {
+  width: 100%;
+  text-align: left;
+}
+
 h2, h2 > * {
   font-size: var(--font-size-heading-2);
 }
