@@ -15,12 +15,17 @@ export const CheckBox = ({
   isMandatory = false,
   isChecked,
   changeChecked,
-  canCrossedOut = false
+  canCrossedOut = false,
 }: Props) => {
   return (
     <div className="check-box-component flex-row-center">
       <Check isChecked={isChecked} changeChecked={changeChecked} />
-      <Label text={label} isMandatory={isMandatory} canCrossedOut={canCrossedOut} isCrossedOut={isChecked} />
+      <Label
+        text={label}
+        isMandatory={isMandatory}
+        canCrossedOut={canCrossedOut}
+        isCrossedOut={isChecked}
+      />
     </div>
   );
 };

@@ -36,7 +36,12 @@
   box-sizing: border-box;
   font-size: var(--font-size-general);
   font-family: "Roboto", sans-serif;
-  user-select: none;
+  background-repeat: no-repeat;
+}
+
+::selection {
+  background-color: var(--secondary-color-normal);
+  color: var(--backgroud-light-color-normal);
 }
 
 body {
@@ -44,20 +49,37 @@ body {
   color: var(--foreground-dark-color);
 }
 
-h1 {
+h1, h2, h3, h4 {
+  color: var(--primary-color-normal);
+}
+
+h1 > span, h2 > span, h3 > span, h4 > span {
+  color: var(--secondary-color-normal);
+}
+
+h1, h1 > * {
   font-size: var(--font-size-heading-1);
 }
 
-h2 {
+h1.complete-left {
+  width: 100%;
+  text-align: left;
+}
+
+h2, h2 > * {
   font-size: var(--font-size-heading-2);
 }
 
-h3 {
+h3, h3 > * {
   font-size: var(--font-size-heading-3);
 }
 
-h4 {
+h4, h4 > * {
   font-size: var(--font-size-heading-4);
+}
+
+img {
+  user-select: none;
 }
 
 input {

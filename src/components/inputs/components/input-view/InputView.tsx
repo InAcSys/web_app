@@ -22,7 +22,7 @@ export const InputView = ({
   hasError
 }: Props) => {
 
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const changeVisibilityValue = () => {
     setIsVisible(!isVisible);
@@ -32,7 +32,7 @@ export const InputView = ({
     <div className={`input-view-component ${hasError ? "error" : ""}`}>
       <input
         className={`input-view-component-input ${hasError ? "error" : ""}`}
-        type={isVisible ? "text" : "password"}
+        type={!isVisible && isSecret ? "password" : "text"}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}

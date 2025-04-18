@@ -1,0 +1,25 @@
+.home-cover-section {
+  width: 100%;
+  min-height: 100vh;
+  background-image: url(../assets/backgrounds/light.png);
+  background-position: center;
+  background-size: cover;
+  gap: 5rem;
+  padding: 2rem;
+}
+
+.home-cover-text-section > p {
+  font-size: var(--font-size-heading-3);
+  font-style: oblique;
+  text-align: center;
+}
+
+.home-cover-text-section > img {
+  width: 100%;
+}
+
+.home-cover-buttons-section {
+  width: 100%;
+  gap: 1rem;
+  flex-wrap: wrap;
+}

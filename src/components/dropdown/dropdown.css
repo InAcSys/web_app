@@ -1,7 +1,6 @@
 .dropdown-component {
   width: 100%;
   min-height: 40px;
-  position: relative;
 }
 
 .dropdown-component-option-selected {
@@ -11,6 +10,10 @@
   background-color: var(--backgroud-light-color-normal);
   border-radius: 10px;
   padding: 10px;
+}
+
+.dropdown-section {
+  position: relative;
 }
 
 .dropdown-component-option-selected-text {
@@ -27,6 +30,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   border-radius: 10px;
+  z-index: 1000;
 }
 
 .dropdown-component-options.open {

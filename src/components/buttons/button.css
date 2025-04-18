@@ -2,6 +2,7 @@
   min-width: 10ch;
   border-radius: 2rem;
   background-color: transparent;
+  padding: 0 1rem;
 }
 
 .button-component.primary {
@@ -26,11 +27,17 @@
 .button-component.secondary:hover {
   background-color: var(--secondary-color-hover);
   color: var(--foreground-light-color);
-  border: none;
+  border-color: transparent;
 }
 
 .button-component.secondary:disabled {
   background-color: var(--secondary-color-inactive);
   color: var(--foreground-light-color);
+  border-color: transparent;
+}
+
+.button-component.action {
+  color: var(--secondary-color-normal);
+  text-decoration: underline;
   border: none;
 }
