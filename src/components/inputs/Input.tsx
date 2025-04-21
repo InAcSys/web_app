@@ -11,6 +11,7 @@ interface Props {
   error?: string;
   isMandatory?: boolean;
   isSecret?: boolean;
+  register?: any
 }
 
 export const Input = ({
@@ -22,6 +23,7 @@ export const Input = ({
   error = "",
   isMandatory = false,
   isSecret = false,
+  register
 }: Props) => {
   return (
     <div className="input-component flex-column-center">
@@ -34,6 +36,7 @@ export const Input = ({
         isSecret={isSecret}
         isMandatory={isMandatory}
         hasError={error.length > 0}
+        register={register}
       />
       <ErrorNote error={error} />
     </div>
