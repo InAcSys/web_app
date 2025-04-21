@@ -10,6 +10,7 @@ interface Props {
   isMandatory: boolean;
   isSecret: boolean;
   hasError: boolean;
+  register?: any
 }
 
 export const InputView = ({
@@ -19,7 +20,8 @@ export const InputView = ({
   disabled,
   isMandatory,
   isSecret,
-  hasError
+  hasError,
+  register
 }: Props) => {
 
   const [isVisible, setIsVisible] = useState(false);
@@ -39,6 +41,7 @@ export const InputView = ({
         disabled={disabled}
         required={isMandatory}
         aria-required={isMandatory}
+        {...register}
       />
       {isSecret && (
         <button
