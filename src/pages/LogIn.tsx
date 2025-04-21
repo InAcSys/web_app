@@ -1,4 +1,4 @@
-import { data, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import FormLayout from "../layouts/FormLayout";
 import "../styles/log-in.css";
@@ -57,6 +57,8 @@ export default function LogIn() {
         token
       );
       navigate("/dashboard");
+    } else {
+      setFormError("Credenciales inválidas")
     }
   };
 

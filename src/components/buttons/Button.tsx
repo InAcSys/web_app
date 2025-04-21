@@ -16,7 +16,7 @@ export const Button = ({
   type = "button",
 }: Props) => {
   const buttonOnClick = () => {
-    !disabled && onClick();
+    (!disabled && type !== "submit") && onClick();
   };
 
   return (
