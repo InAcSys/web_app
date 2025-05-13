@@ -1,13 +1,19 @@
 import sapiensLogo from "../assets/sapiens-logo.png";
 import { Button } from "../components";
+import { useAuthContext } from "../contexts/AuthContext";
 import "../styles/home.css";
 import { useNavigate } from "react-router";
 
 export default function Home() {
   const navigate = useNavigate();
+  const {isLogged} = useAuthContext()
 
   const handleRedirectLogIn = () => {
-    navigate("/log-in");
+    if (isLogged()) {
+      navigate("/dashboard");
+    } else {
+      navigate("/log-in");
+    }
   };
 
   const handleRedirectRegistration = () => {
