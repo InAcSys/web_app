@@ -1,0 +1,21 @@
+.calendar-header-section {
+  width: 100%;
+}
+
+.calendar-header-button {
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  line-height: 30px;
+  border: none;
+  background-color: var(--primary-color-normal);
+  color: var(--foreground-light-color);
+}
+
+.calendar-header-button:disabled {
+  background-color: var(--primary-color-inactive);
+}
+
+.calendar-month-and-year-section {
+  gap: 10px;
+}

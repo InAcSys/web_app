@@ -1,0 +1,17 @@
+.option-side-bar-menu-section {
+  width: auto;
+  height: auto;
+  padding: 10px;
+}
+
+.option-side-bar-menu-section:hover {
+  background-color: var(--backgroud-light-color-normal);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.option-side-bar-menu-icon {
+  color: var(--secondary-color-normal);
+  width: 30px;
+  height: 30px;
+}

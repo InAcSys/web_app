@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { getClientInfo } from "../utils/ClientInfo";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
@@ -13,8 +20,9 @@ interface Type {
   passwordError: string;
   emailError: string;
   formError: string;
+  permissions: any;
   logIn: (email: string, password: string) => void;
-  isLogged: () => boolean
+  isLogged: () => boolean;
 }
 
 const AuthContext = createContext<Type | undefined>(undefined);
@@ -24,6 +32,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [formError, setFormError] = useState<string>("");
+  const [permissions, setPermissions] = useState<any>();
 
   const navigate = useNavigate();
 
@@ -79,13 +88,42 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   const isLogged = () => {
-    const token = Cookies.get("sapiens_360_gwEjbpFRQsyFZm4VVYBTSk5zP7DmM9tpzAAmW1f4FvndB2HvJmyKytdFYkq2bK53")
+    const token = Cookies.get(
+      "sapiens_360_gwEjbpFRQsyFZm4VVYBTSk5zP7DmM9tpzAAmW1f4FvndB2HvJmyKytdFYkq2bK53"
+    );
     if (token !== undefined) {
-      setJwt(token)
-      return true
+      setJwt(token);
+      return true;
     }
-    return false
-  }
+    return false;
+  };
+
+  const getPermissions = async () => {
+    if (!isLogged()) {
+      return;
+    }
+
+    const headers: HeadersInit = {};
+
+    if (jwt) {
+      headers["Authorization"] = jwt;
+
+      const response = await fetch(
+        "http://localhost:5005/api/RolePermission/role/permissions",
+        {
+          method: "GET",
+          headers: headers,
+        }
+      );
+
+      const data = await response.json();
+      setPermissions(data.permissions)
+    }
+  };
+
+  useEffect(() => {
+    getPermissions();
+  }, [jwt]);
 
   const objValue = useMemo(
     () => ({
@@ -94,9 +132,10 @@ export const AuthProvider = ({ children }: Props) => {
       passwordError,
       formError,
       logIn,
-      isLogged
+      isLogged,
+      permissions,
     }),
-    [jwt, emailError, passwordError, formError]
+    [jwt, emailError, passwordError, formError, permissions]
   );
 
   return (

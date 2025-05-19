@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router";
-import { Home, LogIn, Dashboard, Registration } from "./pages";
-import TermsAndConditions from "./pages/registration/TermsAndConditions";
+import { Home, LogIn, Dashboard, InstituteRegistration } from "./pages";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
@@ -10,12 +9,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/log-in" element={<LogIn />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route
-            path="/registration/terms-and-conditions"
-            element={<TermsAndConditions />}
-          />
+          <Route path="/registration/*" element={<InstituteRegistration />} />
           <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="*" element={<h1>Error 404</h1>} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

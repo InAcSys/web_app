@@ -1,0 +1,12 @@
+.side-bar-menu {
+  background-color: var(--backgroud-light-color-light);
+  height: 100dvh;
+  width: 100px;
+  padding: 10px;
+}
+
+.side-bar-menu-options-sections {
+  width: 100%;
+  height: auto;
+  gap: 10px;
+}
