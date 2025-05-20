@@ -65,7 +65,6 @@ export const CalendarBody = ({
             key={index}
             onClick={() => {
               handleDay(day)
-              console.log(day)
             }}
           >
             {day}

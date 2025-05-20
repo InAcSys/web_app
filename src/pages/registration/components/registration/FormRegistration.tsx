@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dropdown, Input, SubDomain } from "../../../../components";
 import { CalendarInput } from "../../../../components/calendar/input/CalendarInput";
 import { useRegistrationContext } from "../../../../contexts/RegistrationContext";
@@ -21,34 +21,20 @@ export const FormRegistration = () => {
     setCity,
     location,
     setLocation,
-    startDay,
-    startMonth,
-    endDay,
-    endMonth,
-    setStartDay,
-    setStartMonth,
-    setStartYear,
-    setEndDay,
-    setEndMonth,
-    setEndYear,
+    setStartDate,
+    setEndDate,
     departments,
     cities,
     instituteTypes,
     natures,
     periods,
-    subDomainError
+    subDomainError,
   } = useRegistrationContext();
 
-  const [startIsOpen, setStartIsOpen] = useState(false);
-  const [endIsOpen, setEndIsOpen] = useState(false);
+  const currentDate = new Date();
 
-  const changeStartOpen = () => {
-    setStartIsOpen(!startIsOpen);
-  };
-
-  const changeEndOpen = () => {
-    setEndIsOpen(!endIsOpen);
-  };
+  const [minimumYear] = useState(currentDate.getFullYear());
+  const [maximumYear] = useState(minimumYear + 10);
 
   return (
     <div className="registration-form-section">
@@ -126,23 +112,15 @@ export const FormRegistration = () => {
       <div className="form-input-section double-form-section">
         <CalendarInput
           label="Fecha de inicio"
-          day={startDay}
-          setDay={setStartDay}
-          month={startMonth}
-          setMonth={setStartMonth}
-          setYear={setStartYear}
-          isOpen={startIsOpen}
-          handleOpen={changeStartOpen}
+          setDate={setStartDate}
+          minimunYear={minimumYear}
+          maximunYear={maximumYear}
         />
         <CalendarInput
           label="Fecha de finalización"
-          day={endDay}
-          setDay={setEndDay}
-          month={endMonth}
-          setMonth={setEndMonth}
-          setYear={setEndYear}
-          isOpen={endIsOpen}
-          handleOpen={changeEndOpen}
+          setDate={setEndDate}
+          minimunYear={minimumYear}
+          maximunYear={maximumYear}
         />
       </div>
     </div>

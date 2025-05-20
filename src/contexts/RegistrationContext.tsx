@@ -15,6 +15,7 @@ import {
   Nature,
   Period,
 } from "../models";
+import { useAuthContext } from "./AuthContext";
 
 interface Props {
   children: ReactNode;
@@ -42,20 +43,10 @@ interface Types {
   setCity: setNumberFunction;
   location: string;
   setLocation: setTextFunction;
-  startDay: number;
-  startMonth: number;
-  startYear: number;
   startDate: string;
-  endDay: number;
-  endMonth: number;
-  endYear: number;
   endDate: string;
-  setStartDay: setNumberFunction;
-  setStartMonth: setNumberFunction;
-  setStartYear: setNumberFunction;
-  setEndDay: setNumberFunction;
-  setEndMonth: setNumberFunction;
-  setEndYear: setNumberFunction;
+  setStartDate: setTextFunction;
+  setEndDate: setTextFunction;
   logo: string;
   setLogo: setTextFunction;
   // Principal
@@ -65,10 +56,27 @@ interface Types {
   setLastNames: setTextFunction;
   shortName: string;
   setShortName: setTextFunction;
+  ci: string;
+  setCI: setTextFunction;
+  ciType: string;
+  setCIType: setTextFunction;
+  imageUrl: string;
+  setImageUrl: setTextFunction;
+  address: string;
+  setAddress: setTextFunction;
+  phone: string;
+  setPhone: setTextFunction;
   email: string;
   setEmail: setTextFunction;
   password: string;
   setPassword: setTextFunction;
+  repeatPassword: string;
+  setRepeatPassword: setTextFunction;
+  gender: string;
+  setGender: setTextFunction;
+  birthDate: string;
+  setBirthDate: setTextFunction;
+  registerPrincial: () => void;
   // Form data
   countries: Array<Country>;
   phoneCode: string;
@@ -86,8 +94,9 @@ interface Types {
 const RegistrationContext = createContext<Types | undefined>(undefined);
 
 export const RegistrationProvider = ({ children }: Props) => {
+  const { logIn } = useAuthContext();
+
   const navigate = useNavigate();
-  const currentDate = new Date();
 
   const [name, setName] = useState("");
   const [institutionType, setInstitutionType] = useState(-1);
@@ -99,12 +108,6 @@ export const RegistrationProvider = ({ children }: Props) => {
   const [subDomain, setSubDomain] = useState("");
   const [location, setLocation] = useState("");
   const [logo, setLogo] = useState("");
-  const [startDay, setStartDay] = useState(currentDate.getDate());
-  const [startMonth, setStartMonth] = useState(currentDate.getMonth());
-  const [startYear, setStartYear] = useState(currentDate.getFullYear());
-  const [endDay, setEndDay] = useState(currentDate.getDate());
-  const [endMonth, setEndMonth] = useState(currentDate.getMonth());
-  const [endYear, setEndYear] = useState(currentDate.getFullYear());
 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -114,8 +117,16 @@ export const RegistrationProvider = ({ children }: Props) => {
   const [firstNames, setFirstNames] = useState("");
   const [lastNames, setLastNames] = useState("");
   const [shortName, setShortName] = useState("");
+  const [ci, setCI] = useState("");
+  const [ciType, setCIType] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
+  const [gender, setGender] = useState("");
+  const [birthDate, setBirthDate] = useState("");
 
   // Form data
   const [countries, setCountries] = useState([]);
@@ -225,11 +236,11 @@ export const RegistrationProvider = ({ children }: Props) => {
       departament: departments[department].id,
       city: cities[city].id,
       location: location,
-      startTime: `${startYear}-${startMonth < 10 ? "0" + startMonth : startMonth}-${startDay < 10 ? "0" + startDay : startDay}`,
-      endTime: `${endYear}-${endMonth < 10 ? "0" + endMonth : endMonth}-${endDay < 10 ? "0" + endDay : endDay}`,
+      startTime: startDate,
+      endTime: endDate,
     };
 
-    console.log(requestBody)
+    console.log(requestBody);
 
     const response = await fetch("http://localhost:5000/api/Institute", {
       method: "POST",
@@ -251,7 +262,7 @@ export const RegistrationProvider = ({ children }: Props) => {
   };
 
   const checkSubDomainAvailability = async () => {
-    if (subDomain.length === 0) return
+    if (subDomain.length === 0) return;
     const response = await fetch(
       `http://localhost:5000/api/Institute/verify-subdomain?subDomain=${subDomain}`,
       {
@@ -265,8 +276,41 @@ export const RegistrationProvider = ({ children }: Props) => {
       if (subDomainResult) {
         setSubDomainError("Subdominio no disponible");
       } else {
-        setSubDomainError("")
+        setSubDomainError("");
       }
+    }
+  };
+
+  const registerPrincial = async () => {
+    const requestBody = {
+      firstNames: firstNames,
+      lastNames: lastNames,
+      shortName: shortName,
+      ci: ci,
+      ciType: ciType,
+      imageUrl: imageUrl,
+      address: address,
+      phoneNumber: phone,
+      email: email,
+      password: password,
+      gender: gender,
+      birthDate: birthDate,
+      roleId: 4,
+    };
+
+    const response = await fetch(
+      `http://localhost:5001/api/User?tenantId=${tenantId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
+
+    if (response.ok) {
+      logIn(email, password);
     }
   };
 
@@ -280,14 +324,6 @@ export const RegistrationProvider = ({ children }: Props) => {
   useEffect(() => {
     getCities();
   }, [department]);
-
-  useEffect(() => {
-    setStartDate(`${startDay}/${startMonth}/${startYear}`);
-  }, [startDay, startMonth, startYear]);
-
-  useEffect(() => {
-    setEndDate(`${endDay}/${endMonth}/${endYear}`);
-  }, [endDay, endMonth, endYear]);
 
   useEffect(() => {
     checkSubDomainAvailability();
@@ -315,31 +351,38 @@ export const RegistrationProvider = ({ children }: Props) => {
       setLocation,
       logo,
       setLogo,
-      startDay,
-      startMonth,
-      startYear,
-      endDay,
-      endMonth,
-      endYear,
-      setStartDay,
-      setStartMonth,
-      setStartYear,
-      setEndDay,
-      setEndMonth,
-      setEndYear,
       startDate,
       endDate,
+      setStartDate,
+      setEndDate,
       // Principal
       firstNames,
       setFirstNames,
       lastNames,
       setLastNames,
+      shortName,
+      setShortName,
+      ci,
+      setCI,
+      ciType,
+      setCIType,
+      imageUrl,
+      setImageUrl,
+      address,
+      setAddress,
+      phone,
+      setPhone,
       email,
       setEmail,
       password,
       setPassword,
-      shortName,
-      setShortName,
+      repeatPassword,
+      setRepeatPassword,
+      gender,
+      setGender,
+      birthDate,
+      setBirthDate,
+      registerPrincial,
       // Form data
       countries,
       phoneCode,
@@ -365,17 +408,21 @@ export const RegistrationProvider = ({ children }: Props) => {
       city,
       location,
       logo,
-      startDay,
-      startMonth,
-      startYear,
-      endDay,
-      endMonth,
-      endYear,
+      startDate,
+      endDate,
       firstNames,
       lastNames,
+      shortName,
+      ci,
+      ciType,
+      imageUrl,
+      address,
+      phone,
       email,
       password,
-      shortName,
+      repeatPassword,
+      gender,
+      birthDate,
       countries,
       phoneCode,
       departments,

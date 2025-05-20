@@ -4,33 +4,28 @@ import "./calendar-input.css";
 import { Label } from "../../generals";
 import { useEffect, useState } from "react";
 
-type setDateFunction = (value: number) => void;
+type setDateFunction = (value: string) => void;
 
 interface Props {
   label?: string;
-  day: number;
-  setDay: setDateFunction;
-  month: number;
-  setMonth: setDateFunction;
-  setYear: setDateFunction;
-  isOpen?: boolean;
-  handleOpen: () => void;
+  setDate: setDateFunction;
+  minimunYear: number;
+  maximunYear: number;
 }
 
 export const CalendarInput = ({
   label = "Ingresar fecha",
-  isOpen = false,
-  day,
-  setDay,
-  month,
-  setMonth,
-  setYear,
-  handleOpen,
+  setDate,
+  minimunYear,
+  maximunYear,
 }: Props) => {
-  const [selectMonth, setSelectMonth] = useState(month);
+  const [selectDay, setSelectDay] = useState(0);
+  const [selectMonth, setSelectMonth] = useState(0);
   const [currentYear, setCurrentYear] = useState(0);
   const [selectYear, setSelectYear] = useState(0);
-  const [currentDate, setCurrentDate] = useState("")
+  const [years, setYears] = useState<Array<string>>([]);
+  const [currentDate, setCurrentDate] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   const months = [
     "Enero",
@@ -47,33 +42,40 @@ export const CalendarInput = ({
     "Diciembre",
   ];
 
-  const [years, setYears] = useState<Array<string>>([]);
-
   const getYears = () => {
-    const yearList = Array.from({ length: 11 }, (_, i) => `${currentYear + i}`);
+    const size = (maximunYear - minimunYear) + 1
+    const yearList = Array.from({ length: size }, (_, i) => `${minimunYear + i}`);
     setYears(yearList);
+  };
+
+  const handleOpen = () => {
+    setIsOpen(!isOpen);
   };
 
   useEffect(() => {
     const currentDate = new Date();
+    console.log(currentDate.getDay());
     setCurrentYear(currentDate.getFullYear());
-  });
+    setSelectDay(currentDate.getDate());
+    setSelectMonth(currentDate.getMonth());
+  }, []);
 
   useEffect(() => {
     getYears();
   }, [currentYear]);
 
   useEffect(() => {
-    setMonth(selectMonth + 1);
-  }, [selectMonth]);
+    setCurrentDate(`${selectDay}/${selectMonth + 1}/${years[selectYear]}`);
+  }, [years]);
 
   useEffect(() => {
-    setYear(Number(years[selectYear]));
-  }, [years, selectYear]);
-
-  useEffect(() => {
-    setCurrentDate(`${day}/${selectMonth + 1}/${years[selectYear]}`)
-  }, [day, selectMonth, selectYear])
+    setCurrentDate(`${selectDay}/${selectMonth + 1}/${years[selectYear]}`);
+    setDate(
+      `${years[selectYear]}-${
+        selectMonth + 1 < 10 ? "0" + (selectMonth + 1) : selectMonth + 1
+      }-${selectDay < 10 ? "0" + selectDay : selectDay}`
+    );
+  }, [selectDay, selectMonth, selectYear]);
 
   return (
     <div className="calendar-input-section">
@@ -89,8 +91,8 @@ export const CalendarInput = ({
       </button>
       {isOpen && (
         <CalendarSection
-          day={day}
-          setDay={setDay}
+          day={selectDay}
+          setDay={setSelectDay}
           month={selectMonth}
           setMonth={setSelectMonth}
           year={selectYear}
