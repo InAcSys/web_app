@@ -5,7 +5,7 @@ import TermsAndConditions from "./TermsAndConditions";
 import FormLayout from "../../layouts/FormLayout";
 import Principal from "./Principal";
 
-export default function InstituteRegistration() {
+export default function RegistrationRoutes() {
   return (
     <RegistrationProvider>
       <FormLayout>

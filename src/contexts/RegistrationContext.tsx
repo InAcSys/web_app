@@ -97,6 +97,7 @@ export const RegistrationProvider = ({ children }: Props) => {
   const { logIn } = useAuthContext();
 
   const navigate = useNavigate();
+  const API_URL = "http://localhost:3000/";
 
   const [name, setName] = useState("");
   const [institutionType, setInstitutionType] = useState(-1);
@@ -143,9 +144,7 @@ export const RegistrationProvider = ({ children }: Props) => {
   const [subDomainError, setSubDomainError] = useState("");
 
   const getDepartments = async () => {
-    const response = await fetch(
-      "http://localhost:5000/api/Department/parent-id/1"
-    );
+    const response = await fetch(`${API_URL}departments/1`);
     const result = await response.text();
     const departmentsResponse = JSON.parse(result);
 
@@ -160,9 +159,7 @@ export const RegistrationProvider = ({ children }: Props) => {
   };
 
   const getCities = async () => {
-    const response = await fetch(
-      `http://localhost:5000/api/City/parent-id/${department + 1}`
-    );
+    const response = await fetch(`${API_URL}cities/${department + 1}`);
     const result = await response.text();
     const citiesResponse = JSON.parse(result);
 
@@ -240,9 +237,7 @@ export const RegistrationProvider = ({ children }: Props) => {
       endTime: endDate,
     };
 
-    console.log(requestBody);
-
-    const response = await fetch("http://localhost:5000/api/Institute", {
+    const response = await fetch("http://localhost:3000/institute/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -252,10 +247,8 @@ export const RegistrationProvider = ({ children }: Props) => {
 
     if (response.ok) {
       const result = await response.text();
-      const entity = JSON.parse(result);
-      setTenantId(entity.id);
-      console.log(entity.id);
-      if (entity.id !== "") {
+      setTenantId(result);
+      if (result !== "") {
         navigate("/registration/principal");
       }
     }
@@ -264,7 +257,7 @@ export const RegistrationProvider = ({ children }: Props) => {
   const checkSubDomainAvailability = async () => {
     if (subDomain.length === 0) return;
     const response = await fetch(
-      `http://localhost:5000/api/Institute/verify-subdomain?subDomain=${subDomain}`,
+      `http://localhost:3000/verify/sub-domain?subDomain=${subDomain}`,
       {
         method: "POST",
       }
@@ -299,7 +292,7 @@ export const RegistrationProvider = ({ children }: Props) => {
     };
 
     const response = await fetch(
-      `http://localhost:5001/api/User?tenantId=${tenantId}`,
+      `http://localhost:3000/principal/registration?tenantId=${tenantId}`,
       {
         method: "POST",
         headers: {

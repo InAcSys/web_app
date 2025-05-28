@@ -54,7 +54,6 @@ export const CalendarInput = ({
 
   useEffect(() => {
     const currentDate = new Date();
-    console.log(currentDate.getDay());
     setCurrentYear(currentDate.getFullYear());
     setSelectDay(currentDate.getDate());
     setSelectMonth(currentDate.getMonth());

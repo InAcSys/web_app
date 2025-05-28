@@ -10,6 +10,7 @@ import { getClientInfo } from "../utils/ClientInfo";
 import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import logInSchema from "../validations/log-in-schema";
+import { Permissions } from "../models/menu/Menu";
 
 interface Props {
   children: ReactNode;
@@ -20,7 +21,7 @@ interface Type {
   passwordError: string;
   emailError: string;
   formError: string;
-  permissions: any;
+  permissions: Permissions | undefined;
   logIn: (email: string, password: string) => void;
   isLogged: () => boolean;
 }
@@ -32,7 +33,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [formError, setFormError] = useState<string>("");
-  const [permissions, setPermissions] = useState<any>();
+  const [permissions, setPermissions] = useState<Permissions | undefined>(undefined);
 
   const navigate = useNavigate();
 
@@ -63,16 +64,13 @@ export const AuthProvider = ({ children }: Props) => {
       os: clientInfo.os,
     };
 
-    const response = await fetch(
-      "http://localhost:5003/api/Authentication/log-in",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestInfo),
-      }
-    );
+    const response = await fetch("http://localhost:3000/log-in", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestInfo),
+    });
 
     if (response.ok) {
       const token = await response.text();
@@ -108,16 +106,13 @@ export const AuthProvider = ({ children }: Props) => {
     if (jwt) {
       headers["Authorization"] = jwt;
 
-      const response = await fetch(
-        "http://localhost:5005/api/RolePermission/role/permissions",
-        {
-          method: "GET",
-          headers: headers,
-        }
-      );
+      const response = await fetch("http://localhost:3000/auth/permissions", {
+        method: "GET",
+        headers: headers,
+      });
 
-      const data = await response.json();
-      setPermissions(data.permissions)
+      const data = (await response.json()) as Permissions;
+      setPermissions(data);
     }
   };
 
