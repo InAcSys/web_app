@@ -1,0 +1,19 @@
+.calendar-input-section {
+  width: 100%;
+  position: relative;
+}
+
+.calendar-input-date-section {
+  width: 100%;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--primary-color-normal);
+}
+
+.calendar-input-date-text {
+  color: var(--secondary-color-normal);
+}
+
+.calendar-input-date-icon {
+  color: var(--primary-color-normal);
+}

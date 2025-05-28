@@ -49,33 +49,57 @@ body {
   color: var(--foreground-dark-color);
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: var(--primary-color-normal);
 }
 
-h1 > span, h2 > span, h3 > span, h4 > span {
+h1 > span,
+h2 > span,
+h3 > span,
+h4 > span,
+p > span {
   color: var(--secondary-color-normal);
 }
 
-h1, h1 > * {
+h1,
+h1 > * {
   font-size: var(--font-size-heading-1);
 }
 
-h1.complete-left {
+.complete-left {
   width: 100%;
   text-align: left;
 }
 
-h2, h2 > * {
+h2,
+h2 > * {
   font-size: var(--font-size-heading-2);
 }
 
-h3, h3 > * {
+h3,
+h3 > * {
   font-size: var(--font-size-heading-3);
 }
 
-h4, h4 > * {
+h4,
+h4 > * {
   font-size: var(--font-size-heading-4);
+}
+
+.notes-text {
+  color: var(--primary-color-normal);
+}
+
+.notes-text > * {
+  color: var(--secondary-color-normal);
+}
+
+.notes-text,
+.notes-text > * {
+  font-size: var(--font-size-notes);
 }
 
 img {
@@ -124,11 +148,32 @@ button:disabled {
   justify-content: center;
 }
 
+.flex-column-between {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-row-between {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .flex-row-center {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.flex-row-center-end {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
 }
 
 ::-webkit-scrollbar {

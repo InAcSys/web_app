@@ -5,7 +5,7 @@
 
 .dropdown-component-option-selected {
   width: 100%;
-  color: var(--primary-color-inactive);
+  color: var(--secondary-color-normal);
   border: 1px solid var(--primary-color-inactive);
   background-color: var(--backgroud-light-color-normal);
   border-radius: 10px;
