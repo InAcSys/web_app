@@ -15,6 +15,23 @@
   box-sizing: border-box;
 }
 
+.users-pagination-section {
+  width: 100%;
+  gap: 10px;
+}
+
+.users-pagination-section > .dropdown-component {
+  width: 80px;
+}
+
+.users-pagination-page-selector-section {
+  gap: 10px;
+}
+
+.users-pagination-page-selector-text {
+  color: var(--secondary-color-inactive);
+}
+
 @media (max-width: 1200px) {
   .users-container > * {
     flex: 1 1 calc(50% - 10px);

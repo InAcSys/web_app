@@ -5,6 +5,7 @@ import axios from "axios";
 import { useAuthContext } from "../../../contexts/AuthContext";
 import "./user-management.css";
 import { Button, Dropdown } from "../../../components";
+import { NumberInput } from "../../../components/number-input/NumberInput";
 
 export default function UsersManagement() {
   const { jwt } = useAuthContext();
@@ -13,20 +14,23 @@ export default function UsersManagement() {
   const [users, setUsers] = useState<Array<User>>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(12);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
-  const [selectPageNumber, setSelectPageNumber] = useState(0);
+  const [selectPageSize, setSelectPageSize] = useState(0);
 
   const getUsers = async () => {
     if (jwt) {
-      const response = await axios.get(`http://localhost:3000/users?pageNumber=${pageNumber}&pageSize=${pageSize}`, {
-        headers: {
-          Authorization: jwt,
-        },
-      });
+      const response = await axios.get(
+        `http://localhost:3000/users?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+        {
+          headers: {
+            Authorization: jwt,
+          },
+        }
+      );
 
       const data = response.data.data;
-      console.log(data)
+      console.log(data);
       setUsers(data.users);
       setPageNumber(data.pageNumber);
       setPageSize(data.pageSize);
@@ -44,8 +48,8 @@ export default function UsersManagement() {
   }, [jwt, pageSize, pageNumber]);
 
   useEffect(() => {
-    setPageSize(parseInt(numberItems[selectPageNumber]))
-  }, [selectPageNumber])
+    setPageSize(parseInt(numberItems[selectPageSize]));
+  }, [selectPageSize]);
 
   return (
     <div className="users-management-page flex-column-center">
@@ -59,12 +63,25 @@ export default function UsersManagement() {
           <p className="users-not-found-text">No se encontraron usuarios</p>
         )}
       </div>
-      <div className="users-pagination-section">
+      <div className="users-pagination-section flex-row-center-end">
+        <div className="users-pagination-page-selector-section flex-row-center">
+          <NumberInput
+            value={pageNumber}
+            setValue={setPageNumber}
+            min={1}
+            max={totalPages}
+          />
+          <p className="users-pagination-page-selector-text">
+            de <b>{totalPages}</b> páginas de
+          </p>
+        </div>
         <Dropdown
-          optionSelected={selectPageNumber}
-          changeOptionSelected={setSelectPageNumber}
+          optionSelected={selectPageSize}
+          changeOptionSelected={setSelectPageSize}
           options={numberItems}
+          errorIsVisible={false}
         />
+        <p className="users-pagination-page-selector-text">usuarios</p>
       </div>
     </div>
   );
