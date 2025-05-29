@@ -24,6 +24,7 @@ interface Type {
   permissions: Permissions | undefined;
   logIn: (email: string, password: string) => void;
   isLogged: () => boolean;
+  logOut: () => void;
 }
 
 const AuthContext = createContext<Type | undefined>(undefined);
@@ -33,7 +34,9 @@ export const AuthProvider = ({ children }: Props) => {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [formError, setFormError] = useState<string>("");
-  const [permissions, setPermissions] = useState<Permissions | undefined>(undefined);
+  const [permissions, setPermissions] = useState<Permissions | undefined>(
+    undefined
+  );
 
   const navigate = useNavigate();
 
@@ -85,6 +88,13 @@ export const AuthProvider = ({ children }: Props) => {
     }
   };
 
+  const logOut = () => {
+    Cookies.remove(
+      "sapiens_360_gwEjbpFRQsyFZm4VVYBTSk5zP7DmM9tpzAAmW1f4FvndB2HvJmyKytdFYkq2bK53"
+    );
+    navigate("/")
+  };
+
   const isLogged = () => {
     const token = Cookies.get(
       "sapiens_360_gwEjbpFRQsyFZm4VVYBTSk5zP7DmM9tpzAAmW1f4FvndB2HvJmyKytdFYkq2bK53"
@@ -129,6 +139,7 @@ export const AuthProvider = ({ children }: Props) => {
       logIn,
       isLogged,
       permissions,
+      logOut
     }),
     [jwt, emailError, passwordError, formError, permissions]
   );

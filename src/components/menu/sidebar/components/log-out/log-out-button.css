@@ -1,0 +1,14 @@
+.log-out-button {
+  width: auto;
+  height: auto;
+  padding: 10px;
+  border: none;
+  background-color: var(--error-color);
+  color: var(--foreground-light-color);
+  border-radius: 10px;
+}
+
+.log-out-icon-button {
+  width: 30px;
+  height: 30px;
+}

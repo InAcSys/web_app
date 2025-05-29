@@ -8,5 +8,9 @@
 .side-bar-menu-options-sections {
   width: 100%;
   height: auto;
+  gap: 20px;
+}
+
+.side-bar-menu-options {
   gap: 10px;
 }

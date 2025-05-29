@@ -4,6 +4,7 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import { DefaultOption } from "./components/option/DefaultOption";
 import { Option } from "./components/option/Option";
 import "./sidebar-menu.css";
+import { LogOutButton } from "./components/log-out/LogOutButton";
 
 interface Props {
   logo?: string;
@@ -14,7 +15,7 @@ export const SidebarMenu = ({ logo = SapiensLogo }: Props) => {
 
   return (
     <div className="side-bar-menu flex-column-between">
-      <div className="side-bar-menu-options-sections flex-column-between">
+      <div className="side-bar-menu-options-sections flex-column-center">
         <img
           src={logo}
           alt="Institute logo"
@@ -25,17 +26,11 @@ export const SidebarMenu = ({ logo = SapiensLogo }: Props) => {
           <DefaultOption icon={Home} path="/dashboard" />
           <DefaultOption icon={User} path="/profile" />
           <DefaultOption icon={Settings} path="/settings" />
-          {/*
-          <Option icon={ChartNoAxesCombined} path="/monitoring" />
-          <Option icon={Calendar} path="/calendar" />
-          <Option icon={PiggyBank} path="/cash" />
-          <Option icon={Users} path="/users" />
-          <Option icon={Inbox} path="/inbox" /> */}
           {Array.isArray(permissions) &&
-  permissions.map((category) => (
-    <Option key={`main-option-${category.id}`} category={category} />
-))}
-
+            permissions.map((category) => (
+              <Option key={`main-option-${category.id}`} category={category} />
+            ))}
+            <LogOutButton />
         </div>
       </div>
       <p className="sapiens-side-bar-copy notes-text">
