@@ -28,6 +28,7 @@
   --font-size-notes: 14px;
 
   --error-color: #fb2c36;
+  --success-color: #00c950;
 }
 
 * {
@@ -176,6 +177,14 @@ button:disabled {
   justify-content: end;
 }
 
+.is-visible {
+  display: block;
+}
+
+.is-hidden {
+  display: none;
+}
+
 ::-webkit-scrollbar {
   width: 0.4rem;
 }
@@ -184,4 +193,36 @@ button:disabled {
   background-color: var(--primary-color-inactive);
   border-radius: 2rem;
   cursor: s-resize;
+}
+
+.pop-up-component-container {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--backgroud-light-color-normal);
+  max-width: 600px;
+  max-height: 800px;
+  padding: 20px;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.close-pop-up {
+  background-color: transparent;
+  border: none;
+  color: var(--error-color);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+@media (max-width: 600px) {
+  .pop-up-component-container {
+    max-width: 100%;
+    max-height: 100vh;
+    padding: 10px;
+    border-radius: 0;
+  }
 }

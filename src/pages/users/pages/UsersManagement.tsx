@@ -6,15 +6,21 @@ import { useAuthContext } from "../../../contexts/AuthContext";
 import "./user-management.css";
 import { Button, Dropdown } from "../../../components";
 import { NumberInput } from "../../../components/number-input/NumberInput";
+import { usePopUpContext } from "../../../contexts/PopUpContext";
+import { CreateUserPopUp } from "../../../components/pop-ups/create-user-pop-up/CreateUserPopUp";
 
 export default function UsersManagement() {
   const { jwt } = useAuthContext();
+  const { setPopUp } = usePopUpContext();
+
   const numberItems = ["12", "24", "60", "120"];
 
   const [users, setUsers] = useState<Array<User>>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [totalPages, setTotalPages] = useState(1);
+
+  const [roles, setRoles] = useState<Map<number, string>>(new Map());
 
   const [selectPageSize, setSelectPageSize] = useState(0);
 
@@ -30,7 +36,6 @@ export default function UsersManagement() {
       );
 
       const data = response.data.data;
-      console.log(data);
       setUsers(data.users);
       setPageNumber(data.pageNumber);
       setPageSize(data.pageSize);
@@ -38,6 +43,34 @@ export default function UsersManagement() {
       return data;
     }
   };
+
+  const handleCreateNewUser = () => {
+    setPopUp(<CreateUserPopUp />);
+  };
+
+  const getRoles = async () => {
+    if (jwt) {
+      try {
+        const response = await axios.get("http://localhost:3000/auth/roles", {
+          headers: {
+            Authorization: jwt,
+          },
+        });
+
+        if (!response.data) {
+          throw new Error("Roles not found");
+        }
+
+        setRoles(response.data);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    getRoles();
+  }, [jwt]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -49,16 +82,19 @@ export default function UsersManagement() {
 
   useEffect(() => {
     setPageSize(parseInt(numberItems[selectPageSize]));
+    setPageNumber(1)
   }, [selectPageSize]);
 
   return (
-    <div className="users-management-page flex-column-center">
-      <div className="users-tools-section">
-        <Button label="Crear nuevo usuario" />
+    <div className="users-management-page">
+      <div className="users-tools-section flex-row-center-end">
+        <Button label="Crear nuevo usuario" onClick={handleCreateNewUser} />
       </div>
-      <div className="users-container flex-row-between">
+      <div className="users-container flex-row-center">
         {users.length > 0 ? (
-          users.map((user) => <UserCard key={`user-${user.id}`} user={user} />)
+          users.map((user) => (
+            <UserCard key={`user-${user.id}`} user={user} roles={roles} />
+          ))
         ) : (
           <p className="users-not-found-text">No se encontraron usuarios</p>
         )}

@@ -6,11 +6,13 @@ import Settings from "./pages/settings/Settings";
 import Monitoring from "./pages/monitoring/Monitoring";
 import Calendar from "./pages/calendar/Calendar";
 import UsersRoutes from "./pages/users/UsersRoutes";
+import { PopUpProvider } from "./contexts/PopUpContext";
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <PopUpProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/log-in" element={<LogIn />} />
@@ -24,6 +26,7 @@ function App() {
 
           <Route path="*" element={<h1>Error 404</h1>} />
         </Routes>
+        </PopUpProvider>
       </AuthProvider>
     </BrowserRouter>
   );

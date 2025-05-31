@@ -1,0 +1,12 @@
+.delete-user-pop-up-container {
+  gap: 20px;
+}
+
+.delete-user-pop-up-title {
+  font-size: var(--font-size-heading-3);
+}
+
+.delete-user-pop-up-actions-buttons-section {
+  width: 100%;
+  gap: 20px;
+}

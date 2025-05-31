@@ -1,23 +1,39 @@
 .users-management-page {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 80px);
+  display: grid;
+  grid-template-rows: 60px auto 60px;
+  grid-template-areas: 
+  "tools"
+  "users"
+  "pagination"
+  ;
+}
+
+.users-tools-section {
+  width: 100%;
+  padding: 10px;
+  grid-area: tools;
 }
 
 .users-container {
   width: 100%;
   gap: 10px;
   flex-wrap: wrap;
+  align-items: start;
+  grid-area: users;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .users-container > * {
-  flex: 1 1 calc(33.333% - 20px);
-  max-width: calc(33.333% - 20px);
   box-sizing: border-box;
 }
 
 .users-pagination-section {
   width: 100%;
   gap: 10px;
+  grid-area: pagination;
 }
 
 .users-pagination-section > .dropdown-component {
@@ -30,20 +46,4 @@
 
 .users-pagination-page-selector-text {
   color: var(--secondary-color-inactive);
-}
-
-@media (max-width: 1200px) {
-  .users-container > * {
-    flex: 1 1 calc(50% - 10px);
-    max-width: calc(50% - 10px);
-    box-sizing: border-box;
-  }
-}
-
-@media (max-width: 800px) {
-  .users-container > * {
-    flex: 1 1 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
 }

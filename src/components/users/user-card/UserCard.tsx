@@ -2,17 +2,31 @@ import { useNavigate } from "react-router";
 import { User } from "../../../models/user/User";
 import { DefaultProfile } from "../../images/profiles/default/DefaultProfile";
 import "./user-card.css";
-import { ChartPie, EllipsisVertical, Pencil, Trash2 } from "lucide-react";
+import {
+  ChartPie,
+  EllipsisVertical,
+  Inbox,
+  Pencil,
+  Trash2,
+} from "lucide-react";
+import { usePopUpContext } from "../../../contexts/PopUpContext";
+import { DeleteUserPopUp } from "../../pop-ups/delete-user-pop-up/DeleteUserPopUp";
 
 interface Props {
   user: User;
+  roles: any;
 }
 
-export const UserCard = ({ user }: Props) => {
+export const UserCard = ({ user, roles }: Props) => {
   const navigate = useNavigate();
+  const { setPopUp } = usePopUpContext();
 
   const handleGoToProfile = () => {
     navigate(`/users/profile/${user.id}`);
+  };
+
+  const handleDeleteUser = () => {
+    setPopUp(<DeleteUserPopUp userId={user.id} />);
   };
 
   return (
@@ -37,16 +51,24 @@ export const UserCard = ({ user }: Props) => {
             {`${user.lastNames}`} {`${user.firstNames}`}
           </b>
         </button>
-        <p className="user-card-role-text">Rol</p>
+        <p className="user-card-role-text">
+          {roles ? roles[user.roleId] : "Rol"}
+        </p>
       </div>
       <div className="user-card-actions-section flex-row-center-end">
+        <button className="user-card-action-button flex-column-center">
+          <Inbox />
+        </button>
         <button className="user-card-action-button flex-column-center">
           <ChartPie />
         </button>
         <button className="user-card-action-button flex-column-center">
           <Pencil />
         </button>
-        <button className="user-card-action-button flex-column-center delete">
+        <button
+          className="user-card-action-button flex-column-center delete"
+          onClick={handleDeleteUser}
+        >
           <Trash2 />
         </button>
         <button className="user-card-action-button flex-column-center user-card-sub-menu-button">
