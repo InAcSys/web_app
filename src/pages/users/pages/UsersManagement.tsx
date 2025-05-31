@@ -8,6 +8,7 @@ import { Button, Dropdown } from "../../../components";
 import { NumberInput } from "../../../components/number-input/NumberInput";
 import { usePopUpContext } from "../../../contexts/PopUpContext";
 import { CreateUserPopUp } from "../../../components/pop-ups/create-user-pop-up/CreateUserPopUp";
+import { SearchBar } from "../../../components/search-bar/SearchBar";
 
 export default function UsersManagement() {
   const { jwt } = useAuthContext();
@@ -15,6 +16,7 @@ export default function UsersManagement() {
 
   const numberItems = ["12", "24", "60", "120"];
 
+  const [searchValue, setSearchValue] = useState("");
   const [users, setUsers] = useState<Array<User>>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(12);
@@ -36,10 +38,6 @@ export default function UsersManagement() {
       );
 
       const data = response.data.data;
-      setUsers(data.users);
-      setPageNumber(data.pageNumber);
-      setPageSize(data.pageSize);
-      setTotalPages(data.totalPages);
       return data;
     }
   };
@@ -68,29 +66,58 @@ export default function UsersManagement() {
     }
   };
 
+  const handleSearchUsers = async () => {
+    if (jwt) {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/search?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${searchValue}`,
+          {
+            headers: {
+              Authorization: jwt,
+            },
+          }
+        );
+        return response.data.data;
+      } catch (error) {
+        console.error("Error searching users:", error);
+      }
+    }
+  };
+
   useEffect(() => {
     getRoles();
   }, [jwt]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      await getUsers();
-    };
+    setPageSize(parseInt(numberItems[selectPageSize]));
+    setPageNumber(1);
+  }, [selectPageSize]);
 
-    fetchUsers();
-  }, [jwt, pageSize, pageNumber]);
+  const fetchUsers = async () => {
+    let result = searchValue ? await handleSearchUsers() : await getUsers();
+    if (result) {
+      setUsers(result.users);
+      setPageNumber(result.pageNumber);
+      setPageSize(result.pageSize);
+      setTotalPages(result.totalPages);
+    }
+  };
 
   useEffect(() => {
-    setPageSize(parseInt(numberItems[selectPageSize]));
-    setPageNumber(1)
-  }, [selectPageSize]);
+    fetchUsers();
+  }, [jwt, searchValue, pageNumber, pageSize]);
 
   return (
     <div className="users-management-page">
       <div className="users-tools-section flex-row-center-end">
+        <SearchBar
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          search={() => {fetchUsers()}}
+        />
         <Button label="Crear nuevo usuario" onClick={handleCreateNewUser} />
       </div>
-      <div className="users-container flex-row-center">
+      <div className="users-container flex-column">
         {users.length > 0 ? (
           users.map((user) => (
             <UserCard key={`user-${user.id}`} user={user} roles={roles} />

@@ -142,6 +142,11 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex-column-center {
   display: flex;
   flex-direction: column;
