@@ -10,7 +10,8 @@ import {
   Trash2,
 } from "lucide-react";
 import { usePopUpContext } from "../../../contexts/PopUpContext";
-import { DeleteUserPopUp } from "../../pop-ups/delete-user-pop-up/DeleteUserPopUp";
+import { DeleteUserPopUp } from "../../pop-ups/user-pop-ups/delete-user-pop-up/DeleteUserPopUp";
+import { EditUserPopUp } from "../../pop-ups/user-pop-ups/edit-user-pop-up/EditUserPopUp";
 
 interface Props {
   user: User;
@@ -23,6 +24,10 @@ export const UserCard = ({ user, roles }: Props) => {
 
   const handleGoToProfile = () => {
     navigate(`/users/profile/${user.id}`);
+  };
+
+  const handleEditUserInfo = () => {
+    setPopUp(<EditUserPopUp userId={user.id} />);
   };
 
   const handleDeleteUser = () => {
@@ -62,7 +67,7 @@ export const UserCard = ({ user, roles }: Props) => {
         <button className="user-card-action-button flex-column-center">
           <ChartPie />
         </button>
-        <button className="user-card-action-button flex-column-center">
+        <button className="user-card-action-button flex-column-center" onClick={handleEditUserInfo}>
           <Pencil />
         </button>
         <button

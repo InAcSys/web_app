@@ -7,7 +7,7 @@ import "./user-management.css";
 import { Button, Dropdown } from "../../../components";
 import { NumberInput } from "../../../components/number-input/NumberInput";
 import { usePopUpContext } from "../../../contexts/PopUpContext";
-import { CreateUserPopUp } from "../../../components/pop-ups/create-user-pop-up/CreateUserPopUp";
+import { CreateUserPopUp } from "../../../components/pop-ups/user-pop-ups/create-user-pop-up/CreateUserPopUp";
 import { SearchBar } from "../../../components/search-bar/SearchBar";
 
 export default function UsersManagement() {

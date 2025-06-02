@@ -1,11 +1,11 @@
 import axios from "axios";
-import { Button } from "../../buttons/Button";
-import { CloseButton } from "../components/close-button/CloseButton";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { usePopUpContext } from "../../../contexts/PopUpContext";
-import { SuccessPopUp } from "../success-pop-up/SuccessPopUp";
+import { Button } from "../../../buttons/Button";
+import { CloseButton } from "../../components/close-button/CloseButton";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import { usePopUpContext } from "../../../../contexts/PopUpContext";
+import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
 import "./delete-user-pop-up.css";
-import { FailedPopUp } from "../failed-pop-up/FailedPopUp";
+import { FailedPopUp } from "../../failed-pop-up/FailedPopUp";
 
 interface Props {
   userId: string;

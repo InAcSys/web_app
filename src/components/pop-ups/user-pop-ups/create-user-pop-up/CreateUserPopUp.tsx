@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
-import { Input } from "../../inputs/Input";
+import { Input } from "../../../inputs/Input";
 import "./create-user-pop-up.css";
-import { usePopUpContext } from "../../../contexts/PopUpContext";
-import { X } from "lucide-react";
-import { Button } from "../../buttons/Button";
-import { Dropdown } from "../../dropdown/Dropdown";
-import { CalendarInput } from "../../calendar/input/CalendarInput";
+import { usePopUpContext } from "../../../../contexts/PopUpContext";
+import { Button } from "../../../buttons/Button";
+import { Dropdown } from "../../../dropdown/Dropdown";
+import { CalendarInput } from "../../../calendar/input/CalendarInput";
 import axios from "axios";
-import { useAuthContext } from "../../../contexts/AuthContext";
-import { SuccessPopUp } from "../success-pop-up/SuccessPopUp";
-import { CloseButton } from "../components/close-button/CloseButton";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
+import { CloseButton } from "../../components/close-button/CloseButton";
 
 export const CreateUserPopUp = () => {
   const { setPopUp, closePopUp } = usePopUpContext();
@@ -31,7 +30,7 @@ export const CreateUserPopUp = () => {
   const [genderOption, setGenderOption] = useState(-1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+  const [birthDate, setBirthDate] = useState<Date>();
   const [roles, setRoles] = useState<Map<number, string>>();
   const [rolesList, setRolesList] = useState<Array<string>>([]);
   const [roleOption, setRoleOption] = useState(-1);
