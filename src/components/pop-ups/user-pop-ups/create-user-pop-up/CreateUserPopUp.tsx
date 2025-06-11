@@ -61,6 +61,10 @@ export const CreateUserPopUp = () => {
   };
 
   const createUser = async () => {
+    if (!birthDate) return;
+    const birthDateAux = `${birthDate.getFullYear()}-${String(
+      birthDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
     const requestBody = {
       firstNames: firstnames,
       lastNames: lastnames,
@@ -73,9 +77,10 @@ export const CreateUserPopUp = () => {
       email: email,
       password: password,
       gender: gender,
-      birthDate: birthDate,
+      birthDate: birthDateAux,
       roleId: roleOption + 1,
     };
+    console.log(requestBody)
     const result = await axios.post(
       "http://localhost:3000/create-user",
       requestBody,
@@ -86,6 +91,7 @@ export const CreateUserPopUp = () => {
         },
       }
     );
+    console.log(result)
 
     if (result) {
       setPopUp(<SuccessPopUp message="Usuario creado con éxito" />);

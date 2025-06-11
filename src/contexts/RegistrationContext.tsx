@@ -22,6 +22,7 @@ interface Props {
 }
 
 type setTextFunction = (value: string) => void;
+type setDateFunction = (value: Date) => void;
 type setNumberFunction = (value: number) => void;
 
 interface Types {
@@ -43,10 +44,10 @@ interface Types {
   setCity: setNumberFunction;
   location: string;
   setLocation: setTextFunction;
-  startDate: string;
-  endDate: string;
-  setStartDate: setTextFunction;
-  setEndDate: setTextFunction;
+  startDate: Date | undefined;
+  endDate: Date | undefined;
+  setStartDate: setDateFunction;
+  setEndDate: setDateFunction;
   logo: string;
   setLogo: setTextFunction;
   // Principal
@@ -74,8 +75,8 @@ interface Types {
   setRepeatPassword: setTextFunction;
   gender: string;
   setGender: setTextFunction;
-  birthDate: string;
-  setBirthDate: setTextFunction;
+  birthDate: Date | undefined;
+  setBirthDate: setDateFunction;
   registerPrincial: () => void;
   // Form data
   countries: Array<Country>;
@@ -110,8 +111,8 @@ export const RegistrationProvider = ({ children }: Props) => {
   const [location, setLocation] = useState("");
   const [logo, setLogo] = useState("");
 
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
 
   // Principal
   const [tenantId, setTenantId] = useState<string>("");
@@ -127,7 +128,7 @@ export const RegistrationProvider = ({ children }: Props) => {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
   const [gender, setGender] = useState("");
-  const [birthDate, setBirthDate] = useState("");
+  const [birthDate, setBirthDate] = useState<Date>();
 
   // Form data
   const [countries, setCountries] = useState([]);
@@ -223,6 +224,15 @@ export const RegistrationProvider = ({ children }: Props) => {
   };
 
   const createInstitute = async () => {
+    if (!startDate || !endDate) return;
+
+    const startDateAux = `${startDate.getFullYear()}-${String(
+      startDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(startDate.getDate()).padStart(2, "0")}`;
+    const endDateAux = `${endDate.getFullYear()}-${String(
+      endDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(endDate.getDate()).padStart(2, "0")}`;
+
     const requestBody = {
       name: name,
       type: institutionType + 1,
@@ -233,9 +243,11 @@ export const RegistrationProvider = ({ children }: Props) => {
       departament: departments[department].id,
       city: cities[city].id,
       location: location,
-      startTime: startDate,
-      endTime: endDate,
+      startTime: startDateAux,
+      endTime: endDateAux,
     };
+
+    console.log(requestBody);
 
     const response = await fetch("http://localhost:3000/institute/create", {
       method: "POST",
@@ -275,6 +287,10 @@ export const RegistrationProvider = ({ children }: Props) => {
   };
 
   const registerPrincial = async () => {
+    if (!birthDate) return;
+    const birthDateAux = `${birthDate.getFullYear()}-${String(
+      birthDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
     const requestBody = {
       firstNames: firstNames,
       lastNames: lastNames,
@@ -287,9 +303,12 @@ export const RegistrationProvider = ({ children }: Props) => {
       email: email,
       password: password,
       gender: gender,
-      birthDate: birthDate,
+      birthDate: birthDateAux,
       roleId: 4,
     };
+
+    console.log(requestBody);
+    console.log(tenantId);
 
     const response = await fetch(
       `http://localhost:3000/principal/registration?tenantId=${tenantId}`,

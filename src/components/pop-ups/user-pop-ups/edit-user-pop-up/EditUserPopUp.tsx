@@ -47,7 +47,7 @@ export const EditUserPopUp = ({ userId }: Props) => {
           Authorization: jwt,
         },
       });
-      setUser(response.data);
+      setUser(response.data.data);
     }
   };
 
