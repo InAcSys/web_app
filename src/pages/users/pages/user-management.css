@@ -1,0 +1,49 @@
+.users-management-page {
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: grid;
+  grid-template-rows: 60px auto 60px;
+  grid-template-areas: 
+  "tools"
+  "users"
+  "pagination"
+  ;
+}
+
+.users-tools-section {
+  width: 100%;
+  padding: 10px;
+  grid-area: tools;
+  gap: 20px;
+}
+
+.users-container {
+  width: 100%;
+  gap: 10px;
+  grid-area: users;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 20px 10px;
+}
+
+.users-container > * {
+  box-sizing: border-box;
+}
+
+.users-pagination-section {
+  width: 100%;
+  gap: 10px;
+  grid-area: pagination;
+}
+
+.users-pagination-section > .dropdown-component {
+  width: 80px;
+}
+
+.users-pagination-page-selector-section {
+  gap: 10px;
+}
+
+.users-pagination-page-selector-text {
+  color: var(--secondary-color-inactive);
+}

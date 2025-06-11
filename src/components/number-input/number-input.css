@@ -1,0 +1,28 @@
+.number-input-container {
+  width: auto;
+  height: 30px;
+  line-height: 30px;
+  gap: 10px;
+}
+
+.number-input-button {
+  background-color: var(--primary-color-normal);
+  color: var(--foreground-light-color);
+  border: none;
+  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+}
+
+.number-input-button:disabled {
+  background-color: var(--primary-color-inactive);
+  color: var(--foreground-light-color);
+}
+
+#number-input-view {
+  width: 7ch;
+  border: 1px solid var(--primary-color-normal);
+  border-radius: 10px;
+  text-align: center;
+  color: var(--secondary-color-normal);
+}

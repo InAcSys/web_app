@@ -1,0 +1,11 @@
+.sub-option-container {
+  border: none;
+  padding: 10px;
+  background-color: transparent;
+  color: var(--secondary-color-normal);
+}
+
+.sub-option-container:hover {
+  background-color: var(--secondary-color-hover);
+  color: var(--foreground-light-color);
+}

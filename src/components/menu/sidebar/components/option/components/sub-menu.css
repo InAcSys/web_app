@@ -1,0 +1,12 @@
+.sub-menu-container {
+  position: absolute;
+  top: 0;
+  left: 100px;
+  background-color: var(--backgroud-light-color-light);
+  width: 300px;
+  height: 100vh;
+}
+
+.sub-menu-container > h3 {
+  padding: 10px;
+}

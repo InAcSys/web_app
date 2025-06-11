@@ -1,0 +1,10 @@
+.general-layout {
+  width: 100%;
+  height: 100dvh;
+  display: grid;
+  grid-template-columns: 100px auto;
+}
+
+.visual-general-container {
+  padding: 10px;
+}

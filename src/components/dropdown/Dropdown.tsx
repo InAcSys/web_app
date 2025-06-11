@@ -13,10 +13,11 @@ interface Props {
   options: string[];
   isDisabled?: boolean;
   error?: string;
+  errorIsVisible?: boolean;
 }
 
 export const Dropdown = ({
-  label = "Dropdown",
+  label = "",
   placeholder = "Select an option",
   isMandatory = false,
   optionSelected = 0,
@@ -24,6 +25,7 @@ export const Dropdown = ({
   options,
   isDisabled = false,
   error = "",
+  errorIsVisible = true,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -63,7 +65,9 @@ export const Dropdown = ({
           )}
         </div>
       </div>
-      <ErrorNote error={error} />
+      {
+        errorIsVisible ? <ErrorNote error={error} /> : ""
+      }
     </div>
   );
 };

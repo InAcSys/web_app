@@ -1,0 +1,8 @@
+.welcome-header-container {
+  width: 100%;
+  padding: 10px;
+}
+
+.welcome-header-role-text {
+  color: var(--primary-color-normal);
+}

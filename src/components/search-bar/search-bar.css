@@ -1,0 +1,29 @@
+.search-bar-container {
+  max-width: 400px;
+  width: 100%;
+  border: 1px solid var(--primary-color-normal);
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+
+.search-bar-input {
+  padding: 10px 5px 10px 20px;
+}
+
+.search-bar-container > button {
+  width: 40px;
+  height: 40px;
+  border: none;
+  padding: 10px;
+}
+
+.search-bar-delete-button {
+  background-color: transparent;
+  color: var(--primary-color-inactive);
+}
+
+.search-bar-button {
+  background-color: var(--primary-color-normal);
+  color: var(--foreground-light-color);
+}

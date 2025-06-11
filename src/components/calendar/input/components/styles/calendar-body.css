@@ -1,0 +1,27 @@
+.calendar-body-section {
+  display: grid;
+  grid-template-columns: repeat(7, calc((100% / 7) - 2px));
+  text-align: center;
+  gap: 2px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
+.calendar-body-day-name {
+  font-size: var(--font-size-notes);
+  text-align: center;
+  color: var(--secondary-color-normal);
+}
+
+.calendar-body-day-button {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  color: var(--primary-color-normal);
+  background-color: var(--backgroud-light-color-normal);
+}
+
+.calendar-body-day-button.selected {
+  background-color: var(--primary-color-normal);
+  color: var(--foreground-light-color);
+}

@@ -1,0 +1,14 @@
+.success-pop-up-container {
+  gap: 20px;
+}
+
+.success-pop-up-title,
+.success-pop-up-icon {
+  color: var(--success-color);
+}
+
+.success-pop-up-icon {
+  width: 200px;
+  height: 200px;
+}
+

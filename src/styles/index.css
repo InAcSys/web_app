@@ -28,6 +28,7 @@
   --font-size-notes: 14px;
 
   --error-color: #fb2c36;
+  --success-color: #00c950;
 }
 
 * {
@@ -49,33 +50,57 @@ body {
   color: var(--foreground-dark-color);
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   color: var(--primary-color-normal);
 }
 
-h1 > span, h2 > span, h3 > span, h4 > span {
+h1 > span,
+h2 > span,
+h3 > span,
+h4 > span,
+p > span {
   color: var(--secondary-color-normal);
 }
 
-h1, h1 > * {
+h1,
+h1 > * {
   font-size: var(--font-size-heading-1);
 }
 
-h1.complete-left {
+.complete-left {
   width: 100%;
   text-align: left;
 }
 
-h2, h2 > * {
+h2,
+h2 > * {
   font-size: var(--font-size-heading-2);
 }
 
-h3, h3 > * {
+h3,
+h3 > * {
   font-size: var(--font-size-heading-3);
 }
 
-h4, h4 > * {
+h4,
+h4 > * {
   font-size: var(--font-size-heading-4);
+}
+
+.notes-text {
+  color: var(--primary-color-normal);
+}
+
+.notes-text > * {
+  color: var(--secondary-color-normal);
+}
+
+.notes-text,
+.notes-text > * {
+  font-size: var(--font-size-notes);
 }
 
 img {
@@ -117,6 +142,11 @@ button:disabled {
   cursor: not-allowed;
 }
 
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
 .flex-column-center {
   display: flex;
   flex-direction: column;
@@ -124,11 +154,40 @@ button:disabled {
   justify-content: center;
 }
 
+.flex-column-between {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-row-between {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .flex-row-center {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
+}
+
+.flex-row-center-end {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: end;
+}
+
+.is-visible {
+  display: block;
+}
+
+.is-hidden {
+  display: none;
 }
 
 ::-webkit-scrollbar {
@@ -139,4 +198,36 @@ button:disabled {
   background-color: var(--primary-color-inactive);
   border-radius: 2rem;
   cursor: s-resize;
+}
+
+.pop-up-component-container {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--backgroud-light-color-normal);
+  max-width: 800px;
+  max-height: 800px;
+  padding: 20px;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.close-pop-up {
+  background-color: transparent;
+  border: none;
+  color: var(--error-color);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+@media (max-width: 800px) {
+  .pop-up-component-container {
+    max-width: 100%;
+    max-height: 100vh;
+    padding: 10px;
+    border-radius: 0;
+  }
 }

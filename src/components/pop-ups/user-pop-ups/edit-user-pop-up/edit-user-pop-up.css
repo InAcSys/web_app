@@ -1,0 +1,22 @@
+.edit-user-pop-up-container {
+  display: grid;
+  grid-template-rows: 40px auto 40px;
+  gap: 10px;
+  height: 100%;
+}
+
+.edit-user-pop-up-form {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px 20px;
+}
+
+.edit-user-pop-up-form > input-component {
+  height: 30px;
+}
+
+.edit-user-pop-up-action-buttons 
+{
+  width: 100%;
+}
