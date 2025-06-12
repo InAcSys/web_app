@@ -1,0 +1,29 @@
+.text-area-component {
+  width: 100%;
+  min-height: 40px;
+  gap: 0.2rem;
+}
+
+.text-area-input {
+  max-width: 100%;
+  min-width: 100%;
+  width: 100%;
+  max-height: 120px;
+  min-height: 120px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 1px solid var(--primary-color-inactive);
+  padding: 10px;
+  color: var(--secondary-color-normal);
+  background: transparent;
+}
+
+.text-area-input::placeholder {
+  color: var(--primary-color-inactive);
+}
+
+.text-area-input:focus {
+  outline: none;
+}

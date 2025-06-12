@@ -50,7 +50,7 @@ export const UserCard = ({ user, roles }: Props) => {
         </div>
         <button
           className="user-card-fullname-section complete-left"
-          onClick={handleGoToProfile}
+          onClick={handleEditUserInfo}
         >
           <b>
             {`${user.lastNames}`} {`${user.firstNames}`}
@@ -67,9 +67,9 @@ export const UserCard = ({ user, roles }: Props) => {
         <button className="user-card-action-button flex-column-center">
           <ChartPie />
         </button>
-        <button className="user-card-action-button flex-column-center" onClick={handleEditUserInfo}>
+        {/* <button className="user-card-action-button flex-column-center" onClick={handleEditUserInfo}>
           <Pencil />
-        </button>
+        </button> */}
         <button
           className="user-card-action-button flex-column-center delete"
           onClick={handleDeleteUser}

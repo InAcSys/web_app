@@ -1,0 +1,33 @@
+.subject-card-container {
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 5px #00000025;
+  border-radius: 0.6rem;
+}
+
+.subject-card-cover {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.subject-card-text-section {
+  width: 100%;
+  padding: 10px;
+}
+
+.subject-name-text{
+  width: 100%;
+  text-align: left;
+  border: none;
+  background-color: transparent;
+}
+
+.subject-name-text > *{
+  font-size: var(--font-size-heading-3);
+  color: var(--secondary-color-normal);
+}
+
+.subject-card-teacher-name {
+  color: var(--primary-color-normal);
+}

@@ -7,6 +7,7 @@ import Monitoring from "./pages/monitoring/Monitoring";
 import Calendar from "./pages/calendar/Calendar";
 import UsersRoutes from "./pages/users/UsersRoutes";
 import { PopUpProvider } from "./contexts/PopUpContext";
+import { LMSRoutes } from "./pages/lms/LMSRoutes";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route path="/settings" element={<Settings />} />
           <Route path="/monitoring/*" element={<Monitoring />} />
           <Route path="/calendar/*" element={<Calendar />} />
+          <Route path="/lms/*" element={<LMSRoutes />} />
 
           <Route path="*" element={<h1>Error 404</h1>} />
         </Routes>
