@@ -18,7 +18,7 @@ export const SubjectCard = ({ subject }: Props) => {
   const [teacher, setTeacher] = useState<User>()
 
   const handleGoSubject = () => {
-    navigate(`/lms/course/${subject.id}`);
+    navigate(`/lms/subject/${subject.id}`);
   };
 
   const handleGetTeacherInfo = async () => {

@@ -1,12 +1,12 @@
 import "./courses.css"
 import { useEffect, useState } from "react";
-import { SubjectCard } from "../../../components/courses/subject-card/SubjectCard";
-import { Subject } from "../../../models/course/Subject";
-import { useAuthContext } from "../../../contexts/AuthContext";
+import { SubjectCard } from "../../../../components/courses/subject-card/SubjectCard";
+import { Subject } from "../../../../models/course/Subject";
+import { useAuthContext } from "../../../../contexts/AuthContext";
 import axios from "axios";
-import { Button } from "../../../components";
-import { usePopUpContext } from "../../../contexts/PopUpContext";
-import { CreateSubjectPopUp } from "../../../components/pop-ups/course-pop-up/create-subject-pop-up/CreateSubjectPopUp";
+import { Button } from "../../../../components";
+import { usePopUpContext } from "../../../../contexts/PopUpContext";
+import { CreateSubjectPopUp } from "../../../../components/pop-ups/course-pop-up/create-subject-pop-up/CreateSubjectPopUp";
 
 export function Courses() {
   const { jwt } = useAuthContext();

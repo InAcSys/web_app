@@ -1,0 +1,8 @@
+.task-card-container {
+  width: 100%;
+  min-height: 60px;
+  background-color: var(--backgroud-light-color-light);
+  box-shadow: 0 4px 5px #00000025;
+  border-radius: .5rem;
+  padding: 10px;
+}
