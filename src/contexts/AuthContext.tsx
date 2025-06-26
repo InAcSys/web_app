@@ -23,8 +23,8 @@ interface Type {
   formError: string;
   permissions: Permissions | undefined;
   logIn: (email: string, password: string) => void;
-  isLogged: () => boolean;
   logOut: () => void;
+  verifyPermission: (permission: string) => boolean;
 }
 
 const AuthContext = createContext<Type | undefined>(undefined);
@@ -92,22 +92,18 @@ export const AuthProvider = ({ children }: Props) => {
     Cookies.remove(
       "sapiens_360_gwEjbpFRQsyFZm4VVYBTSk5zP7DmM9tpzAAmW1f4FvndB2HvJmyKytdFYkq2bK53"
     );
-    navigate("/")
+    navigate("/");
   };
 
-  const isLogged = () => {
+  const getToken = () => {
     const token = Cookies.get(
       "sapiens_360_gwEjbpFRQsyFZm4VVYBTSk5zP7DmM9tpzAAmW1f4FvndB2HvJmyKytdFYkq2bK53"
     );
-    if (token !== undefined) {
-      setJwt(token);
-      return true;
-    }
-    return false;
+    setJwt(token ?? "");
   };
 
   const getPermissions = async () => {
-    if (!isLogged()) {
+    if (!jwt) {
       return;
     }
 
@@ -126,6 +122,39 @@ export const AuthProvider = ({ children }: Props) => {
     }
   };
 
+  const hasPermissionRecursive = (
+    categories: any[],
+    permissionCode: string
+  ): boolean => {
+    for (const category of categories) {
+      if (
+        category.permissions?.some((perm: any) => perm.code === permissionCode)
+      ) {
+        return true;
+      }
+
+      if (category.subCategories && category.subCategories.length > 0) {
+        if (hasPermissionRecursive(category.subCategories, permissionCode)) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  };
+
+  const verifyPermission = (permissionCode: string): boolean => {
+    if (!permissions || !Array.isArray(permissions)) {
+      return false;
+    }
+
+    return hasPermissionRecursive(permissions, permissionCode);
+  };
+
+  useEffect(() => {
+    getToken();
+  }, []);
+
   useEffect(() => {
     getPermissions();
   }, [jwt]);
@@ -137,9 +166,9 @@ export const AuthProvider = ({ children }: Props) => {
       passwordError,
       formError,
       logIn,
-      isLogged,
       permissions,
-      logOut
+      logOut,
+      verifyPermission,
     }),
     [jwt, emailError, passwordError, formError, permissions]
   );

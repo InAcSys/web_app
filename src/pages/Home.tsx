@@ -6,10 +6,10 @@ import { useNavigate } from "react-router";
 
 export default function Home() {
   const navigate = useNavigate();
-  const {isLogged} = useAuthContext()
+  const { jwt } = useAuthContext();
 
   const handleRedirectLogIn = () => {
-    if (isLogged()) {
+    if (jwt) {
       navigate("/dashboard");
     } else {
       navigate("/log-in");
