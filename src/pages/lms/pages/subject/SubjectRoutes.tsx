@@ -3,6 +3,7 @@ import { Subject } from "./pages/subject/Subject";
 import { Tab } from "../../../../models/tabs/Tab";
 import { Tabs } from "../../../../components/tabs/Tabs";
 import { Tasks } from "./pages/tasks/Tasks";
+import { Task } from "./pages/task/Task";
 
 export const SubjectRoutes = () => {
   const {id} = useParams()
@@ -20,6 +21,7 @@ export const SubjectRoutes = () => {
         <Route path="/" element={<Subject />} />
         <Route path="/tasks" element={<Tasks />} />
         <Route path="/users" element={<p>Usuarios</p>} />
+        <Route path="/task/:taskId" element={<Task />} />
       </Routes>
     </>
   );

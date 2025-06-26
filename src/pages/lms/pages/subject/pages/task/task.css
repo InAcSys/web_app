@@ -1,0 +1,21 @@
+.task-page {
+  padding: 20px;
+  gap: 10px;
+  overflow: auto;
+}
+
+.task-header-information {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.due-date-task-text {
+  font-size: var(--font-size-notes);
+  color: var(--secondary-color-normal);
+}
+
+.task-description-text {
+  width: 100%;
+  text-align: justify;
+  
+}

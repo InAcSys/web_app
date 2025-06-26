@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { usePopUpContext } from "../../../../contexts/PopUpContext";
 import { Button } from "../../../buttons";
 import { Input } from "../../../inputs";
 import { CloseButton } from "../../components/close-button/CloseButton";
@@ -8,8 +7,9 @@ import { CalendarInput } from "../../../calendar/input/CalendarInput";
 import dayjs from "dayjs";
 import { FailedPopUp } from "../../failed-pop-up/FailedPopUp";
 import axios from "axios";
-import { useAuthContext } from "../../../../contexts/AuthContext";
+import { useAuthContext, usePopUpContext } from "../../../../contexts";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
+import taskSchema from "../../../../validations/task-schema";
 
 interface Props {
   id: string | undefined;
@@ -24,12 +24,31 @@ export const CreateTaskPopUp = ({ id }: Props) => {
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState<Date>(currentDate);
 
+  const [titleError, setTitleError] = useState("");
+  const [descriptionError, setDescriptionError] = useState("");
+  const [dueDateError, setDueDateError] = useState("");
+
   const createTask = async () => {
     if (!id) {
       setPopUp(
         <FailedPopUp message="Hubo un error durante la ejecución, inténtalo más tarde" />
       );
     }
+
+    const result = taskSchema.safeParse({ title, description, dueDate });
+    if (!result.success) {
+      const errors = result.error.flatten().fieldErrors;
+
+      setTitleError(errors.title?.[0] ?? "");
+      setDescriptionError(errors.description?.[0] ?? "");
+      setDueDateError(errors.dueDate?.[0] ?? "");
+      return;
+    }
+
+    setTitleError("");
+    setDescriptionError("");
+    setDueDateError("");
+
     const requestBody = {
       title,
       description,
@@ -37,7 +56,7 @@ export const CreateTaskPopUp = ({ id }: Props) => {
       courseId: id,
     };
     const response = await axios.post(
-      "http://localhost:3000/task",
+      `http://localhost:3000/task?subjectId=${id}`,
       requestBody,
       {
         headers: {
@@ -61,12 +80,14 @@ export const CreateTaskPopUp = ({ id }: Props) => {
           value={title}
           onChange={setTitle}
           placeholder="Tarea"
+          error={titleError}
         />
         <TextArea
           label="Descripción"
           value={description}
           onChange={setDescription}
           placeholder="Ingrese una descripción de la tarea"
+          error={descriptionError}
         />
         <CalendarInput
           label="Fecha de entrega"

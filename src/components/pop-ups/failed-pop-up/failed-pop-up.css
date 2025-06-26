@@ -1,0 +1,13 @@
+.failed-pop-up-container {
+  gap: 20px;
+}
+
+.failed-pop-up-title,
+.failed-pop-up-icon {
+  color: var(--error-color);
+}
+
+.failed-pop-up-icon {
+  width: 200px;
+  height: 200px;
+}
