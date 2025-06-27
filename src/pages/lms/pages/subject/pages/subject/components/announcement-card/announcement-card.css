@@ -1,0 +1,43 @@
+.announcement-card-component {
+  width: 100%;
+  padding: 20px;
+  border-radius: 1rem;
+  background-color: var(--backgroud-light-color-light);
+  box-shadow: var(--box-shadow-card);
+  margin-bottom: 1rem;
+}
+
+.announcement-author-info-section {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 80px auto;
+  grid-template-rows: 40px 40px;
+  grid-template-areas:
+  "profile name"
+  "profile date"
+  ;
+}
+
+.announcement-author-profile {
+  grid-area: profile;
+}
+
+.announcement-author-name,
+.announcement-publish-date {
+  padding: 10px;
+  width: 100%;
+}
+
+.announcement-author-name {
+  grid-area: name;
+}
+.announcement-publish-date {
+  grid-area: date;
+  font-size: var(--font-size-notes);
+  color: var(--secondary-color-inactive);
+}
+
+.announcement-publish-info-section {
+  gap: 10px;
+  padding: 20px 0;
+}

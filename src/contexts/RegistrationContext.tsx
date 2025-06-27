@@ -257,8 +257,11 @@ export const RegistrationProvider = ({ children }: Props) => {
       body: JSON.stringify(requestBody),
     });
 
+    console.log(response)
+
     if (response.ok) {
       const result = await response.text();
+      console.log(result)
       setTenantId(result);
       if (result !== "") {
         navigate("/registration/principal");

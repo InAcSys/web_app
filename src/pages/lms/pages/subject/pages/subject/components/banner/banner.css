@@ -1,0 +1,18 @@
+.lms-subject-header {
+  width: 100%;
+  background-color: var(--backgroud-light-color-light);
+  box-shadow: var(--box-shadow-card);
+  border-radius: 1rem;
+}
+
+.subject-banner {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.subject-info-section {
+  width: 100%;
+  padding: 20px;
+}

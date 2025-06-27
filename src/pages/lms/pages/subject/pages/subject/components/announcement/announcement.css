@@ -1,9 +1,7 @@
-.task-card-container {
+.announcement-component {
   width: 100%;
-  min-height: 60px;
   background-color: var(--backgroud-light-color-light);
+  border-radius: 1rem;
   box-shadow: var(--box-shadow-card);
-  border-radius: .5rem;
-  padding: 10px;
-  border: none;
+  padding: 20px;
 }
