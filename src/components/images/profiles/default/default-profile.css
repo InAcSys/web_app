@@ -4,6 +4,6 @@
   border: 1px solid var(--secondary-color-normal);
   border-radius: 50%;
   color: var(--primary-color-normal);
-  font-size: clamp(0.5rem, 5vw, 2.5rem);
+  font-size: clamp(0.5rem, 1.5vw, 1.5rem);
   user-select: none;
 }
