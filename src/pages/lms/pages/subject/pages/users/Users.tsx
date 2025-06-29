@@ -5,6 +5,7 @@ import "./users.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { EnrollStudentsPopUp } from "../../../../../../components/pop-ups/lms-pop-up/subject-pop-up/enroll-students-pop-up/EnrollStudentsPopUp";
+import { StudentCard } from "../../../../../../components/users/student-card/StudentCard";
 
 export const Users = () => {
   const { jwt } = useAuthContext();
@@ -34,7 +35,9 @@ export const Users = () => {
 
   const handleEnroll = () => {
     if (!id) return;
-    setPopUp(<EnrollStudentsPopUp subjectId={id} />);
+    setPopUp(
+      <EnrollStudentsPopUp subjectId={id} enrollmentStudents={students ?? []} />
+    );
   };
 
   useEffect(() => {
@@ -49,7 +52,9 @@ export const Users = () => {
       </div>
       <div className="users-list-section">
         {students && students.length > 0 ? (
-          students.map((student, index) => <p key={index}>{student}</p>)
+          students.map((student) => (
+            <StudentCard key={`student-${student}`} studentId={student} />
+          ))
         ) : (
           <p className="users-page-not-found">Estudiantes no encontrados</p>
         )}
