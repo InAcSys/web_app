@@ -17,15 +17,15 @@ const GeneralLayout = ({ header, children }: Props) => {
   const { setPopUp } = usePopUpContext();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (jwt === null) return;
-    if (!jwt) {
-      setPopUp(
-        <FailedPopUp message="No tienes autorización para acceder. Por favor, inicia sesión para continuar." />
-      );
-      navigate("/log-in");
-    }
-  }, [jwt]);
+  // useEffect(() => {
+  //   if (jwt === null) return;
+  //   if (!jwt) {
+  //     setPopUp(
+  //       <FailedPopUp message="No tienes autorización para acceder. Por favor, inicia sesión para continuar." />
+  //     );
+  //     navigate("/log-in");
+  //   }
+  // }, [jwt]);
 
   return (
     <div className="general-layout">

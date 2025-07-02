@@ -41,3 +41,20 @@
   color: #1e293990;
   font-size: var(--font-size-notes);
 }
+
+.task-card-time-description {
+  font-size: var(--font-size-notes);
+  padding: 5px 10px;
+  border-radius: 1rem;
+  gap: 2px;
+}
+
+.task-card-time-description.expired {
+  color: var(--error-color);
+  background-color: #fb2c3650;
+}
+
+.task-card-time-description.delivered {
+  color: var(--success-color);
+  background-color: #00c95050;
+}
