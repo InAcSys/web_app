@@ -247,8 +247,6 @@ export const RegistrationProvider = ({ children }: Props) => {
       endTime: endDateAux,
     };
 
-    console.log(requestBody);
-
     const response = await fetch("http://localhost:3000/institute/create", {
       method: "POST",
       headers: {
@@ -256,12 +254,9 @@ export const RegistrationProvider = ({ children }: Props) => {
       },
       body: JSON.stringify(requestBody),
     });
-
-    console.log(response)
-
+  
     if (response.ok) {
       const result = await response.text();
-      console.log(result)
       setTenantId(result);
       if (result !== "") {
         navigate("/registration/principal");
@@ -309,9 +304,6 @@ export const RegistrationProvider = ({ children }: Props) => {
       birthDate: birthDateAux,
       roleId: 4,
     };
-
-    console.log(requestBody);
-    console.log(tenantId);
 
     const response = await fetch(
       `http://localhost:3000/principal/registration?tenantId=${tenantId}`,

@@ -5,8 +5,13 @@ import { useAuthContext } from "../../../../../contexts/AuthContext";
 export const LogOutButton = () => {
   const { logOut } = useAuthContext();
 
+  const handleLogOut = () => {
+    logOut();
+    window.location.reload();
+  };
+
   return (
-    <button className="log-out-button" onClick={logOut}>
+    <button className="log-out-button" onClick={handleLogOut}>
       <LogOut className="log-out-icon-button" />
     </button>
   );

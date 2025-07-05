@@ -24,14 +24,6 @@ export function Task() {
   };
 
   useEffect(() => {
-    console.log(id);
-  }, [id]);
-
-  useEffect(() => {
-    console.log(taskId);
-  }, [taskId]);
-
-  useEffect(() => {
     getTaskInfo();
   }, [jwt, id, taskId]);
 

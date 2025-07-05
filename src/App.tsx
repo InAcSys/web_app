@@ -9,6 +9,7 @@ import UsersRoutes from "./pages/users/UsersRoutes";
 import { PopUpProvider } from "./contexts/PopUpContext";
 import { LMSRoutes } from "./pages/lms/LMSRoutes";
 import { ErrorPage } from "./pages/errors/ErrorPage";
+import { VerifyAuthorization } from "./components/permission/VerifyAuthorization";
 
 function App() {
   return (
@@ -20,12 +21,34 @@ function App() {
             <Route path="/log-in" element={<LogIn />} />
             <Route path="/registration/*" element={<RegistrationRoutes />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/users/*" element={<UsersRoutes />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="/monitoring/*" element={<Monitoring />} />
+            {/* Required authorization */}
+            <Route
+              path="/users/*"
+              element={
+                <VerifyAuthorization authorization="USERS_PAGE">
+                  <UsersRoutes />
+                </VerifyAuthorization>
+              }
+            />
+            <Route
+              path="/monitoring/*"
+              element={
+                <VerifyAuthorization authorization="MONITORING_PAGE">
+                  <Monitoring />
+                </VerifyAuthorization>
+              }
+            />
             <Route path="/calendar/*" element={<Calendar />} />
-            <Route path="/lms/*" element={<LMSRoutes />} />
+            <Route
+              path="/lms/*"
+              element={
+                <VerifyAuthorization authorization="LMS_PAGE">
+                  <LMSRoutes />
+                </VerifyAuthorization>
+              }
+            />
 
             <Route path="*" element={<ErrorPage />} />
           </Routes>

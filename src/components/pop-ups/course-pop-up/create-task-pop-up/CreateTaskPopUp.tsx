@@ -64,7 +64,6 @@ export const CreateTaskPopUp = ({ id }: Props) => {
         },
       }
     );
-    console.log(response.data.data);
     if (response.status === 200 || response.status === 201) {
       setPopUp(<SuccessPopUp message="Tarea asignada correctamente" />);
     }

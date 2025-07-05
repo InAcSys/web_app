@@ -26,8 +26,6 @@ export const Users = () => {
       }
     );
 
-    console.log(response.data);
-
     if (response.data.status === 200) {
       setStudents(response.data.data);
     }

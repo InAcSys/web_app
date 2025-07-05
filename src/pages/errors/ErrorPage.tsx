@@ -32,7 +32,7 @@ export function ErrorPage() {
   const Icon = errorMessages[code].icon ?? Frown;
 
   const handleBack = () => {
-    navigate(-1);
+    navigate("/dashboard");
   };
 
   return (
@@ -43,7 +43,7 @@ export function ErrorPage() {
         {(message ?? errorMessages[code].message) ||
           "Ocurrió un error inesperado."}
       </p>
-      <Button label="Volver a la página anterior" onClick={handleBack} />
+      <Button label="Volver a la página principal" onClick={handleBack} />
     </div>
   );
 }

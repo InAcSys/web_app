@@ -29,7 +29,6 @@ export const EnrollStudentsPopUp = ({
   const [search, setSearch] = useState("");
 
   const getUsers = async () => {
-    console.log(enrollmentStudents)
     if (jwt) {
       try {
         const response = await axios.get(`http://localhost:3000/users/role/1`, {

@@ -77,7 +77,6 @@ export const CreateSubjectPopUp = () => {
   useEffect(() => {
     if (selectTeacher >= 0 && teachers[selectTeacher]) {
       const id = teachers[selectTeacher].id;
-      console.log(id);
       setTeacherId(id);
     }
   }, [selectTeacher, teachers]);

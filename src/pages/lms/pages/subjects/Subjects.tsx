@@ -1,4 +1,4 @@
-import "./courses.css"
+import "./subjects.css"
 import { useEffect, useState } from "react";
 import { SubjectCard } from "../../../../components/courses/subject-card/SubjectCard";
 import { Subject } from "../../../../models/course/Subject";
@@ -9,8 +9,8 @@ import { usePopUpContext } from "../../../../contexts/PopUpContext";
 import { CreateSubjectPopUp } from "../../../../components/pop-ups/course-pop-up/create-subject-pop-up/CreateSubjectPopUp";
 import { VerifyPermission } from "../../../../components/permission/VerifyPermission";
 
-export function Courses() {
-  const { jwt, verifyPermission } = useAuthContext();
+export function Subjects() {
+  const { jwt } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
   const [subjects, setSubjects] = useState<Array<Subject>>();
@@ -42,7 +42,7 @@ export function Courses() {
   return (
     <div className="lms-courses-page">
       <div className="lms-course-action-buttons-section flex-row-center-end">
-        <VerifyPermission permission="CREATE_COURSES">
+        <VerifyPermission permission="CREATE_SUBJECTS">
           <Button label="Crear materia" onClick={handleCreateSubject} />
         </VerifyPermission>
       </div>

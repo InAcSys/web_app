@@ -4,12 +4,16 @@
   padding: 10px;
   border: none;
   background-color: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.option-side-bar-menu-section.selected {
+  background-color: var(--backgroud-light-color-dark);
 }
 
 .option-side-bar-menu-section:hover {
   background-color: var(--backgroud-light-color-dark);
-  border-radius: 10px;
-  cursor: pointer;
 }
 
 .option-side-bar-menu-icon {
