@@ -80,7 +80,6 @@ export const CreateUserPopUp = () => {
       birthDate: birthDateAux,
       roleId: roleOption + 1,
     };
-    console.log(requestBody)
     const result = await axios.post(
       "http://localhost:3000/create-user",
       requestBody,
@@ -91,7 +90,6 @@ export const CreateUserPopUp = () => {
         },
       }
     );
-    console.log(result)
 
     if (result) {
       setPopUp(<SuccessPopUp message="Usuario creado con éxito" />);

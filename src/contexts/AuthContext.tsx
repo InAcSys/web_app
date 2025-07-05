@@ -127,6 +127,7 @@ export const AuthProvider = ({ children }: Props) => {
     permissionCode: string
   ): boolean => {
     for (const category of categories) {
+      if (category.code === permissionCode) return true;
       if (
         category.permissions?.some((perm: any) => perm.code === permissionCode)
       ) {

@@ -9,6 +9,7 @@ import { NumberInput } from "../../../components/number-input/NumberInput";
 import { usePopUpContext } from "../../../contexts/PopUpContext";
 import { CreateUserPopUp } from "../../../components/pop-ups/user-pop-ups/create-user-pop-up/CreateUserPopUp";
 import { SearchBar } from "../../../components/search-bar/SearchBar";
+import { VerifyPermission } from "../../../components/permission/VerifyPermission";
 
 export default function UsersManagement() {
   const { jwt } = useAuthContext();
@@ -113,9 +114,13 @@ export default function UsersManagement() {
         <SearchBar
           searchValue={searchValue}
           setSearchValue={setSearchValue}
-          search={() => {fetchUsers()}}
+          search={() => {
+            fetchUsers();
+          }}
         />
-        <Button label="Crear nuevo usuario" onClick={handleCreateNewUser} />
+        <VerifyPermission permission="CREATE_USERS">
+          <Button label="Crear nuevo usuario" onClick={handleCreateNewUser} />
+        </VerifyPermission>
       </div>
       <div className="users-container flex-column">
         {users.length > 0 ? (

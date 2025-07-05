@@ -25,7 +25,6 @@ export function Tasks() {
         },
       }
     );
-    console.log(response.data);
 
     setTasks(response.data);
   };
