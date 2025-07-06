@@ -10,6 +10,7 @@ import { Dropdown } from "../../../dropdown/Dropdown";
 import { CalendarInput } from "../../../calendar/input/CalendarInput";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
 import { User } from "../../../../models/user/User";
+import { UploadProfile } from "../../../images/profiles/upload-profile/UploadProfile";
 
 interface Props {
   userId: string;
@@ -39,6 +40,7 @@ export const EditUserPopUp = ({ userId }: Props) => {
   const [roles, setRoles] = useState<Map<number, string>>();
   const [rolesList, setRolesList] = useState<Array<string>>([]);
   const [roleOption, setRoleOption] = useState(-1);
+  const [imageUrl, setImageUrl] = useState("");
 
   const getUserInfo = async () => {
     if (jwt) {
@@ -83,7 +85,7 @@ export const EditUserPopUp = ({ userId }: Props) => {
       shortName: shortName ?? user?.shortName,
       ci: ci ?? user?.ci,
       ciType: ciType ?? user?.ciType,
-      imageUrl: user?.imageUrl,
+      imageUrl: imageUrl ?? user?.imageUrl,
       address: user?.address,
       phoneNumber: user?.phoneNumber,
       email: email ?? user?.email,
@@ -120,6 +122,7 @@ export const EditUserPopUp = ({ userId }: Props) => {
       setGenderOption(apiGendersOptions.indexOf(user.gender));
       setBirthDate(user.birthDate);
       setRoleOption(user.roleId - 1);
+      setImageUrl(user.imageUrl ?? "");
     }
   };
 
@@ -154,6 +157,9 @@ export const EditUserPopUp = ({ userId }: Props) => {
       <CloseButton />
       <h3 className="edit-user-pop-up-title">Editar información de usuario</h3>
       <div className="edit-user-pop-up-form">
+        <div className="flex-column-center">
+          <UploadProfile imageUrl={imageUrl} />
+        </div>
         <Input
           label="Nombres"
           placeholder="Denis Jorge"

@@ -9,6 +9,7 @@ import axios from "axios";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
 import { CloseButton } from "../../components/close-button/CloseButton";
+import { UploadProfile } from "../../../images/profiles/upload-profile/UploadProfile";
 
 export const CreateUserPopUp = () => {
   const { setPopUp, closePopUp } = usePopUpContext();
@@ -34,6 +35,8 @@ export const CreateUserPopUp = () => {
   const [roles, setRoles] = useState<Map<number, string>>();
   const [rolesList, setRolesList] = useState<Array<string>>([]);
   const [roleOption, setRoleOption] = useState(-1);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageToUpload, setImageToUpload] = useState<File>();
 
   const getRoles = async () => {
     try {
@@ -60,7 +63,7 @@ export const CreateUserPopUp = () => {
     }
   };
 
-  const createUser = async () => {
+  const createUser = async (imageUrlParam: string) => {
     if (!birthDate) return;
     const birthDateAux = `${birthDate.getFullYear()}-${String(
       birthDate.getMonth() + 1
@@ -71,7 +74,7 @@ export const CreateUserPopUp = () => {
       shortName: shortName,
       ci: ci,
       ciType: ciType,
-      imageUrl: "",
+      imageUrl: imageUrlParam,
       address: "",
       phoneNumber: "",
       email: email,
@@ -86,7 +89,7 @@ export const CreateUserPopUp = () => {
       {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": jwt,
+          Authorization: jwt,
         },
       }
     );
@@ -94,6 +97,42 @@ export const CreateUserPopUp = () => {
     if (result) {
       setPopUp(<SuccessPopUp message="Usuario creado con éxito" />);
     }
+  };
+
+  const handleUploadImage = async () => {
+    if (!imageToUpload) return;
+
+    const formData = new FormData();
+    formData.append("file", imageToUpload);
+    const response = await axios.post(
+      `http://localhost:3000/files/upload`,
+      formData,
+      {
+        headers: {
+          Authorization: jwt,
+        },
+      }
+    );
+
+    if (response.status === 200 || response.status === 201) {
+      const url = response.data.data.url;
+      return url;
+    }
+
+    return "";
+  };
+
+  const handleCreateUser = async () => {
+    let finalImageUrl = "";
+    if (imageToUpload) {
+      const uploadedUrl = await handleUploadImage();
+      if (uploadedUrl) {
+        setImageUrl(uploadedUrl);
+        finalImageUrl = uploadedUrl;
+      }
+    }
+
+    await createUser(finalImageUrl);
   };
 
   useEffect(() => {
@@ -121,6 +160,12 @@ export const CreateUserPopUp = () => {
         Crear nuevo usuario
       </h3>
       <div className="create-user-pop-up-form">
+        <div className="flex-column-center">
+          <UploadProfile
+            imageUrl={imageUrl}
+            setImageToUpload={setImageToUpload}
+          />
+        </div>
         <Input
           label="Nombres"
           placeholder="Denis Jorge"
@@ -195,7 +240,7 @@ export const CreateUserPopUp = () => {
         />
       </div>
       <div className="create-user-pop-up-action-buttons flex-row-between">
-        <Button label="Crear usuario" onClick={createUser} />
+        <Button label="Crear usuario" onClick={handleCreateUser} />
         <Button
           styleVariant="secondary"
           label="Cancelar"
