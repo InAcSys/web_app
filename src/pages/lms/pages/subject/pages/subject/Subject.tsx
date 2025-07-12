@@ -73,7 +73,7 @@ export function Subject() {
   return (
     <div className="lms-subject-page">
       <Banner teacher={teacher} subject={subject} />
-      <VerifyPermission permission="CREATE_ANNOUNCEMENT">
+      <VerifyPermission permission="PUBLISH_ANNOUNCEMENTS">
         <Announcement />
       </VerifyPermission>
       <div className="announcements-section">

@@ -4,6 +4,7 @@ import Registration from "./Registration";
 import TermsAndConditions from "./TermsAndConditions";
 import FormLayout from "../../layouts/FormLayout";
 import Principal from "./Principal";
+import { ErrorPage } from "../errors/ErrorPage";
 
 export default function RegistrationRoutes() {
   return (
@@ -17,7 +18,7 @@ export default function RegistrationRoutes() {
             element={<TermsAndConditions />}
           />
 
-          <Route path="*" element={<h1>Error 404</h1>} />
+          <Route path="*" element={<ErrorPage />} />
         </Routes>
       </FormLayout>
     </RegistrationProvider>

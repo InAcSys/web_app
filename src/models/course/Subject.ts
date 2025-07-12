@@ -8,4 +8,5 @@ export interface Subject {
   code: string;
   id: string;
   tenantId: string;
+  imageUrl: string;
 }

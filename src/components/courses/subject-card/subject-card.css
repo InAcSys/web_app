@@ -3,6 +3,7 @@
   width: 100%;
   box-shadow: var(--box-shadow-card);
   border-radius: 0.6rem;
+  overflow: hidden;
 }
 
 .subject-card-cover {

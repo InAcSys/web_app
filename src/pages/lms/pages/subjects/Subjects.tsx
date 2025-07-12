@@ -25,7 +25,8 @@ export function Subjects() {
           },
         }
       );
-      setSubjects(response.data.data.users);
+
+      setSubjects(response.data.data.items);
     } catch (error) {
       console.error(error);
     }

@@ -9,6 +9,9 @@ import { useAuthContext } from "../../../../contexts/AuthContext";
 import { User } from "../../../../models/user/User";
 import { Dropdown } from "../../../dropdown";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
+import { UploadCover } from "../../../images/covers/upload-cover/UploadCover";
+import "./create-subject-pop-up.css";
+import { AcademicLevel } from "../../../../models/course/AcademicLevel";
 
 export const CreateSubjectPopUp = () => {
   const { closePopUp } = usePopUpContext();
@@ -19,21 +22,30 @@ export const CreateSubjectPopUp = () => {
   const [description, setDescription] = useState("");
   const [code, setCode] = useState("");
   const [credits, setCredits] = useState("0");
+  const [imageUrl, setImageUrl] = useState("");
   const [teacherId, setTeacherId] = useState("");
+  const [levelId, setLevelId] = useState("");
+
+  const [image, setImage] = useState<File>();
 
   const [teachers, setTeachers] = useState<Array<User>>([]);
   const [teachersNames, setTeachersNames] = useState<Array<string>>([]);
   const [selectTeacher, setSelectTeacher] = useState(-1);
 
-  const createSubject = async () => {
+  const [levels, setLevels] = useState<Array<AcademicLevel>>([]);
+  const [levelsNames, setLevelsNames] = useState<Array<string>>([]);
+  const [selectLevel, setSelectLevel] = useState(-1);
+
+  const createSubject = async (imageUrl: string) => {
     const requestBody = {
       credits,
       lmsId: 0,
-      academicLevelId: 1,
+      academicLevelId: levelId,
       teacherId,
       name,
       description,
       code,
+      imageUrl,
     };
     const response = await axios.post(
       "http://localhost:3000/subject",
@@ -65,6 +77,23 @@ export const CreateSubjectPopUp = () => {
     }
   };
 
+  const getLevels = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3000/academic-levels?pageNumber=1&pageSize=100",
+        {
+          headers: {
+            Authorization: jwt,
+          },
+        }
+      );
+
+      setLevels(response.data.data.items);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const getTeachersNames = () => {
     if (teachers) {
       const names = teachers.map((teacher) => {
@@ -72,6 +101,51 @@ export const CreateSubjectPopUp = () => {
       });
       setTeachersNames(names);
     }
+  };
+
+  const getLevelsNames = () => {
+    if (levels) {
+      const names = levels.map((level) => {
+        return level.name;
+      });
+      setLevelsNames(names);
+    }
+  };
+
+  const handleUploadImage = async () => {
+    if (!image) return;
+
+    const formData = new FormData();
+    formData.append("file", image);
+    const response = await axios.post(
+      `http://localhost:3000/files/upload`,
+      formData,
+      {
+        headers: {
+          Authorization: jwt,
+        },
+      }
+    );
+
+    if (response.status === 200 || response.status === 201) {
+      const url = response.data.data.url;
+      return url;
+    }
+
+    return "";
+  };
+
+  const handleCreateSubject = async () => {
+    let finalImageUrl = "";
+    if (image) {
+      const uploadedUrl = await handleUploadImage();
+      if (uploadedUrl) {
+        setImageUrl(uploadedUrl);
+        finalImageUrl = uploadedUrl;
+      }
+    }
+
+    await createSubject(finalImageUrl);
   };
 
   useEffect(() => {
@@ -82,12 +156,27 @@ export const CreateSubjectPopUp = () => {
   }, [selectTeacher, teachers]);
 
   useEffect(() => {
+    if (selectLevel >= 0 && levels[selectLevel]) {
+      const id = levels[selectLevel].id;
+      setLevelId(id?.toString() ?? "");
+    }
+  }, [selectLevel, levels]);
+
+  useEffect(() => {
     getTeachers();
+  }, [jwt]);
+
+  useEffect(() => {
+    getLevels();
   }, [jwt]);
 
   useEffect(() => {
     getTeachersNames();
   }, [teachers]);
+
+  useEffect(() => {
+    getLevelsNames();
+  }, [levels]);
 
   return (
     <div className="create-subject-pop-up-container pop-up-component-container">
@@ -96,6 +185,7 @@ export const CreateSubjectPopUp = () => {
         Crear una nueva materia
       </h3>
       <div className="create-subject-pop-up-form">
+        <UploadCover imageUrl={imageUrl} setImageToUpload={setImage} />
         <Input
           label="Nombre de la materia"
           value={name}
@@ -121,6 +211,13 @@ export const CreateSubjectPopUp = () => {
           placeholder="0"
         />
         <Dropdown
+          label="Nivel academico"
+          placeholder="Selecciona un nivel academico"
+          options={levelsNames}
+          optionSelected={selectLevel}
+          changeOptionSelected={setSelectLevel}
+        />
+        <Dropdown
           label="Docente"
           placeholder="Selecciona un docente"
           options={teachersNames}
@@ -129,7 +226,7 @@ export const CreateSubjectPopUp = () => {
         />
       </div>
       <div className="create-subject-pop-up-action-buttons flex-row-between">
-        <Button label="Crear materia" onClick={createSubject} />
+        <Button label="Crear materia" onClick={handleCreateSubject} />
         <Button
           styleVariant="secondary"
           label="Cancelar"

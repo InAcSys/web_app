@@ -1,0 +1,22 @@
+.create-subject-pop-up-container {
+  display: grid;
+  grid-template-rows: 40px auto 40px;
+  gap: 10px;
+  height: 100%;
+}
+
+.create-subject-pop-up-form {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px 20px;
+}
+
+.create-subject-pop-up-form > input-component {
+  height: 30px;
+}
+
+.create-subject-pop-up-action-buttons 
+{
+  width: 100%;
+}

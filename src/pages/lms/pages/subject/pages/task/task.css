@@ -17,5 +17,7 @@
 .task-description-text {
   width: 100%;
   text-align: justify;
-  
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
 }

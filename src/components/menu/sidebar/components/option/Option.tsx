@@ -8,6 +8,7 @@ import {
   Inbox,
   LucideIcon,
   PiggyBank,
+  University,
   User,
   Users,
 } from "lucide-react";
@@ -21,12 +22,13 @@ interface Props {
 
 const icons = new Map<string, LucideIcon>([
   ["usuarios", Users],
-  ["analã­ticas y reportes", ChartLine],
+  ["analíticas y reportes", ChartLine],
   ["lms", BrainCircuit],
   ["calendario", CalendarDays],
   ["pagos", PiggyBank],
   ["calificaciones", GraduationCap],
-  ["mensajerã­a", Inbox],
+  ["mensajería", Inbox],
+  ["institución", University],
 ]);
 
 export const Option = ({ category }: Props) => {

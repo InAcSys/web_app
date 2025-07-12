@@ -1,31 +1,41 @@
 import "./task.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useAuthContext } from "../../../../../../contexts/AuthContext";
 import { type Task } from "../../../../../../models/course/Task";
 
 export function Task() {
   const { id, taskId } = useParams();
   const { jwt } = useAuthContext();
+  const navigate = useNavigate();
   const [task, setTask] = useState<Task | null>(null);
 
-  const getTaskInfo = async () => {
-    const response = await axios.get(
-      `http://localhost:3000/task/${taskId}?subjectId=${id}`,
-      {
-        headers: {
-          Authorization: jwt,
-        },
-      }
-    );
+  const getTask = async () => {
+    if (!taskId || !id || !jwt) return;
 
-    setTask(response.data);
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/task/${taskId}?subjectId=${id}`,
+        {
+          headers: {
+            Authorization: jwt,
+          },
+        }
+      );
+      setTask(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        navigate("/error", { state: { code: 404 } });
+      } else {
+        console.error("Error al obtener la tarea:", error);
+      }
+    }
   };
 
   useEffect(() => {
-    getTaskInfo();
-  }, [jwt, id, taskId]);
+    getTask();
+  }, [taskId, id, jwt]);
 
   return (
     <div className="task-page">

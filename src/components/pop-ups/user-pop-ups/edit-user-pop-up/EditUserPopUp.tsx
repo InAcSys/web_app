@@ -41,6 +41,7 @@ export const EditUserPopUp = ({ userId }: Props) => {
   const [rolesList, setRolesList] = useState<Array<string>>([]);
   const [roleOption, setRoleOption] = useState(-1);
   const [imageUrl, setImageUrl] = useState("");
+  const [imageToUpload, setImageToUpload] = useState<File>();
 
   const getUserInfo = async () => {
     if (jwt) {
@@ -79,18 +80,21 @@ export const EditUserPopUp = ({ userId }: Props) => {
   };
 
   const updateUser = async () => {
+    const image = await handleUploadImage();
     const updateUser = {
       firstNames: firstnames ?? user?.firstNames,
       lastNames: lastnames ?? user?.lastNames,
       shortName: shortName ?? user?.shortName,
       ci: ci ?? user?.ci,
       ciType: ciType ?? user?.ciType,
-      imageUrl: imageUrl ?? user?.imageUrl,
+      imageUrl: image ?? user?.imageUrl,
       address: user?.address,
       phoneNumber: user?.phoneNumber,
       email: email ?? user?.email,
       gender: gender ?? user?.gender,
-      birthDate: birthDate?.toISOString().split("T")[0] ?? user?.birthDate,
+      birthDate: birthDate
+        ? new Date(birthDate).toISOString().split("T")[0]
+        : user?.birthDate,
       roleId: roleOption + 1 || user?.roleId,
     };
 
@@ -126,6 +130,29 @@ export const EditUserPopUp = ({ userId }: Props) => {
     }
   };
 
+  const handleUploadImage = async () => {
+    if (!imageToUpload) return;
+
+    const formData = new FormData();
+    formData.append("file", imageToUpload);
+    const response = await axios.post(
+      `http://localhost:3000/files/upload`,
+      formData,
+      {
+        headers: {
+          Authorization: jwt,
+        },
+      }
+    );
+
+    if (response.status === 200 || response.status === 201) {
+      const url = response.data.data.url;
+      return url;
+    }
+
+    return "";
+  };
+
   useEffect(() => {
     setCiType(identifyType[ciTypeOption] ?? "");
   }, [ciTypeOption]);
@@ -158,7 +185,10 @@ export const EditUserPopUp = ({ userId }: Props) => {
       <h3 className="edit-user-pop-up-title">Editar información de usuario</h3>
       <div className="edit-user-pop-up-form">
         <div className="flex-column-center">
-          <UploadProfile imageUrl={imageUrl} />
+          <UploadProfile
+            imageUrl={imageUrl}
+            setImageToUpload={setImageToUpload}
+          />
         </div>
         <Input
           label="Nombres"
