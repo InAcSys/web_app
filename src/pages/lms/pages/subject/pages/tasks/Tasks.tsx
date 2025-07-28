@@ -7,7 +7,8 @@ import { useParams } from "react-router";
 import { useAuthContext } from "../../../../../../contexts/AuthContext";
 import { usePopUpContext } from "../../../../../../contexts/PopUpContext";
 import { CreateTaskPopUp } from "../../../../../../components/pop-ups/course-pop-up/create-task-pop-up/CreateTaskPopUp";
-import "./task.css"
+import "./task.css";
+import { VerifyPermission } from "../../../../../../components/permission/VerifyPermission";
 
 export function Tasks() {
   const { id } = useParams();
@@ -41,7 +42,9 @@ export function Tasks() {
     <div className="tasks-page">
       <div className="tasks-header flex-row-between">
         <h2 className="tasks-title">Tareas</h2>
-        <Button label="Crear una nueva tarea" onClick={handleCreateTask} />
+        <VerifyPermission permission="CREATE_ASSIGNMENTS">
+          <Button label="Crear una nueva tarea" onClick={handleCreateTask} />
+        </VerifyPermission>
       </div>
       <div className="tasks-section flex-column">
         {tasks && tasks.length > 0 ? (

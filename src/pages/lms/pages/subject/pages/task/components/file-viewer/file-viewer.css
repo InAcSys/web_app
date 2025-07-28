@@ -1,0 +1,30 @@
+.file-viewer-component {
+  width: 100%;
+  height: 60px;
+  background-color: var(--backgroud-light-color-light);
+  box-shadow: var(--box-shadow-card);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.file-viewer-info-section {
+  gap: 20px;
+}
+
+.file-viewer-icon {
+  width: 30px;
+  height: 30px;
+}
+
+.file-viewer-name {
+  color: var(--primary-color-normal);
+}
+
+.file-viewer-delete-file {
+  color: var(--foreground-light-color);
+  background-color: var(--error-color);
+  border: none;
+  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+}

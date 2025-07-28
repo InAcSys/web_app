@@ -10,6 +10,7 @@ import axios from "axios";
 import { useAuthContext, usePopUpContext } from "../../../../contexts";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
 import taskSchema from "../../../../validations/task-schema";
+import { MarkdownEditor } from "../../../editors/markdown-editor/MarkdownEditor";
 
 interface Props {
   id: string | undefined;
@@ -81,13 +82,7 @@ export const CreateTaskPopUp = ({ id }: Props) => {
           placeholder="Tarea"
           error={titleError}
         />
-        <TextArea
-          label="Descripción"
-          value={description}
-          onChange={setDescription}
-          placeholder="Ingrese una descripción de la tarea"
-          error={descriptionError}
-        />
+        <MarkdownEditor value={description} setValue={setDescription} />
         <CalendarInput
           label="Fecha de entrega"
           date={dueDate}

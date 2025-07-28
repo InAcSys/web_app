@@ -23,11 +23,11 @@ export const CalendarInput = ({
 }: Props) => {
   const [selectDay, setSelectDay] = useState(0);
   const [selectMonth, setSelectMonth] = useState(0);
-  const [currentYear, setCurrentYear] = useState(0);
   const [selectYear, setSelectYear] = useState(0);
   const [years, setYears] = useState<Array<string>>([]);
   const [currentDate, setCurrentDate] = useState<Date>();
   const [isOpen, setIsOpen] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
   const months = [
     "Enero",
@@ -59,7 +59,6 @@ export const CalendarInput = ({
 
   useEffect(() => {
     const currentDate = new Date();
-    setCurrentYear(currentDate.getFullYear());
     setSelectDay(currentDate.getDate());
     setSelectMonth(currentDate.getMonth());
   }, []);
@@ -73,8 +72,11 @@ export const CalendarInput = ({
 
     const fullYear = parseInt(years[selectYear]);
     const newDate = new Date(fullYear, selectMonth, selectDay);
-    setCurrentDate(newDate);
-    setDate(newDate);
+
+    if (currentDate?.getTime() !== newDate.getTime()) {
+      setCurrentDate(newDate);
+      setDate(newDate);
+    }
   }, [selectDay, selectMonth, selectYear, years]);
 
   const parseDateLocal = (dateString: string): Date => {
@@ -83,30 +85,26 @@ export const CalendarInput = ({
   };
 
   useEffect(() => {
-    if (!date) return;
+    if (!date || years.length === 0 || initialized) return;
 
-    let parsedDate: Date;
-
-    if (date instanceof Date) {
-      parsedDate = date;
-    } else if (typeof date === "string") {
-      parsedDate = parseDateLocal(date);
-    } else {
-      return;
-    }
+    const parsedDate =
+      date instanceof Date ? date : parseDateLocal(date as string);
 
     if (isNaN(parsedDate.getTime())) return;
 
+    const day = parsedDate.getDate();
+    const month = parsedDate.getMonth();
+    const year = parsedDate.getFullYear();
+    const yearIndex = years.findIndex((y) => parseInt(y) === year);
+
+    if (yearIndex === -1) return;
+
+    setSelectDay(day);
+    setSelectMonth(month);
+    setSelectYear(yearIndex);
     setCurrentDate(parsedDate);
-    setSelectDay(parsedDate.getDate());
-    setSelectMonth(parsedDate.getMonth());
-    const yearIndex = years.findIndex(
-      (y) => parseInt(y) === parsedDate.getFullYear()
-    );
-    if (yearIndex !== -1) {
-      setSelectYear(yearIndex);
-    }
-  }, [date, years]);
+    setInitialized(true);
+  }, [date, years, initialized]);
 
   return (
     <div className="calendar-input-section">

@@ -12,7 +12,7 @@ export function AcademicLevels() {
   const { jwt } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
-  const numberItems = ["12", "24", "60", "120"];
+  const numberItems = ["10", "20", "50", "100"];
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(12);
   const [selectPageSize, setSelectPageSize] = useState(0);

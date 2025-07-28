@@ -1,0 +1,15 @@
+services:
+  frontend:
+    build: .
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./:/app
+    environment:
+      - NODE_ENV=development
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+    external: true

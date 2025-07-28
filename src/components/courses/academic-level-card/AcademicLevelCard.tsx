@@ -13,7 +13,7 @@ export const AcademicLevelCard = ({level}: Props) => {
         <b>{level.name}</b>
       </button>
       <div className="academic-level-card-actions-section">
-        <button className="academic-level-card-actions academic-level-card-action-delete flex-column-center"><Trash /></button>
+        {/* <button className="academic-level-card-actions academic-level-card-action-delete flex-column-center"><Trash /></button> */}
       </div>
     </div>
   )

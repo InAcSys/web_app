@@ -128,7 +128,8 @@ export const CreateSubjectPopUp = () => {
     );
 
     if (response.status === 200 || response.status === 201) {
-      const url = response.data.data.url;
+      let url = response.data.data.url;
+      url = url.replace("file-server:8000", "localhost:8002");
       return url;
     }
 
@@ -186,6 +187,13 @@ export const CreateSubjectPopUp = () => {
       </h3>
       <div className="create-subject-pop-up-form">
         <UploadCover imageUrl={imageUrl} setImageToUpload={setImage} />
+        <Dropdown
+          label="Nivel academico"
+          placeholder="Selecciona un nivel academico"
+          options={levelsNames}
+          optionSelected={selectLevel}
+          changeOptionSelected={setSelectLevel}
+        />
         <Input
           label="Nombre de la materia"
           value={name}
@@ -209,13 +217,6 @@ export const CreateSubjectPopUp = () => {
           value={credits}
           onChange={setCredits}
           placeholder="0"
-        />
-        <Dropdown
-          label="Nivel academico"
-          placeholder="Selecciona un nivel academico"
-          options={levelsNames}
-          optionSelected={selectLevel}
-          changeOptionSelected={setSelectLevel}
         />
         <Dropdown
           label="Docente"

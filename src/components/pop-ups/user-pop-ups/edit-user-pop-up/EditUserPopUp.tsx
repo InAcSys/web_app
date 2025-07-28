@@ -146,7 +146,8 @@ export const EditUserPopUp = ({ userId }: Props) => {
     );
 
     if (response.status === 200 || response.status === 201) {
-      const url = response.data.data.url;
+      let url = response.data.data.url;
+      url = url.replace("file-server:8000", "localhost:8002");
       return url;
     }
 

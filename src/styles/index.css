@@ -50,6 +50,7 @@
 body {
   background-color: var(--backgroud-light-color-normal);
   color: var(--foreground-dark-color);
+  max-height: 100dvh;
 }
 
 h1,
@@ -177,6 +178,13 @@ button:disabled {
   justify-content: center;
 }
 
+.flex-row-center-start {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+
 .flex-row-center-end {
   display: flex;
   flex-direction: row;
@@ -222,6 +230,12 @@ button:disabled {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.text-break {
+  overflow-wrap: break-word;
+  white-space: normal;
+  word-break: break-word;
 }
 
 @media (max-width: 800px) {

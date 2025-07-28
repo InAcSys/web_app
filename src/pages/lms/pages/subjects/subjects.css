@@ -2,11 +2,10 @@
   width: 100%;
   height: calc(100vh - 80px);
   display: grid;
-  grid-template-rows: 60px auto 60px;
+  grid-template-rows: 60px auto;
   grid-template-areas:
     "tools"
-    "subjects"
-    "pagination";
+    "subjects";
 }
 
 .lms-course-action-buttons-section {
@@ -17,17 +16,13 @@
 }
 
 .subjects-section {
-  width: 100%;
   gap: 20px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: start;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   grid-area: subjects;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
   padding: 20px 10px;
-  margin: auto;
+  will-change: scroll-position;
 }
 
 .subjects-section > * {

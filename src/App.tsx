@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import { LogIn, Dashboard, RegistrationRoutes } from "./pages";
 import { AuthProvider } from "./contexts/AuthContext";
-import Profile from "./pages/Profile";
+import Profile from "./pages/profile/Profile";
 import Settings from "./pages/settings/Settings";
 import Monitoring from "./pages/monitoring/Monitoring";
 import Calendar from "./pages/calendar/Calendar";

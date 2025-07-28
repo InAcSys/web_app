@@ -1,0 +1,8 @@
+.markdown-editor-option-component {
+  width: 40px;
+  height: 40px;
+  color: var(--secondary-color-normal);
+  background-color: var(--backgroud-light-color-light);
+  border: none;
+  padding: 10px;
+}

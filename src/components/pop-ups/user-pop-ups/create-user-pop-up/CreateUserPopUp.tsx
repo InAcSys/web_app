@@ -23,7 +23,6 @@ export const CreateUserPopUp = () => {
 
   const [firstnames, setFirstnames] = useState("");
   const [lastnames, setLastnames] = useState("");
-  const [shortName, setShortName] = useState("");
   const [ci, setCi] = useState("");
   const [ciType, setCiType] = useState("");
   const [gender, setGender] = useState("");
@@ -68,10 +67,11 @@ export const CreateUserPopUp = () => {
     const birthDateAux = `${birthDate.getFullYear()}-${String(
       birthDate.getMonth() + 1
     ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
+    const shortname = handleCreateShortName();
     const requestBody = {
       firstNames: firstnames,
       lastNames: lastnames,
-      shortName: shortName,
+      shortName: shortname,
       ci: ci,
       ciType: ciType,
       imageUrl: imageUrlParam,
@@ -115,7 +115,8 @@ export const CreateUserPopUp = () => {
     );
 
     if (response.status === 200 || response.status === 201) {
-      const url = response.data.data.url;
+      let url = response.data.data.url;
+      url = url.replace("file-server:8000", "localhost:8002");
       return url;
     }
 
@@ -133,6 +134,12 @@ export const CreateUserPopUp = () => {
     }
 
     await createUser(finalImageUrl);
+  };
+
+  const handleCreateShortName = () => {
+    const first = firstnames.split(" ");
+    const last = lastnames.split(" ");
+    return `${first[0]} ${last[0]}`;
   };
 
   useEffect(() => {
@@ -166,6 +173,14 @@ export const CreateUserPopUp = () => {
             setImageToUpload={setImageToUpload}
           />
         </div>
+        <Dropdown
+          label="Selecciona el rol dentro del sistema"
+          placeholder="Seleccionar rol"
+          isMandatory
+          options={rolesList}
+          optionSelected={roleOption}
+          changeOptionSelected={setRoleOption}
+        />
         <Input
           label="Nombres"
           placeholder="Denis Jorge"
@@ -179,13 +194,6 @@ export const CreateUserPopUp = () => {
           isMandatory
           value={lastnames}
           onChange={setLastnames}
-        />
-        <Input
-          label="Nombre corto"
-          placeholder="Denis Gandarillas"
-          isMandatory
-          value={shortName}
-          onChange={setShortName}
         />
         <Input
           label="Identificación nacional"
@@ -229,14 +237,6 @@ export const CreateUserPopUp = () => {
           setDate={setBirthDate}
           minimunYear={minimumYear}
           maximunYear={maximumYear}
-        />
-        <Dropdown
-          label="Selecciona el rol dentro del sistema"
-          placeholder="Seleccionar rol"
-          isMandatory
-          options={rolesList}
-          optionSelected={roleOption}
-          changeOptionSelected={setRoleOption}
         />
       </div>
       <div className="create-user-pop-up-action-buttons flex-row-between">

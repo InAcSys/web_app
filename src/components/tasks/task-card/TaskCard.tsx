@@ -5,6 +5,7 @@ import { usePopUpContext } from "../../../contexts/PopUpContext";
 import { FailedPopUp } from "../../pop-ups/failed-pop-up/FailedPopUp";
 import { BookText, Check, X } from "lucide-react";
 import { ReactNode, useEffect, useState } from "react";
+import { VerifyPermission } from "../../permission/VerifyPermission";
 
 interface Props {
   task: Task;
@@ -74,13 +75,15 @@ export const TaskCard = ({ task }: Props) => {
         </h3>
         <p className="task-card-due-date complete-left">{dueDate}</p>
       </div>
-      <div className="task-card-time">
+      <VerifyPermission permission="SUBMIT_ASSIGNMENT">
+        <div className="task-card-time">
         <p
           className={`task-card-time-description flex-row-center ${taskStatus}`}
         >
           {status.get(taskStatus)}
         </p>
       </div>
+      </VerifyPermission>
     </button>
   );
 };
