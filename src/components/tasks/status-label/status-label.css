@@ -1,0 +1,22 @@
+.status-label-task-component {
+  width: auto;
+  padding: 5px 10px;
+  border-radius: 2rem;
+  gap: 10px;
+  font-size: var(--font-size-notes);
+}
+
+.status-label-task-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.status-label-task-component.submitted {
+  color: var(--success-color);
+  background-color: #00c95050;
+}
+
+.status-label-task-component.expired {
+  color: var(--error-color);
+  background-color: #fb2c3650;
+}

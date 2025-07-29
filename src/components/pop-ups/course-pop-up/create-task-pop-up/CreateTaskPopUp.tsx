@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Button } from "../../../buttons";
 import { Input } from "../../../inputs";
 import { CloseButton } from "../../components/close-button/CloseButton";
-import { TextArea } from "../../../textarea/TextArea";
 import { CalendarInput } from "../../../calendar/input/CalendarInput";
 import dayjs from "dayjs";
 import { FailedPopUp } from "../../failed-pop-up/FailedPopUp";
@@ -37,6 +36,7 @@ export const CreateTaskPopUp = ({ id }: Props) => {
     }
 
     const result = taskSchema.safeParse({ title, description, dueDate });
+
     if (!result.success) {
       const errors = result.error.flatten().fieldErrors;
 
@@ -45,6 +45,8 @@ export const CreateTaskPopUp = ({ id }: Props) => {
       setDueDateError(errors.dueDate?.[0] ?? "");
       return;
     }
+
+    console.log("Hi 3");
 
     setTitleError("");
     setDescriptionError("");
@@ -65,6 +67,7 @@ export const CreateTaskPopUp = ({ id }: Props) => {
         },
       }
     );
+    console.log(response);
     if (response.status === 200 || response.status === 201) {
       setPopUp(<SuccessPopUp message="Tarea asignada correctamente" />);
     }

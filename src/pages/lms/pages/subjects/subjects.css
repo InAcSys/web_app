@@ -16,13 +16,15 @@
 }
 
 .subjects-section {
-  gap: 20px;
+  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 420px));
   grid-area: subjects;
+  gap: 20px;
   overflow: auto;
   padding: 20px 10px;
   will-change: scroll-position;
+  margin: auto;
 }
 
 .subjects-section > * {

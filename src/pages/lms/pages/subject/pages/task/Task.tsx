@@ -9,6 +9,7 @@ import { marked } from "marked";
 import { UploadFiles } from "./components/upload-files/UploadFiles";
 import { VerifyPermission } from "../../../../../../components/permission/VerifyPermission";
 import { Button } from "../../../../../../components";
+import { StatusLabel } from "../../../../../../components/tasks/status-label/StatusLabel";
 
 export function Task() {
   const { id, taskId } = useParams();
@@ -16,6 +17,7 @@ export function Task() {
   const navigate = useNavigate();
   const [task, setTask] = useState<Task | null>(null);
   const [files, setFiles] = useState<Array<File>>([]);
+  const [isDelivered, setIsDelivered] = useState(false);
 
   const handleSubmit = async () => {
     if (!taskId && files.length === 0) return;
@@ -34,6 +36,8 @@ export function Task() {
         },
       }
     );
+
+    setIsDelivered(response.status === 200);
   };
 
   const uploadFiles = async () => {
@@ -92,7 +96,12 @@ export function Task() {
       {task && (
         <>
           <div className="task-header-information">
-            <h1>{task.title}</h1>
+            <div className="task-first-section flex-row-between">
+              <h1>{task.title}</h1>
+              <VerifyPermission permission="SUBMIT_ASSIGNMENT">
+                <StatusLabel setIsDelivered={setIsDelivered} taskId={taskId} />
+              </VerifyPermission>
+            </div>
             <p className="due-date-task-text">
               {(() => {
                 const date = new Date(task.dueDate);
@@ -111,9 +120,12 @@ export function Task() {
           <div className="task-actions-section">
             <VerifyPermission permission="SUBMIT_ASSIGNMENT">
               <UploadFiles
+                taskId={taskId ?? ""}
                 files={files}
                 setFiles={setFiles}
                 handleUpload={handleSubmit}
+                isDelivered={isDelivered}
+                setIsDelivered={setIsDelivered}
               />
               <VerifyPermission permission="REVIEW_ASSIGNMENT">
                 <Button label="Revisar entregas" />

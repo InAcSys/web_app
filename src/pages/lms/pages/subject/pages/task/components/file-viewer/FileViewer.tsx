@@ -6,9 +6,10 @@ import { Trash } from "lucide-react";
 interface Props {
   file: File;
   removeFileByName: (fileName: string) => void;
+  isDelivered: boolean;
 }
 
-export const FileViewer = ({ file, removeFileByName }: Props) => {
+export const FileViewer = ({ file, removeFileByName, isDelivered }: Props) => {
   const [icon, setIcon] = useState("");
 
   useEffect(() => {
@@ -26,12 +27,14 @@ export const FileViewer = ({ file, removeFileByName }: Props) => {
         <p className="file-viewer-name">{file.name}</p>
       </div>
       <div className="file-viewer-actions-section">
-        <button
-          className="file-viewer-delete-file flex-row-center"
-          onClick={() => removeFileByName(file.name)}
-        >
-          <Trash />
-        </button>
+        {!isDelivered && (
+          <button
+            className="file-viewer-delete-file flex-row-center"
+            onClick={() => removeFileByName(file.name)}
+          >
+            <Trash />
+          </button>
+        )}
       </div>
     </div>
   );
