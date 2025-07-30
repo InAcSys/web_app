@@ -11,6 +11,8 @@ import { useNavigate } from "react-router";
 import Cookies from "js-cookie";
 import logInSchema from "../validations/log-in-schema";
 import { Permissions } from "../models/menu/Menu";
+import { SessionData } from "../models/session/SessionData";
+import axios from "axios";
 
 interface Props {
   children: ReactNode;
@@ -18,6 +20,7 @@ interface Props {
 
 interface Type {
   jwt: string | null;
+  sessionData: SessionData | null;
   passwordError: string;
   emailError: string;
   formError: string;
@@ -37,6 +40,7 @@ export const AuthProvider = ({ children }: Props) => {
   const [permissions, setPermissions] = useState<Permissions | undefined>(
     undefined
   );
+  const [sessionData, setSessionData] = useState<SessionData | null>(null);
 
   const navigate = useNavigate();
 
@@ -152,12 +156,28 @@ export const AuthProvider = ({ children }: Props) => {
     return hasPermissionRecursive(permissions, permissionCode);
   };
 
+  const getSessionData = async () => {
+    if (!jwt) return;
+
+    const userData = await axios.get("http://localhost:3000/my-info", {
+      headers: {
+        Authorization: jwt,
+      },
+    });
+
+    setSessionData(userData.data as SessionData);
+  };
+
   useEffect(() => {
     getToken();
   }, []);
 
   useEffect(() => {
     getPermissions();
+  }, [jwt]);
+
+  useEffect(() => {
+    getSessionData();
   }, [jwt]);
 
   const objValue = useMemo(
@@ -170,8 +190,9 @@ export const AuthProvider = ({ children }: Props) => {
       permissions,
       logOut,
       verifyPermission,
+      sessionData,
     }),
-    [jwt, emailError, passwordError, formError, permissions]
+    [jwt, emailError, passwordError, formError, permissions, sessionData]
   );
 
   return (

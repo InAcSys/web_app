@@ -1,8 +1,10 @@
 .subject-card-container {
   max-width: 400px;
   width: 100%;
+  height: 300px;
   box-shadow: var(--box-shadow-card);
   border-radius: 0.6rem;
+  overflow: hidden;
 }
 
 .subject-card-cover {

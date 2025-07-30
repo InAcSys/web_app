@@ -8,7 +8,7 @@ export default function Dashboard() {
     document.title = `Dashboard - ${NAME_PAGE}`;
   }, []);
   return (
-    <GeneralLayout header={<WelcomeHeader shortname="Denis Gandarillas" role="Director" />}>
+    <GeneralLayout header={<WelcomeHeader />}>
       <h2>Bienvenido :D</h2>
     </GeneralLayout>
   )

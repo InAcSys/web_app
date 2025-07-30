@@ -1,0 +1,18 @@
+.text-style-component {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.text-style-button {
+  background-color: var(--backgroud-light-color-light);
+  color: var(--secondary-color-normal);
+  border: none;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+}
+
+.text-style-button.is-clicked {
+  background-color: var(--secondary-color-normal);
+  color: var(--foreground-light-color);
+}

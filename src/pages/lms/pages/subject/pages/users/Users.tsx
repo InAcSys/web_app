@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { EnrollStudentsPopUp } from "../../../../../../components/pop-ups/lms-pop-up/subject-pop-up/enroll-students-pop-up/EnrollStudentsPopUp";
 import { StudentCard } from "../../../../../../components/users/student-card/StudentCard";
+import { VerifyPermission } from "../../../../../../components/permission/VerifyPermission";
 
 export const Users = () => {
   const { jwt } = useAuthContext();
@@ -46,7 +47,9 @@ export const Users = () => {
     <div className="users-page">
       <div className="users-header flex-row-between">
         <h2 className="users-lms-title">Estudiantes</h2>
-        <Button label="Matricular estudiante" onClick={handleEnroll} />
+        <VerifyPermission permission="ENROLL_STUDENTS">
+          <Button label="Matricular estudiante" onClick={handleEnroll} />
+        </VerifyPermission>
       </div>
       <div className="users-list-section">
         {students && students.length > 0 ? (

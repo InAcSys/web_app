@@ -1,7 +1,7 @@
 .home-cover-section {
   width: 100%;
   min-height: 100vh;
-  background-image: url(../assets/backgrounds/light.png);
+  background-image: url(../../../../assets/backgrounds/light.png);
   background-position: center;
   background-size: cover;
   gap: 5rem;

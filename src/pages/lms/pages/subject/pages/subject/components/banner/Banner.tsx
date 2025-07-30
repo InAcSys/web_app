@@ -11,7 +11,11 @@ interface Props {
 export const Banner = ({ teacher, subject }: Props) => {
   return (
     <div className="lms-subject-header">
-      <img src={DefaultBanner} alt="" className="subject-banner" />
+      <img
+        src={subject?.imageUrl ?? DefaultBanner}
+        alt=""
+        className="subject-banner"
+      />
       <div className="subject-info-section">
         <h2 className="subject-name-text complete-left">
           {subject?.name ?? "Materia"}

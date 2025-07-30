@@ -1,7 +1,7 @@
-import sapiensLogo from "../assets/sapiens-logo.png";
-import { Button } from "../components";
-import { useAuthContext } from "../contexts/AuthContext";
-import "../styles/home.css";
+import sapiensLogo from "../../../../assets/sapiens-logo.png";
+import { Button } from "../../../../components";
+import { useAuthContext } from "../../../../contexts/AuthContext";
+import "./home.css";
 import { useNavigate } from "react-router";
 
 export default function Home() {

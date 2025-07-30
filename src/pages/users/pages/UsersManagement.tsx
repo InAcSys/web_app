@@ -15,12 +15,12 @@ export default function UsersManagement() {
   const { jwt } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
-  const numberItems = ["12", "24", "60", "120"];
+  const numberItems = ["10", "20", "50", "100"];
 
   const [searchValue, setSearchValue] = useState("");
   const [users, setUsers] = useState<Array<User>>([]);
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(12);
+  const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
   const [roles, setRoles] = useState<Map<number, string>>(new Map());
@@ -69,6 +69,7 @@ export default function UsersManagement() {
 
   const handleSearchUsers = async () => {
     if (jwt) {
+      setPageNumber(1)
       try {
         const response = await axios.get(
           `http://localhost:3000/search?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${searchValue}`,

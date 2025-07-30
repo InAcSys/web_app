@@ -1,0 +1,30 @@
+.academic-level-card-component {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--backgroud-light-color-light);
+  border-radius: .6rem;
+  box-shadow: var(--box-shadow-card);
+}
+
+.academic-level-name-section {
+  color: var(--primary-color-normal);
+  border: none;
+  background-color: transparent;
+}
+
+.academic-level-name-section > b {
+  font-size: var(--font-size-heading-2);
+  width: 100%;
+}
+
+.academic-level-card-actions {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  border: none;
+}
+
+.academic-level-card-action-delete {
+  background-color: var(--error-color);
+  color: var(--backgroud-light-color-light);
+}

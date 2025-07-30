@@ -1,0 +1,49 @@
+.academic-levels-page {
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: grid;
+  grid-template-rows: 60px auto 60px;
+  grid-template-areas: 
+  "tools"
+  "academic-levels"
+  "pagination"
+  ;
+}
+
+.academic-levels-tools-section {
+  width: 100%;
+  padding: 10px;
+  grid-area: tools;
+  gap: 20px;
+}
+
+.academic-levels-container {
+  width: 100%;
+  gap: 10px;
+  grid-area: academic-levels;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 20px 10px;
+}
+
+.academic-levels-container > * {
+  box-sizing: border-box;
+}
+
+.academic-levels-pagination-section {
+  width: 100%;
+  gap: 10px;
+  grid-area: pagination;
+}
+
+.academic-levels-pagination-section > .dropdown-component {
+  width: 80px;
+}
+
+.academic-levels-pagination-page-selector-section {
+  gap: 10px;
+}
+
+.academic-levels-pagination-page-selector-text {
+  color: var(--secondary-color-inactive);
+}

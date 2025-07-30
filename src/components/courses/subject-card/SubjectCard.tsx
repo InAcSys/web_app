@@ -13,9 +13,9 @@ interface Props {
 
 export const SubjectCard = ({ subject }: Props) => {
   const navigate = useNavigate();
-  const {jwt} = useAuthContext()
+  const { jwt } = useAuthContext();
 
-  const [teacher, setTeacher] = useState<User>()
+  const [teacher, setTeacher] = useState<User>();
 
   const handleGoSubject = () => {
     navigate(`/lms/subject/${subject.id}`);
@@ -27,25 +27,25 @@ export const SubjectCard = ({ subject }: Props) => {
         `http://localhost:3000/user/${subject.teacherId}`,
         {
           headers: {
-            "Authorization": jwt
-          }
+            Authorization: jwt,
+          },
         }
       );
 
-      setTeacher(response.data.data)
+      setTeacher(response.data.data);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    handleGetTeacherInfo()
-  }, [jwt, subject])
+    handleGetTeacherInfo();
+  }, [jwt, subject]);
 
   return (
     <div className="subject-card-container">
       <img
-        src={subjectCover}
+        src={subject.imageUrl ?? subjectCover}
         alt="Subject cover"
         className="subject-card-cover"
       />
@@ -53,9 +53,7 @@ export const SubjectCard = ({ subject }: Props) => {
         <button className="subject-name-text" onClick={handleGoSubject}>
           <b>{subject.name}</b>
         </button>
-        <p className="subject-card-teacher-name">
-          {teacher?.shortName}
-        </p>
+        <p className="subject-card-teacher-name">{teacher?.shortName}</p>
       </div>
     </div>
   );

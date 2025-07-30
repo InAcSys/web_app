@@ -22,12 +22,13 @@ export const CalendarBody = ({
 
   const handleDay = (day: number) => {
     setDay(day);
-    handleOpen()
+    handleOpen();
   };
 
   const getCalendarMatrix = (month: number, year: number) => {
-    const totalDays = new Date(year, month + 1, 0).getDate();
-    const firstDayIndex = new Date(year, month, 1).getDay();
+    const currentDate = new Date(year, month + 1, 0);
+    const totalDays = currentDate.getDate();
+    const firstDayIndex = new Date(year, month + 1, 1).getDay() - 1;
 
     const calendar: (number | null)[] = [];
 
@@ -64,7 +65,7 @@ export const CalendarBody = ({
             }`}
             key={index}
             onClick={() => {
-              handleDay(day)
+              handleDay(day);
             }}
           >
             {day}

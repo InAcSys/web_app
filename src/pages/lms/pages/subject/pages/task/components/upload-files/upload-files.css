@@ -1,0 +1,20 @@
+.upload-files-task-component {
+  padding: 20px 0;
+}
+
+.upload-files-viewer-section {
+  gap: 10px;
+}
+
+.upload-files-actions-section {
+  padding: 20px 0;
+  gap: 20px;
+}
+
+.upload-files-attach-files {
+  padding: 10px;
+  gap: 10px;
+  color: var(--primary-color-normal);
+  border: none;
+  background-color: transparent;
+}

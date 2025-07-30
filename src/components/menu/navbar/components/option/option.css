@@ -1,0 +1,12 @@
+.nav-bar-option-component {
+  padding: 10px 20px;
+  border: none;
+  background-color: transparent;
+  border-radius: 1rem;
+  color: var(--primary-color-normal);
+}
+
+.nav-bar-option-component.selected {
+  background-color: var(--backgroud-light-color-normal);
+  color: var(--secondary-color-normal);
+}

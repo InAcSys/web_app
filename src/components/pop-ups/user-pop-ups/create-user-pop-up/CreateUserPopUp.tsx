@@ -9,6 +9,7 @@ import axios from "axios";
 import { useAuthContext } from "../../../../contexts/AuthContext";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
 import { CloseButton } from "../../components/close-button/CloseButton";
+import { UploadProfile } from "../../../images/profiles/upload-profile/UploadProfile";
 
 export const CreateUserPopUp = () => {
   const { setPopUp, closePopUp } = usePopUpContext();
@@ -22,7 +23,6 @@ export const CreateUserPopUp = () => {
 
   const [firstnames, setFirstnames] = useState("");
   const [lastnames, setLastnames] = useState("");
-  const [shortName, setShortName] = useState("");
   const [ci, setCi] = useState("");
   const [ciType, setCiType] = useState("");
   const [gender, setGender] = useState("");
@@ -34,6 +34,8 @@ export const CreateUserPopUp = () => {
   const [roles, setRoles] = useState<Map<number, string>>();
   const [rolesList, setRolesList] = useState<Array<string>>([]);
   const [roleOption, setRoleOption] = useState(-1);
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageToUpload, setImageToUpload] = useState<File>();
 
   const getRoles = async () => {
     try {
@@ -60,18 +62,19 @@ export const CreateUserPopUp = () => {
     }
   };
 
-  const createUser = async () => {
+  const createUser = async (imageUrlParam: string) => {
     if (!birthDate) return;
     const birthDateAux = `${birthDate.getFullYear()}-${String(
       birthDate.getMonth() + 1
     ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
+    const shortname = handleCreateShortName();
     const requestBody = {
       firstNames: firstnames,
       lastNames: lastnames,
-      shortName: shortName,
+      shortName: shortname,
       ci: ci,
       ciType: ciType,
-      imageUrl: "",
+      imageUrl: imageUrlParam,
       address: "",
       phoneNumber: "",
       email: email,
@@ -86,7 +89,7 @@ export const CreateUserPopUp = () => {
       {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": jwt,
+          Authorization: jwt,
         },
       }
     );
@@ -94,6 +97,49 @@ export const CreateUserPopUp = () => {
     if (result) {
       setPopUp(<SuccessPopUp message="Usuario creado con éxito" />);
     }
+  };
+
+  const handleUploadImage = async () => {
+    if (!imageToUpload) return;
+
+    const formData = new FormData();
+    formData.append("file", imageToUpload);
+    const response = await axios.post(
+      `http://localhost:3000/files/upload`,
+      formData,
+      {
+        headers: {
+          Authorization: jwt,
+        },
+      }
+    );
+
+    if (response.status === 200 || response.status === 201) {
+      let url = response.data.data.url;
+      url = url.replace("file-server:8000", "localhost:8002");
+      return url;
+    }
+
+    return "";
+  };
+
+  const handleCreateUser = async () => {
+    let finalImageUrl = "";
+    if (imageToUpload) {
+      const uploadedUrl = await handleUploadImage();
+      if (uploadedUrl) {
+        setImageUrl(uploadedUrl);
+        finalImageUrl = uploadedUrl;
+      }
+    }
+
+    await createUser(finalImageUrl);
+  };
+
+  const handleCreateShortName = () => {
+    const first = firstnames.split(" ");
+    const last = lastnames.split(" ");
+    return `${first[0]} ${last[0]}`;
   };
 
   useEffect(() => {
@@ -121,6 +167,20 @@ export const CreateUserPopUp = () => {
         Crear nuevo usuario
       </h3>
       <div className="create-user-pop-up-form">
+        <div className="flex-column-center">
+          <UploadProfile
+            imageUrl={imageUrl}
+            setImageToUpload={setImageToUpload}
+          />
+        </div>
+        <Dropdown
+          label="Selecciona el rol dentro del sistema"
+          placeholder="Seleccionar rol"
+          isMandatory
+          options={rolesList}
+          optionSelected={roleOption}
+          changeOptionSelected={setRoleOption}
+        />
         <Input
           label="Nombres"
           placeholder="Denis Jorge"
@@ -134,13 +194,6 @@ export const CreateUserPopUp = () => {
           isMandatory
           value={lastnames}
           onChange={setLastnames}
-        />
-        <Input
-          label="Nombre corto"
-          placeholder="Denis Gandarillas"
-          isMandatory
-          value={shortName}
-          onChange={setShortName}
         />
         <Input
           label="Identificación nacional"
@@ -185,17 +238,9 @@ export const CreateUserPopUp = () => {
           minimunYear={minimumYear}
           maximunYear={maximumYear}
         />
-        <Dropdown
-          label="Selecciona el rol dentro del sistema"
-          placeholder="Seleccionar rol"
-          isMandatory
-          options={rolesList}
-          optionSelected={roleOption}
-          changeOptionSelected={setRoleOption}
-        />
       </div>
       <div className="create-user-pop-up-action-buttons flex-row-between">
-        <Button label="Crear usuario" onClick={createUser} />
+        <Button label="Crear usuario" onClick={handleCreateUser} />
         <Button
           styleVariant="secondary"
           label="Cancelar"
