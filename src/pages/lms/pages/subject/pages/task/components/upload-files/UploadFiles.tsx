@@ -148,7 +148,15 @@ export const UploadFiles = ({
         >
           <Paperclip /> Adjuntar
         </button>
-        <Button label="Entregar" onClick={handleUpload} />
+        {isDelivered ? (
+          <Button
+            label="Modificar entrega"
+            onClick={() => setIsDelivered(false)}
+            styleVariant="secondary"
+          />
+        ) : (
+          <Button label="Entregar" onClick={handleUpload} />
+        )}
       </div>
     </div>
   );
