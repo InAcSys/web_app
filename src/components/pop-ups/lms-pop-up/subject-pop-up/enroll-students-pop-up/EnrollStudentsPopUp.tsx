@@ -24,7 +24,6 @@ export const EnrollStudentsPopUp = ({
 
   const [selectStudents, setSelectStudents] = useState<User[]>([]);
   const [unenrollStudents, setUnenrollStudents] = useState<User[]>([]);
-  const [students, setStudents] = useState<User[]>([]);
   const [showStudents, setShowStudents] = useState<User[]>([]);
   const [search, setSearch] = useState("");
 
@@ -46,11 +45,11 @@ export const EnrollStudentsPopUp = ({
           (student) => !enrollmentStudents.includes(student.id)
         );
 
-        setStudents(data);
         setSelectStudents(selected);
         setShowStudents(notSelected);
       } catch (error) {
         console.error("Error al obtener estudiantes:", error);
+        setPopUp(<FailedPopUp message="Hubo un error. Intentar más tarde" />);
       }
     }
   };
@@ -133,6 +132,7 @@ export const EnrollStudentsPopUp = ({
         );
       }
     } catch (error) {
+      console.error(error);
       setPopUp(
         <FailedPopUp message="Error al procesar la matriculación. Por favor, inténtalo de nuevo." />
       );

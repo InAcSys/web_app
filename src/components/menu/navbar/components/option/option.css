@@ -7,6 +7,6 @@
 }
 
 .nav-bar-option-component.selected {
-  background-color: var(--backgroud-light-color-normal);
+  background-color: var(--background-light-color-normal);
   color: var(--secondary-color-normal);
 }

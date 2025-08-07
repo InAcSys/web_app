@@ -7,7 +7,7 @@
   width: 100%;
   color: var(--secondary-color-normal);
   border: 1px solid var(--primary-color-inactive);
-  background-color: var(--backgroud-light-color-normal);
+  background-color: var(--background-light-color-normal);
   border-radius: 10px;
   padding: 10px;
 }

@@ -1,6 +1,6 @@
 .user-card-container {
   width: 100%;
-  background-color: var(--backgroud-light-color-light);
+  background-color: var(--background-light-color-light);
   border-radius: 10px;
   box-shadow: var(--box-shadow-card);
   padding: 10px 20px;

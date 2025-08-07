@@ -46,8 +46,6 @@ export const CreateTaskPopUp = ({ id }: Props) => {
       return;
     }
 
-    console.log("Hi 3");
-
     setTitleError("");
     setDescriptionError("");
     setDueDateError("");
@@ -67,7 +65,7 @@ export const CreateTaskPopUp = ({ id }: Props) => {
         },
       }
     );
-    console.log(response);
+
     if (response.status === 200 || response.status === 201) {
       setPopUp(<SuccessPopUp message="Tarea asignada correctamente" />);
     }

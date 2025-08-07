@@ -1,0 +1,21 @@
+.register-attendance-pop-up {
+  display: grid;
+  grid-template-rows: 40px auto 60px;
+  gap: 10px;
+  height: 100%;
+}
+
+.register-attendance-header {
+  width: 100%;
+  padding: 10px;
+}
+
+.register-attendance-body {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding: 10px 20px;
+}
+
+.register-attendance-actions-section {
+}

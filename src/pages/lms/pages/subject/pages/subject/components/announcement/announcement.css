@@ -1,7 +1,7 @@
 .announcement-component {
   min-width: 100%;
   max-width: 100%;
-  background-color: var(--backgroud-light-color-light);
+  background-color: var(--background-light-color-light);
   border-radius: 1rem;
   box-shadow: var(--box-shadow-card);
   padding: 20px;

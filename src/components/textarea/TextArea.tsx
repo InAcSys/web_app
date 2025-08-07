@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const TextArea = ({
-  label = "Label",
+  label = "",
   onChange,
   value,
   placeholder = "Placeholder",

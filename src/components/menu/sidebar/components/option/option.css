@@ -9,11 +9,11 @@
 }
 
 .option-side-bar-menu-section.selected {
-  background-color: var(--backgroud-light-color-dark);
+  background-color: var(--background-light-color-dark);
 }
 
 .option-side-bar-menu-section:hover {
-  background-color: var(--backgroud-light-color-dark);
+  background-color: var(--background-light-color-dark);
 }
 
 .option-side-bar-menu-icon {

@@ -1,7 +1,7 @@
 .task-card-container {
   width: 100%;
   min-height: 80px;
-  background-color: var(--backgroud-light-color-light);
+  background-color: var(--background-light-color-light);
   box-shadow: var(--box-shadow-card);
   border-radius: 0.5rem;
   padding: 10px;
@@ -25,7 +25,7 @@
   height: 40px;
   background-color: var(--secondary-color-normal);
   border-radius: 50%;
-  color: var(--backgroud-light-color-normal);
+  color: var(--background-light-color-normal);
 }
 
 .task-card-title {

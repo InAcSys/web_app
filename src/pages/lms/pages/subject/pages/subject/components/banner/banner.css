@@ -1,6 +1,6 @@
 .lms-subject-header {
   width: 100%;
-  background-color: var(--backgroud-light-color-light);
+  background-color: var(--background-light-color-light);
   box-shadow: var(--box-shadow-card);
   border-radius: 1rem;
 }

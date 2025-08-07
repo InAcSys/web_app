@@ -1,7 +1,7 @@
 .academic-level-card-component {
   width: 100%;
   padding: 10px;
-  background-color: var(--backgroud-light-color-light);
+  background-color: var(--background-light-color-light);
   border-radius: .6rem;
   box-shadow: var(--box-shadow-card);
 }
@@ -26,5 +26,5 @@
 
 .academic-level-card-action-delete {
   background-color: var(--error-color);
-  color: var(--backgroud-light-color-light);
+  color: var(--background-light-color-light);
 }

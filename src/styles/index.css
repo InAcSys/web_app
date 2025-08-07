@@ -9,13 +9,13 @@
   --secondary-color-hover: #f54a00;
   --secondary-color-inactive: #ff8904;
 
-  --backgroud-light-color-normal: #f3f4f6;
-  --backgroud-light-color-dark: #e5e7eb;
-  --backgroud-light-color-light: #f9fafb;
+  --background-light-color-normal: #f3f4f6;
+  --background-light-color-dark: #e5e7eb;
+  --background-light-color-light: #f9fafb;
 
-  --backgroud-dark-color-normal: #101828;
-  --backgroud-dark-color-dark: #030712;
-  --backgroud-dark-color-light: #1e2939;
+  --background-dark-color-normal: #101828;
+  --background-dark-color-dark: #030712;
+  --background-dark-color-light: #1e2939;
 
   --foreground-light-color: #fff;
   --foreground-dark-color: #000;
@@ -44,11 +44,11 @@
 
 ::selection {
   background-color: var(--secondary-color-normal);
-  color: var(--backgroud-light-color-normal);
+  color: var(--background-light-color-normal);
 }
 
 body {
-  background-color: var(--backgroud-light-color-normal);
+  background-color: var(--background-light-color-normal);
   color: var(--foreground-dark-color);
   max-height: 100dvh;
 }
@@ -150,6 +150,12 @@ button:disabled {
   flex-direction: column;
 }
 
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+
 .flex-column-center {
   display: flex;
   flex-direction: column;
@@ -216,7 +222,7 @@ button:disabled {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--backgroud-light-color-normal);
+  background-color: var(--background-light-color-normal);
   max-width: 800px;
   max-height: 800px;
   padding: 20px;
