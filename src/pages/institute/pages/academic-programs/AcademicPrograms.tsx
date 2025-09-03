@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import { Button, Dropdown, NumberInput } from "../../../../components";
 import { VerifyPermission } from "../../../../components/permission/VerifyPermission";
 import { useAuthContext, usePopUpContext } from "../../../../contexts";
-import "./academic-levels.css";
+import "./academic-programs.css";
+import { AcademicProgram } from "../../../../models/course/AcademicProgram";
 import axios from "axios";
-import { AcademicLevel } from "../../../../models/course/AcademicLevel";
-import { AcademicLevelCard } from "../../../../components/courses/academic-level-card/AcademicLevelCard";
-import { CreateAcademicLevelPopUp } from "../../../../components/pop-ups/course-pop-up/create-academic-level-pop-up/CreateAcademicLevelPopUp";
+import { AcademicProgramCard } from "../../../../components/courses/academic-program-card/AcademicProgramCard";
+import { CreateAcademicProgramPopUp } from "../../../../components/pop-ups/course-pop-up/create-academic-program-pop-up/CreateAcademicProgramPopUp";
 
-export function AcademicLevels() {
+export function AcademicPrograms() {
   const API_URL = "http://127.0.0.1:8000/api/";
 
   const { sessionData } = useAuthContext();
@@ -19,31 +19,33 @@ export function AcademicLevels() {
   const [pageSize, setPageSize] = useState(12);
   const [selectPageSize, setSelectPageSize] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [levels, setLevels] = useState<Array<AcademicLevel>>([]);
+  const [programs, setPrograms] = useState<Array<AcademicProgram>>()
 
-  const handleAddLevel = () => setPopUp(<CreateAcademicLevelPopUp />);
+  const handleAddProgram = () => setPopUp(<CreateAcademicProgramPopUp />);
 
-  const getLevels = async () => {
+  const getPrograms = async () => {
     if (!sessionData) return;
     const response = await axios.get(
-      `${API_URL}courses/levels?page=${pageNumber}&size=${pageSize}&filters[tenant_id]=${sessionData.user.tenant_id}`,
+      `${API_URL}courses/programs?page=${pageNumber}&size=${pageSize}&filters[tenant_id]=${sessionData.user.tenant_id}`,
       {
         withCredentials: true,
       }
     );
+
+    console.log(response.data.data)
     const data = response.data;
     return {
-      items: data.data,
-      pageNumber: data.current_page,
-      pageSize: data.per_page,
-      total: data.total,
-    };
+        items: data.data,
+        pageNumber: data.current_page,
+        pageSize: data.per_page,
+        total: data.total,
+      };
   };
 
-  const fetchLevels = async () => {
-    let result = await getLevels();
+  const fetchPrograms = async () => {
+    let result = await getPrograms();
     if (result) {
-      setLevels(result.items);
+      setPrograms(result.items);
       setPageNumber(result.pageNumber);
       setPageSize(result.pageSize);
       setTotalPages(result.total);
@@ -51,23 +53,23 @@ export function AcademicLevels() {
   };
 
   useEffect(() => {
-    fetchLevels();
+    fetchPrograms();
   }, [sessionData, pageNumber, pageSize]);
 
   return (
-    <div className="academic-levels-page page">
-      <div className="academic-leves-tools-section flex-row-center-end">
-        <VerifyPermission permission="CREATE_ACADEMIC_LEVELS">
-          <Button label="Añadir nivel" onClick={handleAddLevel} />
+    <div className="academic-programs-page page">
+      <div className="academic-programs-tools-section flex-row-center-end">
+        <VerifyPermission permission="CREATE_ACADEMIC_PROGRAMS">
+          <Button label="Añadir programa" onClick={handleAddProgram} />
         </VerifyPermission>
       </div>
       <div className="academic-levels-container flex-column">
-        {levels && levels.length > 0 ? (
-          levels.map((level) => (
-            <AcademicLevelCard key={level.id} level={level} />
+        {programs && programs.length > 0 ? (
+          programs.map((program) => (
+            <AcademicProgramCard key={program.id} program={program} />
           ))
         ) : (
-          <p>No hay niveles academicos</p>
+          <p>No hay programas academicos</p>
         )}
       </div>
       <div className="academic-levels-pagination-section flex-row-center-end">

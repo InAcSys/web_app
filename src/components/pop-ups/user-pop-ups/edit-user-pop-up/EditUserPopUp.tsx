@@ -11,18 +11,20 @@ import { CalendarInput } from "../../../calendar/input/CalendarInput";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
 import { User } from "../../../../models/user/User";
 import { UploadProfile } from "../../../images/profiles/upload-profile/UploadProfile";
+import { Role } from "../../../../models/role/Role";
 
 interface Props {
   userId: string;
 }
 
 export const EditUserPopUp = ({ userId }: Props) => {
-  const { jwt } = useAuthContext();
+  const API_URL = "http://127.0.0.1:8000/api/";
+
+  const { sessionData } = useAuthContext();
   const { setPopUp, closePopUp } = usePopUpContext();
   const [user, setUser] = useState<User>();
 
   const currentDate = new Date();
-  const identifyType = ["Cédula de identidad", "Pasaporte"];
   const genders = ["Masculino", "Femenino"];
   const [minimumYear] = useState(currentDate.getFullYear() - 100);
   const [maximumYear] = useState(currentDate.getFullYear() - 3);
@@ -31,35 +33,32 @@ export const EditUserPopUp = ({ userId }: Props) => {
   const [lastnames, setLastnames] = useState("");
   const [shortName, setShortName] = useState("");
   const [ci, setCi] = useState("");
-  const [ciType, setCiType] = useState("");
   const [gender, setGender] = useState("");
-  const [ciTypeOption, setCITypeOption] = useState(-1);
   const [genderOption, setGenderOption] = useState(-1);
   const [email, setEmail] = useState("");
   const [birthDate, setBirthDate] = useState<Date>();
-  const [roles, setRoles] = useState<Map<number, string>>();
+  const [roles, setRoles] = useState<Array<Role>>([]);
   const [rolesList, setRolesList] = useState<Array<string>>([]);
   const [roleOption, setRoleOption] = useState(-1);
   const [imageUrl, setImageUrl] = useState("");
   const [imageToUpload, setImageToUpload] = useState<File>();
 
   const getUserInfo = async () => {
-    if (jwt) {
-      const response = await axios.get(`http://localhost:3000/user/${userId}`, {
-        headers: {
-          Authorization: jwt,
-        },
-      });
-      setUser(response.data.data);
+    if (sessionData) {
+      const response = await axios.get(
+        `${API_URL}users/by?column=id&value=${userId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setUser(response.data);
     }
   };
 
   const getRoles = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/auth/roles", {
-        headers: {
-          Authorization: jwt,
-        },
+      const response = await axios.get(`${API_URL}authorization/roles`, {
+        withCredentials: true,
       });
 
       if (!response.data) {
@@ -74,7 +73,7 @@ export const EditUserPopUp = ({ userId }: Props) => {
 
   const getRoleNames = () => {
     if (roles) {
-      const result = Object.values(roles);
+      const result = roles.map((role) => role.name);
       setRolesList(result);
     }
   };
@@ -82,30 +81,29 @@ export const EditUserPopUp = ({ userId }: Props) => {
   const updateUser = async () => {
     const image = await handleUploadImage();
     const updateUser = {
-      firstNames: firstnames ?? user?.firstNames,
-      lastNames: lastnames ?? user?.lastNames,
-      shortName: shortName ?? user?.shortName,
+      firstnames: firstnames ?? user?.firstnames,
+      lastnames: lastnames ?? user?.lastnames,
+      shortname: shortName ?? user?.shortname,
       ci: ci ?? user?.ci,
-      ciType: ciType ?? user?.ciType,
-      imageUrl: image ?? user?.imageUrl,
+      image_url: image ?? user?.image_url,
       address: user?.address,
-      phoneNumber: user?.phoneNumber,
+      phoneNumber: user?.phone,
       email: email ?? user?.email,
       gender: gender ?? user?.gender,
       birthDate: birthDate
         ? new Date(birthDate).toISOString().split("T")[0]
-        : user?.birthDate,
-      roleId: roleOption + 1 || user?.roleId,
+        : user?.birthdate,
+      roleId: roleOption + 1 || user?.role_id,
     };
 
     const result = await axios.put(
-      `http://localhost:3000/users/update/${user?.id}`,
+      `${API_URL}/users/${user?.id}`,
       updateUser,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: jwt,
         },
+        withCredentials: true,
       }
     );
 
@@ -117,16 +115,15 @@ export const EditUserPopUp = ({ userId }: Props) => {
   const handleUpdateUserInfo = () => {
     const apiGendersOptions = ["M", "F"];
     if (user) {
-      setFirstnames(user.firstNames);
-      setLastnames(user.lastNames);
-      setShortName(user.shortName);
+      setFirstnames(user.firstnames);
+      setLastnames(user.lastnames);
+      setShortName(user.shortname);
       setCi(user.ci);
-      setCITypeOption(identifyType.indexOf(user.ciType));
       setEmail(user.email);
       setGenderOption(apiGendersOptions.indexOf(user.gender));
-      setBirthDate(user.birthDate);
-      setRoleOption(user.roleId - 1);
-      setImageUrl(user.imageUrl ?? "");
+      setBirthDate(user.birthdate);
+      setRoleOption(user.role_id);
+      setImageUrl(user.image_url ?? "");
     }
   };
 
@@ -139,9 +136,7 @@ export const EditUserPopUp = ({ userId }: Props) => {
       `http://localhost:3000/files/upload`,
       formData,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 
@@ -153,10 +148,6 @@ export const EditUserPopUp = ({ userId }: Props) => {
 
     return "";
   };
-
-  useEffect(() => {
-    setCiType(identifyType[ciTypeOption] ?? "");
-  }, [ciTypeOption]);
 
   useEffect(() => {
     if (genderOption > -1) {
@@ -174,7 +165,7 @@ export const EditUserPopUp = ({ userId }: Props) => {
 
   useEffect(() => {
     getUserInfo();
-  }, [jwt, userId]);
+  }, [sessionData, userId]);
 
   useEffect(() => {
     handleUpdateUserInfo();
@@ -218,14 +209,6 @@ export const EditUserPopUp = ({ userId }: Props) => {
           isMandatory
           value={ci}
           onChange={setCi}
-        />
-        <Dropdown
-          label="Tipo de identificación"
-          placeholder="Selecciona el tipo de identificación"
-          isMandatory
-          options={identifyType}
-          optionSelected={ciTypeOption}
-          changeOptionSelected={setCITypeOption}
         />
         <Input
           label="Correo electrónico"

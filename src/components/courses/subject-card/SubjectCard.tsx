@@ -12,8 +12,9 @@ interface Props {
 }
 
 export const SubjectCard = ({ subject }: Props) => {
+  const API_URL = "http://127.0.0.1:8000/api/";
   const navigate = useNavigate();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
 
   const [teacher, setTeacher] = useState<User>();
 
@@ -24,11 +25,9 @@ export const SubjectCard = ({ subject }: Props) => {
   const handleGetTeacherInfo = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/user/${subject.teacherId}`,
+        `${API_URL}users/by?column=id&value=${subject.teacherId}`,
         {
-          headers: {
-            Authorization: jwt,
-          },
+          withCredentials: true,
         }
       );
 
@@ -40,7 +39,7 @@ export const SubjectCard = ({ subject }: Props) => {
 
   useEffect(() => {
     handleGetTeacherInfo();
-  }, [jwt, subject]);
+  }, [sessionData, subject]);
 
   return (
     <div className="subject-card-container">
@@ -53,7 +52,7 @@ export const SubjectCard = ({ subject }: Props) => {
         <button className="subject-name-text" onClick={handleGoSubject}>
           <b>{subject.name}</b>
         </button>
-        <p className="subject-card-teacher-name">{teacher?.shortName}</p>
+        <p className="subject-card-teacher-name">{teacher?.shortname}</p>
       </div>
     </div>
   );

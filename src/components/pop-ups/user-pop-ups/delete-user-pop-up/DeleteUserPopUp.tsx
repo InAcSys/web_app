@@ -12,19 +12,15 @@ interface Props {
 }
 
 export const DeleteUserPopUp = ({ userId }: Props) => {
-  const { jwt } = useAuthContext();
+  const API_URL = "http://127.0.0.1:8000/api/";
+  const { sessionData } = useAuthContext();
   const { setPopUp, closePopUp } = usePopUpContext();
 
   const handleDeleteUser = async () => {
-    if (jwt) {
-      const result = await axios.delete(
-        `http://localhost:3000/users/delete/${userId}`,
-        {
-          headers: {
-            Authorization: jwt,
-          },
-        }
-      );
+    if (sessionData) {
+      const result = await axios.delete(`${API_URL}users/${userId}`, {
+        withCredentials: true,
+      });
       if (result.status === 500) {
         setPopUp(<FailedPopUp message="Este usuario no pudo ser eliminado" />);
       } else {

@@ -80,8 +80,6 @@ export const AuthProvider = ({ children }: Props) => {
       withCredentials: true,
     });
 
-    console.log(response);
-
     if (response.status === 200 || response.status === 201) {
       navigate("/dashboard");
     } else {
@@ -103,15 +101,13 @@ export const AuthProvider = ({ children }: Props) => {
 
     if (sessionData) {
       const response = await axios.get(
-        `${API_URL}authorization/role-permissions/role/${
+        `${API_URL}auth/role-permissions/role/${
           sessionData?.role.id ?? 1
         }/permissions?tenant=${sessionData.user.tenant_id}`,
         {
           withCredentials: true,
         }
       );
-
-      console.log(response.data);
 
       const data = response.data as Permissions;
       setPermissions(data);
@@ -153,8 +149,6 @@ export const AuthProvider = ({ children }: Props) => {
       withCredentials: true,
     });
 
-    console.log(userResponse.data);
-
     const userData = userResponse.data as User;
 
     const roleResponse = await axios.get(
@@ -170,8 +164,6 @@ export const AuthProvider = ({ children }: Props) => {
       user: userData,
       role: roleData,
     };
-
-    console.log(data);
 
     setSessionData(data);
   };

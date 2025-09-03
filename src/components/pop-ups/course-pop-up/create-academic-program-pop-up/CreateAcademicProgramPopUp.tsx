@@ -1,49 +1,46 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuthContext, usePopUpContext } from "../../../../contexts";
-import { Input } from "../../../inputs";
-import { CloseButton } from "../../components/close-button/CloseButton";
-import "./create-academic-level-pop-up.css";
 import { Button } from "../../../buttons";
+import { Input } from "../../../inputs";
 import { TextArea } from "../../../textarea/TextArea";
-import { AcademicLevel } from "../../../../models/course/AcademicLevel";
+import { CloseButton } from "../../components/close-button/CloseButton";
+import { AcademicProgram } from "../../../../models/course/AcademicProgram";
 import axios from "axios";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
 import { FailedPopUp } from "../../failed-pop-up/FailedPopUp";
-import { AcademicProgram } from "../../../../models/course/AcademicProgram";
-import { Dropdown } from "../../../dropdown";
 
-export const CreateAcademicLevelPopUp = () => {
+export const CreateAcademicProgramPopUp = () => {
   const API_URL = "http://127.0.0.1:8000/api/";
+
   const { sessionData } = useAuthContext();
   const { closePopUp, setPopUp } = usePopUpContext();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [code, setCode] = useState("");
-  const [order, setOrder] = useState("");
-
-  const [programs, setPrograms] = useState<Array<AcademicProgram>>([]);
-  const [programsList, setProgramsList] = useState<Array<string>>([]);
-  const [programOption, setProgramOption] = useState(-1);
 
   const handleCreate = async () => {
     if (!sessionData) return;
 
-    const requestBody: AcademicLevel = {
-      order: parseInt(order ?? 0),
+    const requestBody: AcademicProgram = {
       name,
       description,
       code,
+      periods: 10,
+      duration_type: "Semestral",
       tenant_id: sessionData.user.tenant_id,
-      program_id: programs[programOption].id ?? "",
     };
 
-    const response = await axios.post(`${API_URL}courses/levels`, requestBody, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      `${API_URL}courses/programs`,
+      requestBody,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      }
+    );
 
     const status = response.status;
 
@@ -55,26 +52,6 @@ export const CreateAcademicLevelPopUp = () => {
       );
     }
   };
-
-  const getPrograms = async () => {
-    if (!sessionData) return;
-
-    const response = await axios.get(
-      `${API_URL}courses/programs?filters[tenant_id]=${sessionData.user.tenant_id}`,
-      { withCredentials: true }
-    );
-
-    const data = response.data as Array<AcademicProgram>;
-
-    const list = data.map((program) => program.name);
-
-    setPrograms(data);
-    setProgramsList(list);
-  };
-
-  useEffect(() => {
-    getPrograms();
-  }, [sessionData]);
 
   return (
     <div className="create-academic-level-pop-up-component pop-up-component-container">
@@ -98,17 +75,6 @@ export const CreateAcademicLevelPopUp = () => {
           value={code}
           onChange={setCode}
           placeholder="SEC-001"
-        />
-        <Dropdown
-          options={programsList}
-          changeOptionSelected={setProgramOption}
-          optionSelected={programOption}
-        />
-        <Input
-          label="Orden"
-          value={order}
-          onChange={setOrder}
-          placeholder="0"
         />
       </div>
       <div className="create-academic-level-actions flex-row-between">

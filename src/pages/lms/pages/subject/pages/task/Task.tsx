@@ -13,7 +13,7 @@ import { StatusLabel } from "../../../../../../components/tasks/status-label/Sta
 
 export function Task() {
   const { id, taskId } = useParams();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const navigate = useNavigate();
   const [task, setTask] = useState<Task | null>(null);
   const [files, setFiles] = useState<Array<File>>([]);
@@ -31,9 +31,9 @@ export function Task() {
       filesToUpload,
       {
         headers: {
-          Authorization: jwt,
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       }
     );
 
@@ -41,7 +41,7 @@ export function Task() {
   };
 
   const uploadFiles = async () => {
-    if (!taskId || !id || !jwt) return;
+    if (!taskId || !id || !sessionData) return;
 
     const uploadedFileIds = await Promise.all(
       files.map(async (file) => {
@@ -52,9 +52,7 @@ export function Task() {
           "http://localhost:3000/files/upload",
           formData,
           {
-            headers: {
-              Authorization: jwt,
-            },
+            withCredentials: true,
           }
         );
 
@@ -66,15 +64,13 @@ export function Task() {
   };
 
   const getTask = async () => {
-    if (!taskId || !id || !jwt) return;
+    if (!taskId || !id || !sessionData) return;
 
     try {
       const response = await axios.get(
         `http://localhost:3000/task/${taskId}?subjectId=${id}`,
         {
-          headers: {
-            Authorization: jwt,
-          },
+          withCredentials: true,
         }
       );
       setTask(response.data);
@@ -89,7 +85,7 @@ export function Task() {
 
   useEffect(() => {
     getTask();
-  }, [taskId, id, jwt]);
+  }, [taskId, id, sessionData]);
 
   return (
     <div className="task-page">

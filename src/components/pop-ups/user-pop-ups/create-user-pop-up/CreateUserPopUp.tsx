@@ -10,10 +10,13 @@ import { useAuthContext } from "../../../../contexts/AuthContext";
 import { SuccessPopUp } from "../../success-pop-up/SuccessPopUp";
 import { CloseButton } from "../../components/close-button/CloseButton";
 import { UploadProfile } from "../../../images/profiles/upload-profile/UploadProfile";
+import { Role } from "../../../../models/role/Role";
 
 export const CreateUserPopUp = () => {
+  const API_URL = "http://127.0.0.1:8000/api/";
+
   const { setPopUp, closePopUp } = usePopUpContext();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
 
   const currentDate = new Date();
   const identifyType = ["Cédula de identidad", "Pasaporte"];
@@ -24,14 +27,12 @@ export const CreateUserPopUp = () => {
   const [firstnames, setFirstnames] = useState("");
   const [lastnames, setLastnames] = useState("");
   const [ci, setCi] = useState("");
-  const [ciType, setCiType] = useState("");
   const [gender, setGender] = useState("");
-  const [ciTypeOption, setCITypeOption] = useState(-1);
   const [genderOption, setGenderOption] = useState(-1);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [birthDate, setBirthDate] = useState<Date>();
-  const [roles, setRoles] = useState<Map<number, string>>();
+  const [roles, setRoles] = useState<Array<Role>>([]);
   const [rolesList, setRolesList] = useState<Array<string>>([]);
   const [roleOption, setRoleOption] = useState(-1);
   const [imageUrl, setImageUrl] = useState("");
@@ -39,10 +40,8 @@ export const CreateUserPopUp = () => {
 
   const getRoles = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/auth/roles", {
-        headers: {
-          Authorization: jwt,
-        },
+      const response = await axios.get(`${API_URL}authorization/roles`, {
+        withCredentials: true,
       });
 
       if (!response.data) {
@@ -57,7 +56,7 @@ export const CreateUserPopUp = () => {
 
   const getRoleNames = () => {
     if (roles) {
-      const result = Object.values(roles);
+      const result = roles.map((role) => role.name);
       setRolesList(result);
     }
   };
@@ -69,30 +68,24 @@ export const CreateUserPopUp = () => {
     ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
     const shortname = handleCreateShortName();
     const requestBody = {
-      firstNames: firstnames,
-      lastNames: lastnames,
-      shortName: shortname,
+      firstnames: firstnames,
+      lastnames: lastnames,
+      shortname: shortname,
       ci: ci,
-      ciType: ciType,
-      imageUrl: imageUrlParam,
-      address: "",
-      phoneNumber: "",
+      image_url: imageUrlParam,
       email: email,
       password: password,
       gender: gender,
-      birthDate: birthDateAux,
-      roleId: roleOption + 1,
+      birthdate: birthDateAux,
+      role_id: roleOption + 1,
+      tenant_id: sessionData?.user.tenant_id,
     };
-    const result = await axios.post(
-      "http://localhost:3000/create-user",
-      requestBody,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: jwt,
-        },
-      }
-    );
+    const result = await axios.post(`${API_URL}users`, requestBody, {
+      withCredentials: true,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     if (result) {
       setPopUp(<SuccessPopUp message="Usuario creado con éxito" />);
@@ -108,9 +101,7 @@ export const CreateUserPopUp = () => {
       `http://localhost:3000/files/upload`,
       formData,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 
@@ -141,10 +132,6 @@ export const CreateUserPopUp = () => {
     const last = lastnames.split(" ");
     return `${first[0]} ${last[0]}`;
   };
-
-  useEffect(() => {
-    setCiType(identifyType[ciTypeOption] ?? "");
-  }, [ciTypeOption]);
 
   useEffect(() => {
     if (genderOption > -1) {
@@ -201,14 +188,6 @@ export const CreateUserPopUp = () => {
           isMandatory
           value={ci}
           onChange={setCi}
-        />
-        <Dropdown
-          label="Tipo de identificación"
-          placeholder="Selecciona el tipo de identificación"
-          isMandatory
-          options={identifyType}
-          optionSelected={ciTypeOption}
-          changeOptionSelected={setCITypeOption}
         />
         <Input
           label="Correo electrónico"

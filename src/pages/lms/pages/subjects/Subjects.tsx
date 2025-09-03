@@ -1,4 +1,4 @@
-import "./subjects.css"
+import "./subjects.css";
 import { useEffect, useState } from "react";
 import { SubjectCard } from "../../../../components/courses/subject-card/SubjectCard";
 import { Subject } from "../../../../models/course/Subject";
@@ -10,7 +10,9 @@ import { CreateSubjectPopUp } from "../../../../components/pop-ups/course-pop-up
 import { VerifyPermission } from "../../../../components/permission/VerifyPermission";
 
 export function Subjects() {
-  const { jwt } = useAuthContext();
+  const API_URL = "http://127.0.0.1:8000/api/";
+
+  const { sessionData } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
   const [subjects, setSubjects] = useState<Array<Subject>>();
@@ -18,11 +20,9 @@ export function Subjects() {
   const handleGetSubjects = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/subjects?pageNumber=1&pageSize=12`,
+        `${API_URL}courses/subjects?filters[tenant_id]=${sessionData?.user.tenant_id}`,
         {
-          headers: {
-            Authorization: jwt,
-          },
+          withCredentials: true,
         }
       );
 
@@ -33,12 +33,12 @@ export function Subjects() {
   };
 
   const handleCreateSubject = () => {
-    setPopUp(<CreateSubjectPopUp />)
-  }
+    setPopUp(<CreateSubjectPopUp />);
+  };
 
   useEffect(() => {
     handleGetSubjects();
-  }, [jwt]);
+  }, [sessionData]);
 
   return (
     <div className="lms-courses-page">

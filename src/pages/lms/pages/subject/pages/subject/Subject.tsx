@@ -16,8 +16,10 @@ import { usePopUpContext } from "../../../../../../contexts";
 import { RegisterAttendanceSubjectPopUp } from "../../../../../../components/pop-ups/attendance-pop-up/register-attendance-subject-pop-up/RegisterAttendanceSubjectPopUp";
 
 export function Subject() {
+  const API_URL = "http://127.0.0.1:8000/api/";
+
   const { id } = useParams();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
   const [subject, setSubject] = useState<SubjectType>();
@@ -27,11 +29,9 @@ export function Subject() {
   );
 
   const getSubject = async () => {
-    if (!id || !jwt) return;
-    const response = await axios.get(`http://localhost:3000/subject/${id}`, {
-      headers: {
-        Authorization: jwt,
-      },
+    if (!id || !sessionData) return;
+    const response = await axios.get(`${API_URL}courses/subjects/by?column=id&value=${id}`, {
+      withCredentials: true,
     });
 
     setSubject(response.data);
@@ -41,11 +41,9 @@ export function Subject() {
     if (!subject) return;
 
     const response = await axios.get(
-      `http://localhost:3000/user/${subject.teacherId}`,
+      `${API_URL}users/by?column=id&value=${subject.teacherId}`,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 
@@ -53,13 +51,11 @@ export function Subject() {
   };
 
   const getAnnouncements = async () => {
-    if (!id || !jwt) return;
+    if (!id || !sessionData) return;
     const response = await axios.get(
       `http://localhost:3000/announcements?subjectId=${id}`,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 
@@ -69,11 +65,11 @@ export function Subject() {
   useEffect(() => {
     getSubject();
     getAnnouncements();
-  }, [id, jwt]);
+  }, [id, sessionData]);
 
   useEffect(() => {
     getTeacherInfo();
-  }, [jwt, subject]);
+  }, [sessionData, subject]);
 
   return (
     <div className="lms-subject-page">

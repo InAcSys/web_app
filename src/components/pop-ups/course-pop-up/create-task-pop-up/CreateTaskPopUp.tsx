@@ -17,7 +17,7 @@ interface Props {
 
 export const CreateTaskPopUp = ({ id }: Props) => {
   const { closePopUp, setPopUp } = usePopUpContext();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
 
   const currentDate = new Date();
   const [title, setTitle] = useState("");
@@ -60,9 +60,7 @@ export const CreateTaskPopUp = ({ id }: Props) => {
       `http://localhost:3000/task?subjectId=${id}`,
       requestBody,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 

@@ -27,19 +27,17 @@ export const UploadFiles = ({
   isDelivered,
   setIsDelivered,
 }: Props) => {
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const getContent = async () => {
-    if (!isDelivered || !taskId || !jwt) return;
+    if (!isDelivered || !taskId || !sessionData) return;
 
     try {
       const response = await axios.get(
         `http://localhost:3000/task/submitted/${taskId}`,
         {
-          headers: {
-            Authorization: jwt,
-          },
+          withCredentials: true,
         }
       );
 
@@ -50,23 +48,14 @@ export const UploadFiles = ({
           contents.map(async (content: string) => {
             const infoRes = await axios.get(
               `http://localhost:3000/files/view/${content}`,
-              {
-                headers: {
-                  Authorization: jwt,
-                },
-              }
+              { withCredentials: true }
             );
 
             const fileName = infoRes.data.data.fileName ?? "unknown file.sp360";
 
             const res = await axios.get(
               `http://localhost:3000/files/download/${content}`,
-              {
-                headers: {
-                  Authorization: jwt,
-                },
-                responseType: "blob",
-              }
+              { withCredentials: true, responseType: "blob" }
             );
 
             const blob = res.data;
@@ -119,7 +108,7 @@ export const UploadFiles = ({
 
   useEffect(() => {
     getContent();
-  }, [taskId, isDelivered, jwt]);
+  }, [taskId, isDelivered, sessionData]);
 
   return (
     <div className="upload-files-task-component">

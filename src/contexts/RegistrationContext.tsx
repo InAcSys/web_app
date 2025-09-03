@@ -305,8 +305,6 @@ export const RegistrationProvider = ({ children }: Props) => {
       tenant_id: tenantId,
     };
 
-    console.log(requestBody);
-
     const response = await axios.post(`${API_URL}users`, requestBody, {
       headers: {
         "Content-Type": "application/json",

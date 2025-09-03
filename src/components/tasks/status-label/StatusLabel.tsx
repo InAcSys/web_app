@@ -11,7 +11,7 @@ interface Props {
 
 export const StatusLabel = ({ setIsDelivered, taskId }: Props) => {
   const [taskStatus, setTaskStatus] = useState("");
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const [Icon, setIcon] = useState<LucideIcon>(Clock);
 
   const textStatus = new Map<string, { status: string; icon: LucideIcon }>([
@@ -39,14 +39,12 @@ export const StatusLabel = ({ setIsDelivered, taskId }: Props) => {
   ]);
 
   const handleStatus = async () => {
-    if (!taskId || !jwt) return;
+    if (!taskId || !sessionData) return;
 
     const response = await axios.get(
       `http://localhost:3000/task/status/${taskId}`,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true
       }
     );
 
@@ -57,7 +55,7 @@ export const StatusLabel = ({ setIsDelivered, taskId }: Props) => {
 
   useEffect(() => {
     handleStatus();
-  }, [taskId, jwt]);
+  }, [taskId, sessionData]);
 
   useEffect(() => {
     if (taskStatus) {

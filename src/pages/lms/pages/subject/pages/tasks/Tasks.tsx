@@ -12,7 +12,7 @@ import { VerifyPermission } from "../../../../../../components/permission/Verify
 
 export function Tasks() {
   const { id } = useParams();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
   const [tasks, setTasks] = useState<Array<Task>>([]);
@@ -21,9 +21,7 @@ export function Tasks() {
     const response = await axios.get(
       `http://localhost:3000/tasks/course/${id}`,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 
@@ -36,7 +34,7 @@ export function Tasks() {
 
   useEffect(() => {
     getTasks();
-  }, [id, jwt]);
+  }, [id, sessionData]);
 
   return (
     <div className="tasks-page">

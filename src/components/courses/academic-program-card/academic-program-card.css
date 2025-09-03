@@ -1,0 +1,10 @@
+.academic-program-card-component {
+  width: 100%;
+  padding: 10px;
+  box-shadow: var(--box-shadow-card);
+  border-radius: .5rem;
+}
+
+.program-card-name {
+  font-size: var(--font-size-heading-3);
+}

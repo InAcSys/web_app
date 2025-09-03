@@ -14,13 +14,14 @@ import axios from "axios";
 
 export const Announcement = () => {
   const { id } = useParams();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
   const handleCreateAnnouncement = async () => {
+    if (!sessionData) return;
     if (!title || !description) return;
 
     const announcement = {
@@ -33,9 +34,9 @@ export const Announcement = () => {
       announcement,
       {
         headers: {
-          Authorization: jwt,
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       }
     );
 

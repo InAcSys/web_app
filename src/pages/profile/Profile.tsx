@@ -28,13 +28,13 @@ export default function Profile() {
 
     const user = sessionData.user;
 
-    setImage(user.imageUrl ?? "");
-    setFirstname(user.firstNames ?? "");
-    setLastname(user.lastNames ?? "");
-    setShortname(user.shortName ?? "");
+    setImage(user.image_url ?? "");
+    setFirstname(user.firstnames ?? "");
+    setLastname(user.lastnames ?? "");
+    setShortname(user.shortname ?? "");
     setEmail(user.email ?? "");
 
-    setBirthDate(dayjs(user.birthDate).toDate());
+    setBirthDate(dayjs(user.birthdate).toDate());
   }, [sessionData]);
 
   useEffect(() => {
@@ -42,9 +42,9 @@ export default function Profile() {
     const data = sessionData.user;
     if (!data || !birthDate) return;
 
-    const sameShortName = data.shortName === shortname;
+    const sameShortName = data.shortname === shortname;
 
-    const sameBirthDate = dayjs(data.birthDate)
+    const sameBirthDate = dayjs(data.birthdate)
       .startOf("day")
       .isSame(dayjs(birthDate).startOf("day"));
 

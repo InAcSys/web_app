@@ -14,8 +14,10 @@ import "./create-subject-pop-up.css";
 import { AcademicLevel } from "../../../../models/course/AcademicLevel";
 
 export const CreateSubjectPopUp = () => {
+  const API_URL = "http://127.0.0.1:8000/api/";
+
   const { closePopUp } = usePopUpContext();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
   const [name, setName] = useState("");
@@ -48,13 +50,13 @@ export const CreateSubjectPopUp = () => {
       imageUrl,
     };
     const response = await axios.post(
-      "http://localhost:3000/subject",
+      `${API_URL}courses/subjects`,
       requestBody,
       {
         headers: {
-          Authorization: jwt,
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       }
     );
 
@@ -65,11 +67,12 @@ export const CreateSubjectPopUp = () => {
 
   const getTeachers = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/users/role/2", {
-        headers: {
-          Authorization: jwt,
-        },
-      });
+      const response = await axios.get(
+        `${API_URL}users?filters[role_id]=2&filters[tenant_id]=${sessionData?.user.tenant_id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
       setTeachers(response.data);
     } catch (error) {
@@ -80,15 +83,13 @@ export const CreateSubjectPopUp = () => {
   const getLevels = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3000/academic-levels?pageNumber=1&pageSize=100",
+        `${API_URL}courses/levels?filters[tenant_id]=${sessionData?.user.tenant_id}`,
         {
-          headers: {
-            Authorization: jwt,
-          },
+          withCredentials: true,
         }
       );
 
-      setLevels(response.data.data.items);
+      setLevels(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -97,7 +98,7 @@ export const CreateSubjectPopUp = () => {
   const getTeachersNames = () => {
     if (teachers) {
       const names = teachers.map((teacher) => {
-        return `${teacher.lastNames} ${teacher.firstNames}`;
+        return teacher.name;
       });
       setTeachersNames(names);
     }
@@ -121,9 +122,7 @@ export const CreateSubjectPopUp = () => {
       `http://localhost:3000/files/upload`,
       formData,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 
@@ -165,11 +164,11 @@ export const CreateSubjectPopUp = () => {
 
   useEffect(() => {
     getTeachers();
-  }, [jwt]);
+  }, [sessionData]);
 
   useEffect(() => {
     getLevels();
-  }, [jwt]);
+  }, [sessionData]);
 
   useEffect(() => {
     getTeachersNames();

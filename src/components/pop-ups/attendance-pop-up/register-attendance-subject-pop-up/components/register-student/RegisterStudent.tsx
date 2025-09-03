@@ -25,7 +25,9 @@ export const RegisterStudent = ({
   onChange,
   subjectId,
 }: Props) => {
-  const { jwt } = useAuthContext();
+  const API_URL = "http://127.0.0.1:8000/api/";
+
+  const { sessionData } = useAuthContext();
 
   const [selectedOption, setSelectedOption] = useState(0);
   const [comment, setComment] = useState("");
@@ -61,14 +63,12 @@ export const RegisterStudent = ({
   }, {} as Record<string, number>);
 
   const getRegisterData = async () => {
-    if (!subjectId || !jwt || !student.id) return;
+    if (!subjectId || !sessionData || !student.id) return;
 
     const response = await axios.get(
-      `http://localhost:3000/attendance/student/${student.id}?subjectId=${subjectId}`,
+      `${API_URL}calendar/attendances/student/${student.id}?subject_id=${subjectId}`,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 
@@ -90,7 +90,7 @@ export const RegisterStudent = ({
 
   useEffect(() => {
     getRegisterData();
-  }, [subjectId, jwt, student]);
+  }, [subjectId, sessionData, student]);
 
   return (
     <div className="register-attendance-student-component flex-column">
@@ -99,7 +99,7 @@ export const RegisterStudent = ({
           <div className="rasc-ms-si-profile">
             <ProfileImage user={student} />
           </div>
-          <p className="rasc-ms-si-fullname">{`${student.lastNames} ${student.firstNames}`}</p>
+          <p className="rasc-ms-si-fullname">{student.name}</p>
         </div>
         <div className="rasc-ms-status-section flex-row">
           <Dropdown
@@ -120,7 +120,7 @@ export const RegisterStudent = ({
           <TextArea
             value={comment}
             onChange={setComment}
-            placeholder={`Comentario sobre ${student.shortName ?? ""}`}
+            placeholder={`Comentario sobre ${student.shortname ?? ""}`}
           />
         )}
       </div>

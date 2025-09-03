@@ -11,17 +11,15 @@ interface Props {
 }
 
 export const AnnouncementCard = ({ announcement }: Props) => {
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const [author, setAuthor] = useState<User>();
 
   const getAuthorInfo = async () => {
-    if (!jwt) return;
+    if (!sessionData) return;
     const user = await axios.get(
       `http://localhost:3000/user/${announcement.authorId}`,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true
       }
     );
     setAuthor(user.data.data);
@@ -29,7 +27,7 @@ export const AnnouncementCard = ({ announcement }: Props) => {
 
   useEffect(() => {
     getAuthorInfo();
-  }, [jwt]);
+  }, [sessionData]);
 
   return (
     <div className="announcement-card-component">
@@ -38,7 +36,7 @@ export const AnnouncementCard = ({ announcement }: Props) => {
           {author && <ProfileImage user={author} />}
         </div>
         <h4 className="announcement-author-name">
-          {author?.shortName ?? "Anonimo"}
+          {author?.shortname ?? "Anonimo"}
         </h4>
         <p className="announcement-publish-date">
           {(() => {

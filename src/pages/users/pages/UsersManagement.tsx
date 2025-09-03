@@ -10,9 +10,12 @@ import { usePopUpContext } from "../../../contexts/PopUpContext";
 import { CreateUserPopUp } from "../../../components/pop-ups/user-pop-ups/create-user-pop-up/CreateUserPopUp";
 import { SearchBar } from "../../../components/search-bar/SearchBar";
 import { VerifyPermission } from "../../../components/permission/VerifyPermission";
+import { Role } from "../../../models/role/Role";
 
 export default function UsersManagement() {
-  const { jwt } = useAuthContext();
+  const API_URL = "http://127.0.0.1:8000/api/";
+
+  const { sessionData } = useAuthContext();
   const { setPopUp } = usePopUpContext();
 
   const numberItems = ["10", "20", "50", "100"];
@@ -23,23 +26,27 @@ export default function UsersManagement() {
   const [pageSize, setPageSize] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
-  const [roles, setRoles] = useState<Map<number, string>>(new Map());
+  const [roles, setRoles] = useState<Array<Role>>([]);
 
   const [selectPageSize, setSelectPageSize] = useState(0);
 
   const getUsers = async () => {
-    if (jwt) {
+    if (sessionData) {
       const response = await axios.get(
-        `http://localhost:3000/users?pageNumber=${pageNumber}&pageSize=${pageSize}`,
+        `${API_URL}users?page=${pageNumber}&size=${pageSize}&filters[tenant_id]=${sessionData.user.tenant_id}`,
         {
-          headers: {
-            Authorization: jwt,
-          },
+          withCredentials: true,
         }
       );
 
-      const data = response.data.data;
-      return data;
+      const data = response.data;
+
+      return {
+        users: data.data,
+        pageNumber: data.current_page,
+        pageSize: data.per_page,
+        total: data.total,
+      };
     }
   };
 
@@ -48,19 +55,18 @@ export default function UsersManagement() {
   };
 
   const getRoles = async () => {
-    if (jwt) {
+    if (sessionData) {
       try {
-        const response = await axios.get("http://localhost:3000/auth/roles", {
-          headers: {
-            Authorization: jwt,
-          },
+        const response = await axios.get(`${API_URL}authorization/roles`, {
+          withCredentials: true,
         });
 
         if (!response.data) {
           throw new Error("Roles not found");
         }
+        const data = response.data as Array<Role>
 
-        setRoles(response.data);
+        setRoles(data);
       } catch (error) {
         console.error("Error fetching roles:", error);
       }
@@ -68,15 +74,13 @@ export default function UsersManagement() {
   };
 
   const handleSearchUsers = async () => {
-    if (jwt) {
-      setPageNumber(1)
+    if (sessionData) {
+      setPageNumber(1);
       try {
         const response = await axios.get(
-          `http://localhost:3000/search?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${searchValue}`,
+          `http://localhost:3000/search?pageNumber=${pageNumber}&pageSize=${pageSize}&search=${searchValue}&onlyActive=true`,
           {
-            headers: {
-              Authorization: jwt,
-            },
+            withCredentials: true,
           }
         );
         return response.data.data;
@@ -88,7 +92,7 @@ export default function UsersManagement() {
 
   useEffect(() => {
     getRoles();
-  }, [jwt]);
+  }, [sessionData]);
 
   useEffect(() => {
     setPageSize(parseInt(numberItems[selectPageSize]));
@@ -101,13 +105,13 @@ export default function UsersManagement() {
       setUsers(result.users);
       setPageNumber(result.pageNumber);
       setPageSize(result.pageSize);
-      setTotalPages(result.totalPages);
+      setTotalPages(result.total - 1);
     }
   };
 
   useEffect(() => {
     fetchUsers();
-  }, [jwt, searchValue, pageNumber, pageSize]);
+  }, [sessionData, searchValue, pageNumber, pageSize]);
 
   return (
     <div className="users-management-page">
@@ -124,7 +128,7 @@ export default function UsersManagement() {
         </VerifyPermission>
       </div>
       <div className="users-container flex-column">
-        {users.length > 0 ? (
+        {users && users.length > 0 ? (
           users.map((user) => (
             <UserCard key={`user-${user.id}`} user={user} roles={roles} />
           ))

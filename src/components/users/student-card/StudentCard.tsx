@@ -10,18 +10,18 @@ interface Props {
 }
 
 export const StudentCard = ({ studentId }: Props) => {
-  const { jwt } = useAuthContext();
+  const API_URL = "http://127.0.0.1:8000/api/";
+
+  const { sessionData } = useAuthContext();
 
   const [student, setStudent] = useState<User>();
 
   const getStudent = async () => {
-    if (!jwt) return;
+    if (!sessionData) return;
     const response = await axios.get(
-      `http://localhost:3000/user/${studentId}`,
+      `${API_URL}users/by?column=id&value=${studentId}`,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true,
       }
     );
 
@@ -30,7 +30,7 @@ export const StudentCard = ({ studentId }: Props) => {
 
   useEffect(() => {
     getStudent();
-  }, [jwt, studentId]);
+  }, [sessionData, studentId]);
 
   if (!student) return;
 
@@ -39,9 +39,7 @@ export const StudentCard = ({ studentId }: Props) => {
       <div className="student-card-profile">
         <ProfileImage user={student} />
       </div>
-      <p className="student-card-full-name">
-        {`${student.lastNames} ${student.firstNames}`}
-      </p>
+      <p className="student-card-full-name">{student.name}</p>
     </div>
   );
 };

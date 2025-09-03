@@ -19,7 +19,8 @@ export const EnrollStudentsPopUp = ({
   subjectId,
   enrollmentStudents,
 }: Props) => {
-  const { jwt } = useAuthContext();
+  const API_URL = "http://127.0.0.1:8000/api/"
+  const { sessionData } = useAuthContext();
   const { closePopUp, setPopUp } = usePopUpContext();
 
   const [selectStudents, setSelectStudents] = useState<User[]>([]);
@@ -28,12 +29,10 @@ export const EnrollStudentsPopUp = ({
   const [search, setSearch] = useState("");
 
   const getUsers = async () => {
-    if (jwt) {
+    if (sessionData) {
       try {
-        const response = await axios.get(`http://localhost:3000/users/role/1`, {
-          headers: {
-            Authorization: jwt,
-          },
+        const response = await axios.get(`${API_URL}users?filters[role_id]=1&filters[tenant_id]=${sessionData.user.tenant_id}`, {
+          withCredentials: true
         });
         const data: User[] = response.data;
 
@@ -78,7 +77,7 @@ export const EnrollStudentsPopUp = ({
   };
 
   const handleEnrollStudents = async () => {
-    if (!subjectId || !jwt) return;
+    if (!subjectId || !sessionData) return;
 
     const studentIds: string[] = selectStudents.map((student) => student.id);
     const unenrollIds: string[] = unenrollStudents.map((student) => student.id);
@@ -92,8 +91,8 @@ export const EnrollStudentsPopUp = ({
           `http://localhost:3000/subject/enroll?subjectId=${subjectId}`,
           studentIds,
           {
+            withCredentials: true,
             headers: {
-              Authorization: jwt,
               "Content-Type": "application/json",
             },
           }
@@ -105,8 +104,8 @@ export const EnrollStudentsPopUp = ({
           `http://localhost:3000/subject/unenroll?subjectId=${subjectId}`,
           unenrollIds,
           {
+            withCredentials: true,
             headers: {
-              Authorization: jwt,
               "Content-Type": "application/json",
             },
           }
@@ -141,7 +140,7 @@ export const EnrollStudentsPopUp = ({
 
   useEffect(() => {
     getUsers();
-  }, [jwt]);
+  }, [sessionData]);
 
   return (
     <div className="enroll-students-pop-up pop-up-component-container">

@@ -4,4 +4,6 @@ export interface AcademicLevel {
   description: string;
   code: string;
   id?: number;
+  tenant_id: string
+  program_id: string
 }

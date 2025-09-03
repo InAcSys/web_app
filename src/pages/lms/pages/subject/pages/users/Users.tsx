@@ -9,21 +9,19 @@ import { StudentCard } from "../../../../../../components/users/student-card/Stu
 import { VerifyPermission } from "../../../../../../components/permission/VerifyPermission";
 
 export const Users = () => {
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const { id } = useParams();
   const { setPopUp } = usePopUpContext();
 
   const [students, setStudents] = useState<string[]>();
 
   const getStudents = async () => {
-    if (!jwt || !id) return;
+    if (!sessionData || !id) return;
 
     const response = await axios.get(
       `http://localhost:3000/subject/students?subjectId=${id}`,
       {
-        headers: {
-          Authorization: jwt,
-        },
+        withCredentials: true
       }
     );
 
@@ -41,7 +39,7 @@ export const Users = () => {
 
   useEffect(() => {
     getStudents();
-  }, [id, jwt]);
+  }, [id, sessionData]);
 
   return (
     <div className="users-page">

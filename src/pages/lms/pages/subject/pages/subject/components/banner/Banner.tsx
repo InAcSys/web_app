@@ -21,7 +21,7 @@ export const Banner = ({ teacher, subject }: Props) => {
           {subject?.name ?? "Materia"}
         </h2>
         <p className="teacher-name-subject-text complete-left">
-          {teacher?.shortName ?? "Docente"}
+          {teacher?.shortname ?? "Docente"}
         </p>
         <p className="description-subject-text">{subject?.description ?? ""}</p>
       </div>

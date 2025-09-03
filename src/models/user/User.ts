@@ -6,7 +6,7 @@ export interface User {
   code?: string;
   lms_id?: number;
   ci: string;
-  imageUrl?: string;
+  image_url?: string;
   address?: string;
   phone?: string;
   email: string;

@@ -11,8 +11,10 @@ import { useEffect } from "react";
 import { ErrorPage } from "../../../errors/ErrorPage";
 
 export const SubjectRoutes = () => {
+  const API_URL = "http://127.0.0.1:8000/api/"
+
   const { id } = useParams();
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const navigate = useNavigate();
 
   const tabs: Array<Tab> = [
@@ -22,13 +24,11 @@ export const SubjectRoutes = () => {
   ];
 
   const getSubject = async () => {
-    if (!id || !jwt) return;
+    if (!id || !sessionData) return;
 
     try {
-      await axios.get(`http://localhost:3000/subject/${id}`, {
-        headers: {
-          Authorization: jwt,
-        },
+      await axios.get(`${API_URL}subjects/by?column=id&value=${id}`, {
+        withCredentials: true
       });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -41,7 +41,7 @@ export const SubjectRoutes = () => {
 
   useEffect(() => {
     getSubject();
-  }, [id, jwt]);
+  }, [id, sessionData]);
 
   return (
     <>

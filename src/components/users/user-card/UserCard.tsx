@@ -27,14 +27,14 @@ export const UserCard = ({ user, roles }: Props) => {
     <div className="user-card-container">
       <div className="user-card-info-section">
         <div className="user-card-image-section">
-          {user.imageUrl ? (
+          {user.image_url ? (
             <img
-              src={user.imageUrl}
+              src={user.image_url}
               alt="User card profile"
               className="user-card-profile"
             />
           ) : (
-            <DefaultProfile shortName={user.shortName} />
+            <DefaultProfile shortName={user.shortname} />
           )}
         </div>
         <button
@@ -42,11 +42,11 @@ export const UserCard = ({ user, roles }: Props) => {
           onClick={handleEditUserInfo}
         >
           <b>
-            {`${user.lastNames}`} {`${user.firstNames}`}
+            {user.name}
           </b>
         </button>
         <p className="user-card-role-text">
-          {roles ? roles[user.roleId] : "Rol"}
+          {roles ? roles[user.role_id].name : "Rol"}
         </p>
       </div>
       <div className="user-card-actions-section flex-row-center-end">

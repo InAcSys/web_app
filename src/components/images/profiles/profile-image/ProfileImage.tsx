@@ -9,10 +9,10 @@ interface Props {
 export const ProfileImage = ({ user }: Props) => {
   return (
     <div className="profile-image-component">
-      {user && user.imageUrl ? (
-        <img src={user.imageUrl} alt="Profile user" className="profile-image" />
+      {user && user.image_url ? (
+        <img src={user.image_url} alt="Profile user" className="profile-image" />
       ) : (
-        <DefaultProfile shortName={user.shortName} />
+        <DefaultProfile shortName={user.shortname} />
       )}
     </div>
   );
