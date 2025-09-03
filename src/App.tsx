@@ -16,19 +16,22 @@ import { useEffect } from "react";
 import { FailedPopUp } from "./components";
 
 function App() {
-  const { jwt } = useAuthContext();
+  const { sessionData } = useAuthContext();
   const { setPopUp } = usePopUpContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (jwt === null) return;
-    if (!jwt) {
+    if (sessionData === null) return;
+
+    if (window.location.pathname === "/") return;
+
+    if (!sessionData) {
       setPopUp(
         <FailedPopUp message="No tienes autorización para acceder. Por favor, inicia sesión para continuar." />
       );
       navigate("/log-in");
     }
-  }, [jwt]);
+  }, [sessionData]);
 
   return (
     <Routes>

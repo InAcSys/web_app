@@ -45,9 +45,15 @@ export const RegisterAttendanceSubjectPopUp = ({ id }: Props) => {
           }
         );
 
-        return student.data.data;
+        return student.data.data as User;
       })
     );
+
+    data.sort((a, b) => {
+      const nombreA = `${a.lastNames} ${a.firstNames}`;
+      const nombreB = `${b.lastNames} ${b.firstNames}`;
+      return nombreA.localeCompare(nombreB, "es", { sensitivity: "base" });
+    });
 
     setStudents(data);
   };

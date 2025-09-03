@@ -13,13 +13,14 @@ import logInSchema from "../validations/log-in-schema";
 import { Permissions } from "../models/menu/Menu";
 import { SessionData } from "../models/session/SessionData";
 import axios from "axios";
+import { User } from "../models/user/User";
+import { Role } from "../models/role/Role";
 
 interface Props {
   children: ReactNode;
 }
 
 interface Type {
-  jwt: string | null;
   sessionData: SessionData | null;
   passwordError: string;
   emailError: string;
@@ -33,7 +34,8 @@ interface Type {
 const AuthContext = createContext<Type | undefined>(undefined);
 
 export const AuthProvider = ({ children }: Props) => {
-  const [jwt, setJwt] = useState<string | null>(null);
+  const API_URL = "http://127.0.0.1:8000/api/";
+
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [formError, setFormError] = useState<string>("");
@@ -71,21 +73,16 @@ export const AuthProvider = ({ children }: Props) => {
       os: clientInfo.os,
     };
 
-    const response = await fetch("http://localhost:3000/log-in", {
-      method: "POST",
+    const response = await axios.post(`${API_URL}auth/login`, requestInfo, {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(requestInfo),
+      withCredentials: true,
     });
 
-    if (response.ok) {
-      const token = await response.text();
-      setJwt(token);
-      Cookies.set(
-        "sapiens_360_gwEjbpFRQsyFZm4VVYBTSk5zP7DmM9tpzAAmW1f4FvndB2HvJmyKytdFYkq2bK53",
-        token
-      );
+    console.log(response);
+
+    if (response.status === 200 || response.status === 201) {
       navigate("/dashboard");
     } else {
       setFormError("Credenciales inválidas");
@@ -99,29 +96,24 @@ export const AuthProvider = ({ children }: Props) => {
     navigate("/");
   };
 
-  const getToken = () => {
-    const token = Cookies.get(
-      "sapiens_360_gwEjbpFRQsyFZm4VVYBTSk5zP7DmM9tpzAAmW1f4FvndB2HvJmyKytdFYkq2bK53"
-    );
-    setJwt(token ?? "");
-  };
-
   const getPermissions = async () => {
-    if (!jwt) {
+    if (!sessionData) {
       return;
     }
 
-    const headers: HeadersInit = {};
+    if (sessionData) {
+      const response = await axios.get(
+        `${API_URL}authorization/role-permissions/role/${
+          sessionData?.role.id ?? 1
+        }/permissions?tenant=${sessionData.user.tenant_id}`,
+        {
+          withCredentials: true,
+        }
+      );
 
-    if (jwt) {
-      headers["Authorization"] = jwt;
+      console.log(response.data);
 
-      const response = await fetch("http://localhost:3000/auth/permissions", {
-        method: "GET",
-        headers: headers,
-      });
-
-      const data = (await response.json()) as Permissions;
+      const data = response.data as Permissions;
       setPermissions(data);
     }
   };
@@ -157,32 +149,43 @@ export const AuthProvider = ({ children }: Props) => {
   };
 
   const getSessionData = async () => {
-    if (!jwt) return;
-
-    const userData = await axios.get("http://localhost:3000/my-info", {
-      headers: {
-        Authorization: jwt,
-      },
+    const userResponse = await axios.get(`${API_URL}auth/me`, {
+      withCredentials: true,
     });
 
-    setSessionData(userData.data as SessionData);
+    console.log(userResponse.data);
+
+    const userData = userResponse.data as User;
+
+    const roleResponse = await axios.get(
+      `${API_URL}authorization/roles/by?column=id&value=${userData.role_id}`,
+      {
+        withCredentials: true,
+      }
+    );
+
+    const roleData = roleResponse.data as Role;
+
+    const data: SessionData = {
+      user: userData,
+      role: roleData,
+    };
+
+    console.log(data);
+
+    setSessionData(data);
   };
 
   useEffect(() => {
-    getToken();
-  }, []);
-
-  useEffect(() => {
     getPermissions();
-  }, [jwt]);
+  }, [sessionData]);
 
   useEffect(() => {
     getSessionData();
-  }, [jwt]);
+  }, []);
 
   const objValue = useMemo(
     () => ({
-      jwt,
       emailError,
       passwordError,
       formError,
@@ -192,7 +195,7 @@ export const AuthProvider = ({ children }: Props) => {
       verifyPermission,
       sessionData,
     }),
-    [jwt, emailError, passwordError, formError, permissions, sessionData]
+    [emailError, passwordError, formError, permissions, sessionData]
   );
 
   return (

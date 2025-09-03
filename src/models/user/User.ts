@@ -1,18 +1,18 @@
 export interface User {
-  firstNames: string;
-  lastNames: string;
-  shortName: string;
+  name: string;
+  firstnames: string;
+  lastnames: string;
+  shortname: string;
   code?: string;
-  lmsId?: number;
+  lms_id?: number;
   ci: string;
-  ciType: string;
   imageUrl?: string;
   address?: string;
-  phoneNumber?: string;
+  phone?: string;
   email: string;
   gender: string;
-  birthDate: Date;
-  roleId: number;
+  birthdate: Date;
+  role_id: number;
   id: string;
-  tenantId: string;
+  tenant_id: string;
 }

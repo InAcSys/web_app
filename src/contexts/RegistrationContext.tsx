@@ -16,6 +16,7 @@ import {
   Period,
 } from "../models";
 import { useAuthContext } from "./AuthContext";
+import axios from "axios";
 
 interface Props {
   children: ReactNode;
@@ -98,7 +99,7 @@ export const RegistrationProvider = ({ children }: Props) => {
   const { logIn } = useAuthContext();
 
   const navigate = useNavigate();
-  const API_URL = "http://localhost:3000/";
+  const API_URL = "http://127.0.0.1:8000/api/";
 
   const [name, setName] = useState("");
   const [institutionType, setInstitutionType] = useState(-1);
@@ -145,26 +146,26 @@ export const RegistrationProvider = ({ children }: Props) => {
   const [subDomainError, setSubDomainError] = useState("");
 
   const getDepartments = async () => {
-    const response = await fetch(`${API_URL}departments/1`);
-    const result = await response.text();
-    const departmentsResponse = JSON.parse(result);
-
-    const departmentsList: Array<Department> = departmentsResponse.map(
-      (item: any) => ({
-        id: item.id,
-        name: item.name,
-      })
+    const response = await axios.get(
+      `${API_URL}academics/states?filters[country_id]=1`
     );
+    const result = response.data;
+
+    const departmentsList: Array<Department> = result.map((item: any) => ({
+      id: item.id,
+      name: item.name,
+    }));
 
     setDepartments(departmentsList);
   };
 
   const getCities = async () => {
-    const response = await fetch(`${API_URL}cities/${department + 1}`);
-    const result = await response.text();
-    const citiesResponse = JSON.parse(result);
+    const response = await axios.get(
+      `${API_URL}academics/cities?filters[state_id]=${departments[department].id}`
+    );
+    const result = await response.data;
 
-    const citiesList: Array<City> = citiesResponse.map((item: any) => ({
+    const citiesList: Array<City> = result.map((item: any) => ({
       id: item.id,
       name: item.name,
     }));
@@ -174,12 +175,9 @@ export const RegistrationProvider = ({ children }: Props) => {
   };
 
   const getNatures = async () => {
-    const response = await fetch(
-      "http://localhost:5000/api/Nature?pageNumber=1&pageSize=100"
-    );
+    const response = await axios.get(`${API_URL}academics/natures`);
 
-    const result = await response.text();
-    const natureResponse = JSON.parse(result);
+    const natureResponse = response.data;
 
     const natureList: Array<Nature> = natureResponse.map((item: any) => ({
       id: item.id,
@@ -190,12 +188,9 @@ export const RegistrationProvider = ({ children }: Props) => {
   };
 
   const getPeriods = async () => {
-    const response = await fetch(
-      "http://localhost:5000/api/Period?pageNumber=1&pageSize=100"
-    );
+    const response = await axios.get(`${API_URL}academics/periods`);
 
-    const result = await response.text();
-    const periodResponse = JSON.parse(result);
+    const periodResponse = response.data;
 
     const periodList: Array<Period> = periodResponse.map((item: any) => ({
       id: item.id,
@@ -206,19 +201,14 @@ export const RegistrationProvider = ({ children }: Props) => {
   };
 
   const getTypes = async () => {
-    const response = await fetch(
-      "http://localhost:5000/api/Type?pageNumber=1&pageSize=100"
-    );
+    const response = await axios.get(`${API_URL}academics/types`);
 
-    const result = await response.text();
-    const instituteTypeResponse = JSON.parse(result);
+    const result = await response.data;
 
-    const instituteTypeList: Array<InstituteType> = instituteTypeResponse.map(
-      (item: any) => ({
-        id: item.id,
-        name: item.name,
-      })
-    );
+    const instituteTypeList: Array<InstituteType> = result.map((item: any) => ({
+      id: item.id,
+      name: item.name,
+    }));
 
     setInstituteTypes(instituteTypeList);
   };
@@ -235,30 +225,49 @@ export const RegistrationProvider = ({ children }: Props) => {
 
     const requestBody = {
       name: name,
-      type: institutionType + 1,
-      nature: institutionNature + 1,
-      period: institutionPeriod + 1,
-      subDomain: subDomain,
-      country: 1,
-      departament: departments[department].id,
-      city: cities[city].id,
+      subdomain: subDomain,
       location: location,
-      startTime: startDateAux,
-      endTime: endDateAux,
+      email: `contact@${subDomain}.edu.bo`,
+      phone: "+591 65330533",
+      established_year: 1900,
+      start_date: startDateAux,
+      end_date: endDateAux,
+      type_id: instituteTypes[institutionType].id,
+      nature_id: natures[institutionNature].id,
+      period_id: periods[institutionPeriod].id,
+      country_id: 1,
+      state_id: departments[department].id,
+      city_id: cities[city].id,
     };
 
-    const response = await fetch("http://localhost:3000/institute/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
-  
-    if (response.ok) {
-      const result = await response.text();
-      setTenantId(result);
-      if (result !== "") {
+    const response = await axios.post(
+      `${API_URL}academics/institutes`,
+      requestBody,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = response.data;
+
+    if (data) {
+      const idResponse = await axios.get(
+        `${API_URL}academics/institutes/by?column=subdomain&value=${data.subdomain}`
+      );
+
+      const id = idResponse.data.id;
+
+      if (id) {
+        await axios.post(
+          `${API_URL}auth/role-permissions/initialize/${id}`,
+          {},
+          {
+            withCredentials: true,
+          }
+        );
+        setTenantId(id);
         navigate("/registration/principal");
       }
     }
@@ -266,21 +275,15 @@ export const RegistrationProvider = ({ children }: Props) => {
 
   const checkSubDomainAvailability = async () => {
     if (subDomain.length === 0) return;
-    const response = await fetch(
-      `http://localhost:3000/verify/sub-domain?subDomain=${subDomain}`,
-      {
-        method: "POST",
-      }
+    const response = await axios.get(
+      `${API_URL}academics/institutes/subdomain/${subDomain}`
     );
+    const result = response.data;
 
-    if (response.ok) {
-      const result = await response.text();
-      const subDomainResult = JSON.parse(result);
-      if (subDomainResult) {
-        setSubDomainError("Subdominio no disponible");
-      } else {
-        setSubDomainError("");
-      }
+    if (result) {
+      setSubDomainError("Subdominio no disponible");
+    } else {
+      setSubDomainError("");
     }
   };
 
@@ -290,33 +293,27 @@ export const RegistrationProvider = ({ children }: Props) => {
       birthDate.getMonth() + 1
     ).padStart(2, "0")}-${String(birthDate.getDate()).padStart(2, "0")}`;
     const requestBody = {
-      firstNames: firstNames,
-      lastNames: lastNames,
-      shortName: shortName,
+      firstnames: firstNames,
+      lastnames: lastNames,
+      shortname: shortName,
       ci: ci,
-      ciType: ciType,
-      imageUrl: imageUrl,
-      address: address,
-      phoneNumber: phone,
       email: email,
       password: password,
       gender: gender,
-      birthDate: birthDateAux,
-      roleId: 4,
+      birthdate: birthDateAux,
+      role_id: 4,
+      tenant_id: tenantId,
     };
 
-    const response = await fetch(
-      `http://localhost:3000/principal/registration?tenantId=${tenantId}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      }
-    );
+    console.log(requestBody);
 
-    if (response.ok) {
+    const response = await axios.post(`${API_URL}users`, requestBody, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status === 201 || response.status === 200) {
       logIn(email, password);
     }
   };
